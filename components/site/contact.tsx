@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowRight, Check, Loader2, Mail, MapPin, Phone } from 'lucide-react'
 import { useActionState, useId } from 'react'
-import { company, services } from '@/lib/content'
+import { useSiteContent } from '@/lib/site-content'
 import { submitContact, type ContactState } from '@/lib/contact'
 import { cn } from '@/lib/utils'
 import { EASE, Eyebrow, Magnetic, Reveal, SplitHeading } from '@/components/motion/primitives'
@@ -76,6 +76,7 @@ function Field({
 }
 
 export function Contact() {
+  const { company, services } = useSiteContent()
   const [state, action, pending] = useActionState(submitContact, initial)
   const serviceId = useId()
 

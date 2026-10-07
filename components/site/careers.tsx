@@ -3,12 +3,14 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowRight, ArrowUpRight, Briefcase, Clock, MapPin, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { careers } from '@/lib/content'
+import { careers as careersShape } from '@/lib/content'
+import { useSiteContent } from '@/lib/site-content'
 import { EASE, Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
 
-type Job = (typeof careers.jobs)[number]
+type Job = (typeof careersShape.jobs)[number]
 
 export function Careers() {
+  const { careers } = useSiteContent()
   const [job, setJob] = useState<Job | null>(null)
   const lastTrigger = useRef<HTMLButtonElement | null>(null)
 
@@ -104,6 +106,7 @@ export function Careers() {
 }
 
 function JobDrawer({ job, onClose }: { job: Job | null; onClose: () => void }) {
+  const { careers } = useSiteContent()
   const panelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

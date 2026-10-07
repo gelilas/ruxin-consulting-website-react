@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { about, services } from '@/lib/content'
+import { useSiteContent } from '@/lib/site-content'
 
 type Vec = { x: number; y: number }
 type Particle = { x: number; y: number; vx: number; vy: number; seed: number; size: number }
@@ -24,6 +24,7 @@ function quad(p0: Vec, c: Vec, p1: Vec, t: number): Vec {
  * Phase anchors are read from elements with ids `about` and `services-intro`.
  */
 export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
+  const { about, services } = useSiteContent()
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -392,7 +393,7 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
       window.removeEventListener('pointermove', onMove)
       document.removeEventListener('pointerleave', onLeave)
     }
-  }, [onLight])
+  }, [onLight, about, services])
 
   return <canvas ref={canvasRef} className="block size-full" aria-hidden="true" />
 }

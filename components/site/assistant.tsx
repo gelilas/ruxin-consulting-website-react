@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowUp, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { assistant } from '@/lib/content'
+import { useSiteContent } from '@/lib/site-content'
 import { requestAssistantReply, type AssistantReply, type ChatMessage } from '@/lib/assistant'
 import { cn } from '@/lib/utils'
 import { EASE } from '@/components/motion/primitives'
@@ -11,6 +11,7 @@ import { EASE } from '@/components/motion/primitives'
 type UIMessage = ChatMessage & { id: number; links?: AssistantReply['links'] }
 
 export function Assistant() {
+  const { assistant } = useSiteContent()
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<UIMessage[]>([{ id: 0, role: 'assistant', content: assistant.welcome }])
   const [input, setInput] = useState('')

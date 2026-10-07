@@ -1,5 +1,5 @@
 import { ArrowUp } from 'lucide-react'
-import { company, services } from '@/lib/content'
+import { useSiteContent } from '@/lib/site-content'
 import { Logo } from './navbar'
 
 const companyLinks = [
@@ -32,6 +32,7 @@ function Column({ title, links }: { title: string; links: { label: string; href:
 }
 
 export function Footer() {
+  const { company, services } = useSiteContent()
   return (
     <footer className="relative border-t border-white/10 bg-ink text-white">
       <div className="mx-auto max-w-[1440px] px-5 pb-10 pt-20 md:px-10">

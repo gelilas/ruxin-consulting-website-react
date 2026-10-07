@@ -3,7 +3,7 @@
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { ArrowRight, Menu, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { navLinks } from '@/lib/content'
+import { useSiteContent } from '@/lib/site-content'
 import { cn } from '@/lib/utils'
 import { EASE, Magnetic } from '@/components/motion/primitives'
 
@@ -25,6 +25,7 @@ export function Logo({ className, light = true }: { className?: string; light?: 
 }
 
 export function Navbar() {
+  const { navLinks } = useSiteContent()
   const { scrollY } = useScroll()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
@@ -47,7 +48,7 @@ export function Navbar() {
       if (el) io.observe(el)
     })
     return () => io.disconnect()
-  }, [])
+  }, [navLinks])
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''

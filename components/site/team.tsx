@@ -1,7 +1,7 @@
 'use client'
 
 import { ArrowUpRight } from 'lucide-react'
-import { team } from '@/lib/content'
+import { useSiteContent } from '@/lib/site-content'
 import { Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
 
 function Linkedin({ className }: { className?: string }) {
@@ -13,6 +13,7 @@ function Linkedin({ className }: { className?: string }) {
 }
 
 export function Team() {
+  const { team } = useSiteContent()
   return (
     <section id="team" aria-labelledby="team-heading" className="bg-white py-24 text-ink md:py-36">
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">

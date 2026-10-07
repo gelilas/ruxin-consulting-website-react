@@ -3,13 +3,14 @@
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
-import { testimonials } from '@/lib/content'
+import { useSiteContent } from '@/lib/site-content'
 import { cn } from '@/lib/utils'
 import { EASE } from '@/components/motion/primitives'
 
 const DURATION = 7000
 
 export function Testimonials() {
+  const { testimonials } = useSiteContent()
   const [index, setIndex] = useState(0)
   const [direction, setDirection] = useState(1)
   const [paused, setPaused] = useState(false)

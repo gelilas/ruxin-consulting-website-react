@@ -1,6 +1,7 @@
 'use client'
 
-import { clients } from '@/lib/content'
+import { clients as clientShape } from '@/lib/content'
+import { useSiteContent } from '@/lib/site-content'
 import { cn } from '@/lib/utils'
 import { Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
 import { Testimonials } from './testimonials'
@@ -13,7 +14,7 @@ const markStyles = [
   'font-semibold lowercase tracking-tight',
 ]
 
-function ClientMark({ client, i }: { client: (typeof clients)[number]; i: number }) {
+function ClientMark({ client, i }: { client: (typeof clientShape)[number]; i: number }) {
   return (
     <li
       className="group flex h-24 w-52 shrink-0 items-center justify-center border-r border-ink/8 md:w-64"
@@ -47,6 +48,7 @@ function ClientMark({ client, i }: { client: (typeof clients)[number]; i: number
 }
 
 export function Clients() {
+  const { clients } = useSiteContent()
   const row = [...clients, ...clients]
   return (
     <section id="clients" aria-labelledby="clients-heading" className="relative bg-paper py-24 text-ink md:py-36">

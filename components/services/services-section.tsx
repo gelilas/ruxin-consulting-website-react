@@ -3,7 +3,8 @@
 import { AnimatePresence, motion, useInView, useReducedMotion } from 'motion/react'
 import { ArrowRight, Pause, Play } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState, type ComponentType } from 'react'
-import { services, type ServiceId } from '@/lib/content'
+import { type ServiceId } from '@/lib/content'
+import { useSiteContent } from '@/lib/site-content'
 import { cn } from '@/lib/utils'
 import { EASE } from '@/components/motion/primitives'
 import { ConsultingVisual } from './visuals/consulting-visual'
@@ -32,6 +33,7 @@ const glowPositions: Record<ServiceId, { x: string; y: string }> = {
 const CYCLE_MS = 9000
 
 export function ServicesSection() {
+  const { services } = useSiteContent()
   const [index, setIndex] = useState(0)
   const [playing, setPlaying] = useState(true)
   const [hoverPaused, setHoverPaused] = useState(false)
@@ -40,8 +42,7 @@ export function ServicesSection() {
   const inView = useInView(sectionRef, { margin: '-30% 0px' })
   const reduce = useReducedMotion()
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const service = services[index]
-  const Visual = visuals[service.id]
+  const service = services[index] ?? services[0]
   const autoplay = playing && !hoverPaused && inView && !reduce
 
   const select = useCallback((i: number, fromUser = true) => {
@@ -50,7 +51,7 @@ export function ServicesSection() {
       return (i + services.length) % services.length
     })
     if (fromUser) setPlaying(false)
-  }, [])
+  }, [services.length])
 
   useEffect(() => {
     if (!autoplay) return
@@ -66,7 +67,7 @@ export function ServicesSection() {
     }
     window.addEventListener('ruxin:service', onSelect)
     return () => window.removeEventListener('ruxin:service', onSelect)
-  }, [select])
+  }, [select, services])
 
   const onTabKey = (e: React.KeyboardEvent) => {
     const keys: Record<string, number> = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }
@@ -88,6 +89,10 @@ export function ServicesSection() {
     if (hoverTimer.current) clearTimeout(hoverTimer.current)
   }
 
+  if (!service) return null
+  const visualKey = (Object.hasOwn(visuals, service.id) ? service.id : 'consulting') as ServiceId
+  const Visual = visuals[visualKey]
+
   return (
     <section
       ref={sectionRef}
@@ -99,7 +104,7 @@ export function ServicesSection() {
         aria-hidden="true"
         className="pointer-events-none absolute size-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-25 blur-3xl"
         style={{ background: 'radial-gradient(circle, rgba(176,22,30,0.55), transparent 65%)' }}
-        animate={{ left: glowPositions[service.id].x, top: glowPositions[service.id].y }}
+        animate={{ left: glowPositions[visualKey].x, top: glowPositions[visualKey].y }}
         transition={{ duration: 1.6, ease: EASE }}
       />
 
@@ -108,7 +113,7 @@ export function ServicesSection() {
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-white/45">Capabilities</p>
           <div className="flex items-center gap-4">
             <p className="font-mono text-[11px] tracking-[0.2em] text-white/45" aria-live="polite">
-              <span className="text-white">{service.number}</span> / 05
+              <span className="text-white">{service.number}</span> / {String(services.length).padStart(2, '0')}
             </p>
             {!reduce && (
               <button
@@ -265,7 +270,9 @@ export function ServicesSection() {
 }
 
 function ServiceDetails({ index }: { index: number }) {
+  const { services } = useSiteContent()
   const s = services[index]
+  if (!s) return null
   return (
     <div>
       <h3 className="text-balance text-2xl font-semibold leading-tight tracking-tight md:text-3xl">{s.title}</h3>
@@ -289,7 +296,9 @@ function ServiceDetails({ index }: { index: number }) {
 }
 
 function ConceptChain({ index }: { index: number }) {
+  const { services } = useSiteContent()
   const s = services[index]
+  if (!s) return null
   return (
     <div className="mt-4 flex items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.18em] text-white/40 md:text-[11px]">
       <AnimatePresence mode="wait">

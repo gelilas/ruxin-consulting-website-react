@@ -3,11 +3,12 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
 import { useState } from 'react'
-import { insightCategories, insights } from '@/lib/content'
+import { insights as insightShape } from '@/lib/content'
+import { useSiteContent } from '@/lib/site-content'
 import { cn } from '@/lib/utils'
 import { EASE, Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
 
-type Insight = (typeof insights)[number]
+type Insight = (typeof insightShape)[number]
 
 function Meta({ item, light = false }: { item: Insight; light?: boolean }) {
   return (
@@ -80,7 +81,8 @@ function SideArticle({ item }: { item: Insight }) {
 }
 
 export function Insights() {
-  const [category, setCategory] = useState<(typeof insightCategories)[number]>('All')
+  const { insightCategories, insights } = useSiteContent()
+  const [category, setCategory] = useState('All')
   const filtered = category === 'All' ? insights : insights.filter((i) => i.category === category)
   const [feature, ...rest] = filtered
 

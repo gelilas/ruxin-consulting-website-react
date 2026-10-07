@@ -3,7 +3,7 @@
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { ArrowDown, ArrowRight } from 'lucide-react'
 import { useRef } from 'react'
-import { about, hero, services } from '@/lib/content'
+import { useSiteContent } from '@/lib/site-content'
 import { ConnectionNetwork } from '@/components/network/connection-network'
 import { Counter, EASE, Eyebrow, Magnetic, Reveal, SplitHeading } from '@/components/motion/primitives'
 
@@ -32,6 +32,7 @@ export function Story() {
 }
 
 function Hero() {
+  const { hero } = useSiteContent()
   const ref = useRef<HTMLElement>(null)
   const reduce = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
@@ -109,6 +110,7 @@ function Hero() {
 }
 
 function About() {
+  const { about } = useSiteContent()
   return (
     <section id="about" aria-labelledby="about-heading" className="relative isolate bg-white">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
@@ -161,6 +163,7 @@ function About() {
 }
 
 function ServicesIntro() {
+  const { services } = useSiteContent()
   return (
     <section id="services-intro" aria-labelledby="services-heading" className="relative">
       <div className="mx-auto flex min-h-[110svh] max-w-[1440px] flex-col justify-center px-5 py-28 md:px-10">
