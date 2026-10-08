@@ -142,17 +142,27 @@ export function Magnetic({ children, strength = 0.3, className }: { children: Re
   )
 }
 
-export function Eyebrow({ children, className, dark = false }: { children: ReactNode; className?: string; dark?: boolean }) {
+export function Eyebrow({
+  children,
+  className,
+  dark = false,
+  mark = 'red',
+}: {
+  children: ReactNode
+  className?: string
+  dark?: boolean
+  mark?: 'red' | 'white'
+}) {
   return (
     <p
       className={cn(
         'flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em]',
-        dark ? 'text-mute' : 'text-neutral-500',
+        dark ? 'text-mute' : 'text-ink/50',
         className,
       )}
     >
       <span className="relative flex size-1.5">
-        <span className="absolute inset-0 rounded-full bg-ruxin" />
+        <span className={cn('absolute inset-0 rounded-full', mark === 'white' ? 'bg-white' : 'bg-ruxin')} />
       </span>
       {children}
     </p>

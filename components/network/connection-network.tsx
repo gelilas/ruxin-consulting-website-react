@@ -7,7 +7,6 @@ type Vec = { x: number; y: number }
 type Particle = { x: number; y: number; vx: number; vy: number; seed: number; size: number }
 type Traveler = { edge: number; t: number; speed: number }
 
-const RED = '176, 22, 30'
 const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v))
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t
 const ease = (t: number) => 1 - Math.pow(1 - clamp(t), 3)
@@ -32,6 +31,19 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
+
+    const palette = { red: '196, 18, 48', ink: '#1c1916' }
+    const readPalette = () => {
+      const style = getComputedStyle(document.documentElement)
+      const hex = style.getPropertyValue('--ruxin').trim().replace('#', '')
+      const ink = style.getPropertyValue('--ink').trim()
+      if (/^[0-9a-fA-F]{6}$/.test(hex)) {
+        const n = parseInt(hex, 16)
+        palette.red = `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`
+      }
+      if (ink) palette.ink = ink
+    }
+    readPalette()
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const fine = window.matchMedia('(pointer: fine)').matches
@@ -118,16 +130,19 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
       const toBranch = ease(clamp(phase - 1))
       const pathness = clamp(1 - Math.abs(phase - 1) * 1.6)
       const alive = reduce ? 0 : ease((t - 3.2) / 1.5)
-      const tone = onLight ? 9 : 255
-      const line = (alpha: number) => `rgba(${tone}, ${tone}, ${tone}, ${onLight ? Math.min(1, alpha * 2.4) : alpha})`
+      const inkHex = palette.ink.replace('#', '')
+      const inkN = /^[0-9a-fA-F]{6}$/.test(inkHex) ? parseInt(inkHex, 16) : 0x1c1916
+      const inkRgb = `${(inkN >> 16) & 255}, ${(inkN >> 8) & 255}, ${inkN & 255}`
+      const line = (alpha: number) =>
+        onLight ? `rgba(${inkRgb}, ${Math.min(1, alpha * 2.4)})` : `rgba(255, 255, 255, ${alpha})`
 
       ctx.clearRect(0, 0, w, h)
 
       // Interaction glow
       if (mouse.glow > 0.01) {
         const g = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, R * 1.4)
-        g.addColorStop(0, `rgba(${RED}, ${0.16 * mouse.glow})`)
-        g.addColorStop(1, `rgba(${RED}, 0)`)
+        g.addColorStop(0, `rgba(${palette.red}, ${0.16 * mouse.glow})`)
+        g.addColorStop(1, `rgba(${palette.red}, 0)`)
         ctx.fillStyle = g
         ctx.fillRect(0, 0, w, h)
       }
@@ -215,7 +230,7 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
       if (starAlpha > 0.01) {
         starEdges.forEach(({ a, b, c }, i) => {
           const isHot = mouse.active && proximity > 0.2
-          ctx.strokeStyle = isHot ? `rgba(${RED}, ${0.5 * starAlpha})` : line(0.2 * starAlpha)
+          ctx.strokeStyle = isHot ? `rgba(${palette.red}, ${0.5 * starAlpha})` : line(0.2 * starAlpha)
           ctx.lineWidth = 1
           ctx.beginPath()
           const steps = 28
@@ -259,11 +274,11 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
             pt = quad(e.a, e.c, e.b, tr.t)
           }
           const fade = Math.sin(tr.t * Math.PI)
-          ctx.fillStyle = `rgba(${RED}, ${0.9 * fade})`
+          ctx.fillStyle = `rgba(${palette.red}, ${0.9 * fade})`
           ctx.beginPath()
           ctx.arc(pt.x, pt.y, 2, 0, Math.PI * 2)
           ctx.fill()
-          ctx.fillStyle = `rgba(${RED}, ${0.18 * fade})`
+          ctx.fillStyle = `rgba(${palette.red}, ${0.18 * fade})`
           ctx.beginPath()
           ctx.arc(pt.x, pt.y, 6, 0, Math.PI * 2)
           ctx.fill()
@@ -284,7 +299,7 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
         ctx.beginPath()
         ctx.arc(n.x, n.y, 13 * appear * pulse, 0, Math.PI * 2)
         ctx.stroke()
-        ctx.fillStyle = '#090909'
+        ctx.fillStyle = palette.ink
         ctx.beginPath()
         ctx.arc(n.x, n.y, 5 * appear, 0, Math.PI * 2)
         ctx.fill()
@@ -319,7 +334,7 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
         about.stages.forEach((stage, k) => {
           const pp = pathPoint((k / (about.stages.length - 1)) * 5)
           const isLast = k === about.stages.length - 1
-          ctx.fillStyle = isLast ? `rgba(${RED}, ${pathness})` : line(0.72 * pathness)
+          ctx.fillStyle = isLast ? `rgba(${palette.red}, ${pathness})` : line(0.72 * pathness)
           ctx.fillText(stage.toUpperCase(), pp.x, pp.y + 34)
           ctx.fillStyle = line(0.45 * pathness)
           ctx.fillText(`0${k + 1}`, pp.x, pp.y - 30)
@@ -333,8 +348,8 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
         const baseR = (compact ? 30 : 44) * (1 - pathness * 0.35)
         const r = baseR * centerIn * (1 + proximity * 0.08)
         const halo = ctx.createRadialGradient(c.x, c.y, r * 0.6, c.x, c.y, r * 3.2)
-        halo.addColorStop(0, `rgba(${RED}, ${(0.28 + proximity * 0.2) * centerIn})`)
-        halo.addColorStop(1, `rgba(${RED}, 0)`)
+        halo.addColorStop(0, `rgba(${palette.red}, ${(0.28 + proximity * 0.2) * centerIn})`)
+        halo.addColorStop(1, `rgba(${palette.red}, 0)`)
         ctx.fillStyle = halo
         ctx.beginPath()
         ctx.arc(c.x, c.y, r * 3.2, 0, Math.PI * 2)
@@ -342,7 +357,7 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
 
         const ring = (t * 0.5) % 1
         if (!reduce) {
-          ctx.strokeStyle = `rgba(${RED}, ${(1 - ring) * 0.5 * centerIn})`
+          ctx.strokeStyle = `rgba(${palette.red}, ${(1 - ring) * 0.5 * centerIn})`
           ctx.beginPath()
           ctx.arc(c.x, c.y, r + ring * r * 0.9, 0, Math.PI * 2)
           ctx.stroke()
@@ -352,7 +367,7 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
         ctx.beginPath()
         ctx.arc(c.x, c.y, r, 0, Math.PI * 2)
         ctx.fill()
-        ctx.strokeStyle = `rgba(${RED}, ${centerIn})`
+        ctx.strokeStyle = `rgba(${palette.red}, ${centerIn})`
         ctx.lineWidth = 1.25
         ctx.stroke()
 

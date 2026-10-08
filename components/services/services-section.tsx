@@ -98,28 +98,28 @@ export function ServicesSection() {
       ref={sectionRef}
       id="services"
       aria-label="Services"
-      className="relative overflow-hidden bg-ink pb-24 text-white md:pb-32"
+      className="relative overflow-hidden bg-stone pb-24 text-ink md:pb-32"
     >
       <motion.div
         aria-hidden="true"
         className="pointer-events-none absolute size-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-25 blur-3xl"
-        style={{ background: 'radial-gradient(circle, rgba(176,22,30,0.55), transparent 65%)' }}
+        style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--ruxin) 28%, transparent), transparent 65%)' }}
         animate={{ left: glowPositions[visualKey].x, top: glowPositions[visualKey].y }}
         transition={{ duration: 1.6, ease: EASE }}
       />
 
       <div className="relative mx-auto max-w-[1440px] px-5 pt-10 md:px-10">
-        <div className="flex items-end justify-between border-b border-white/10 pb-6">
-          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-white/45">Capabilities</p>
+        <div className="flex items-end justify-between border-b border-ink/10 pb-6">
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink/45">Capabilities</p>
           <div className="flex items-center gap-4">
-            <p className="font-mono text-[11px] tracking-[0.2em] text-white/45" aria-live="polite">
-              <span className="text-white">{service.number}</span> / {String(services.length).padStart(2, '0')}
+            <p className="font-mono text-[11px] tracking-[0.2em] text-ink/45" aria-live="polite">
+              <span className="text-ink">{service.number}</span> / {String(services.length).padStart(2, '0')}
             </p>
             {!reduce && (
               <button
                 type="button"
                 onClick={() => setPlaying((p) => !p)}
-                className="flex size-8 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:border-white/40 hover:text-white"
+                className="flex size-8 items-center justify-center rounded-full border border-ink/15 text-ink/70 transition-colors hover:border-ink/40 hover:text-ink"
                 aria-label={playing ? 'Pause service rotation' : 'Play service rotation'}
               >
                 {playing ? <Pause className="size-3" /> : <Play className="size-3" />}
@@ -153,18 +153,25 @@ export function ServicesSection() {
                     onMouseEnter={() => hoverSelect(i)}
                     onMouseLeave={cancelHover}
                     className={cn(
-                      'group relative flex shrink-0 snap-start items-center gap-3 rounded-full border px-4 py-2.5 text-left transition-colors lg:gap-6 lg:rounded-none lg:border-0 lg:border-b lg:border-white/10 lg:px-0 lg:py-6',
-                      isActive ? 'border-ruxin bg-ruxin/10 lg:bg-transparent' : 'border-white/15 hover:border-white/30',
+                      'group relative flex shrink-0 snap-start items-center gap-3 rounded-full border px-4 py-2.5 text-left transition-colors lg:gap-6 lg:rounded-none lg:border-0 lg:border-b lg:border-ink/10 lg:px-0 lg:py-6',
+                      isActive
+                        ? 'border-ruxin bg-ruxin text-white lg:px-5'
+                        : 'border-ink/15 text-ink/70 hover:border-ink/30',
                     )}
                   >
-                    <span className={cn('font-mono text-[11px] transition-colors', isActive ? 'text-ruxin' : 'text-white/40')}>
+                    <span
+                      className={cn(
+                        'font-mono text-[11px] transition-colors',
+                        isActive ? 'text-white' : 'text-ink/40',
+                      )}
+                    >
                       {s.number}
                     </span>
-                    <span className="hidden h-px w-6 bg-white/20 lg:block" aria-hidden="true" />
+                    <span className={cn('hidden h-px w-6 lg:block', isActive ? 'bg-white/40' : 'bg-ink/20')} aria-hidden="true" />
                     <span
                       className={cn(
                         'text-sm font-medium transition-all duration-500 lg:text-[clamp(1.5rem,2.4vw,2.25rem)] lg:font-semibold lg:tracking-tight',
-                        isActive ? 'text-white lg:translate-x-1' : 'text-white/50 group-hover:text-white/80',
+                        isActive ? 'text-white lg:translate-x-1' : 'text-ink/50 group-hover:text-ink/80',
                       )}
                     >
                       {s.name}
@@ -173,7 +180,7 @@ export function ServicesSection() {
                       <span className="absolute inset-x-0 -bottom-px hidden h-px overflow-hidden lg:block" aria-hidden="true">
                         <motion.span
                           key={`${index}-${cycle}-${autoplay}`}
-                          className="block h-full origin-left bg-ruxin"
+                          className="block h-full origin-left bg-white/80"
                           initial={{ scaleX: autoplay ? 0 : 1 }}
                           animate={{ scaleX: 1 }}
                           transition={{ duration: autoplay ? CYCLE_MS / 1000 : 0.4, ease: 'linear' }}
@@ -217,7 +224,7 @@ export function ServicesSection() {
                   if (info.offset.x < -60) select(index + 1)
                   else if (info.offset.x > 60) select(index - 1)
                 }}
-                className="relative aspect-[4/3] w-full cursor-grab touch-pan-y overflow-hidden border border-white/10 bg-charcoal/60 active:cursor-grabbing"
+                className="relative aspect-[4/3] w-full cursor-grab touch-pan-y overflow-hidden border-2 border-ruxin bg-charcoal/60 active:cursor-grabbing"
               >
                 <div className="pointer-events-none absolute inset-0 grid-fine" aria-hidden="true" />
                 <CornerTicks />
@@ -276,17 +283,17 @@ function ServiceDetails({ index }: { index: number }) {
   return (
     <div>
       <h3 className="text-balance text-2xl font-semibold leading-tight tracking-tight md:text-3xl">{s.title}</h3>
-      <p className="mt-4 max-w-md text-pretty leading-relaxed text-white/60">{s.description}</p>
+      <p className="mt-4 max-w-md text-pretty leading-relaxed text-ink/60">{s.description}</p>
       <ul className="mt-6 flex flex-wrap gap-2">
         {s.capabilities.map((c) => (
-          <li key={c} className="rounded-full border border-white/12 px-3 py-1.5 text-xs text-white/70">
+          <li key={c} className="rounded-full border border-ink/12 px-3 py-1.5 text-xs text-ink/70">
             {c}
           </li>
         ))}
       </ul>
       <a
         href="#contact"
-        className="group mt-8 inline-flex items-center gap-2 text-sm font-medium text-white underline-offset-8 hover:underline"
+        className="group mt-8 inline-flex items-center gap-2 text-sm font-medium text-ink underline-offset-8 hover:underline"
       >
         Discuss {s.name.toLowerCase()}
         <ArrowRight className="size-4 text-ruxin transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
@@ -300,7 +307,7 @@ function ConceptChain({ index }: { index: number }) {
   const s = services[index]
   if (!s) return null
   return (
-    <div className="mt-4 flex items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.18em] text-white/40 md:text-[11px]">
+    <div className="mt-4 flex items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.18em] text-ink/40 md:text-[11px]">
       <AnimatePresence mode="wait">
         <motion.ol
           key={s.id}
@@ -312,7 +319,7 @@ function ConceptChain({ index }: { index: number }) {
         >
           {s.concept.map((c, i) => (
             <li key={c} className="flex items-center gap-3">
-              <span className={i === s.concept.length - 1 ? 'text-ruxin' : 'text-white/60'}>{c}</span>
+              <span className={i === s.concept.length - 1 ? 'text-ruxin' : 'text-ink/60'}>{c}</span>
               {i < s.concept.length - 1 && <span aria-hidden="true">{'→'}</span>}
             </li>
           ))}

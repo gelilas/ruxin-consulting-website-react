@@ -32,7 +32,7 @@ function Field({
   const id = useId()
   const errId = `${id}-err`
   const base =
-    'peer w-full border-0 border-b border-white/15 bg-transparent px-0 pb-3 pt-7 text-base text-white placeholder-transparent outline-none transition-colors focus:border-ruxin focus-visible:outline-none'
+    'peer w-full border-0 border-b border-white/30 bg-transparent px-0 pb-3 pt-7 text-base text-white placeholder-transparent outline-none transition-colors focus:border-white focus-visible:outline-none'
   return (
     <div className={cn('relative', className)}>
       {as === 'textarea' ? (
@@ -61,13 +61,15 @@ function Field({
       )}
       <label
         htmlFor={id}
-        className="pointer-events-none absolute left-0 top-1 font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/45 transition-colors peer-focus:text-ruxin"
+        className={cn(
+          'pointer-events-none absolute left-0 top-1 font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/55 transition-colors peer-focus:text-white',
+        )}
       >
         {label}
-        {required && <span className="text-ruxin"> *</span>}
+        {required && <span className="text-cream"> *</span>}
       </label>
       {error && (
-        <p id={errId} className="mt-2 text-xs text-ruxin-bright">
+        <p id={errId} className="mt-2 text-xs text-cream">
           {error}
         </p>
       )}
@@ -81,47 +83,42 @@ export function Contact() {
   const serviceId = useId()
 
   return (
-    <section id="contact" aria-labelledby="contact-heading" className="relative overflow-hidden bg-ink py-24 text-white md:py-36">
-      <div
-        className="pointer-events-none absolute -right-40 top-0 size-[720px] rounded-full opacity-30 blur-3xl"
-        style={{ background: 'radial-gradient(circle, rgba(176,22,30,0.6), transparent 65%)' }}
-        aria-hidden="true"
-      />
-      <div className="pointer-events-none absolute inset-0 grid-fine [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_70%)]" aria-hidden="true" />
-
+    <section id="contact" aria-labelledby="contact-heading" className="relative overflow-hidden bg-ruxin py-24 text-white md:py-36">
       <div className="relative mx-auto max-w-[1440px] px-5 md:px-10">
         <Reveal>
-          <Eyebrow dark>Contact</Eyebrow>
+          <Eyebrow dark mark="white" className="text-white/70">
+            Contact
+          </Eyebrow>
         </Reveal>
         <SplitHeading
           id="contact-heading"
           lines={["Let's build", "what's next."]}
           accentLast
-          accentClassName="text-ruxin"
+          accentClassName="text-white/55"
           className="mt-7 text-balance text-[clamp(3rem,9vw,8.5rem)] font-semibold leading-[0.92] tracking-[-0.045em]"
         />
 
         <div className="mt-16 grid grid-cols-1 gap-16 lg:mt-24 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <Reveal>
-              <p className="max-w-sm text-pretty text-lg leading-relaxed text-white/65">
+              <p className="max-w-sm text-pretty text-lg leading-relaxed text-white/75">
                 Have a challenge, opportunity, or idea? {"Let's"} start a conversation.
               </p>
             </Reveal>
             <Reveal delay={0.1}>
-              <dl className="mt-12 divide-y divide-white/10 border-y border-white/10">
+              <dl className="mt-12 divide-y divide-white/20 border-y border-white/20">
                 {[
                   { icon: Mail, label: 'Email', value: company.email, href: `mailto:${company.email}` },
                   { icon: Phone, label: 'Phone', value: company.phone, href: `tel:${company.phone.replace(/\s/g, '')}` },
                   { icon: MapPin, label: 'Location', value: company.location },
                 ].map(({ icon: Icon, label, value, href }) => (
                   <div key={label} className="flex items-start gap-4 py-5">
-                    <Icon className="mt-0.5 size-4 text-ruxin" aria-hidden="true" />
+                    <Icon className="mt-0.5 size-4 text-white" aria-hidden="true" />
                     <div>
-                      <dt className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/40">{label}</dt>
+                      <dt className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/55">{label}</dt>
                       <dd className="mt-1.5">
                         {href ? (
-                          <a href={href} className="text-white transition-colors hover:text-ruxin-bright">
+                          <a href={href} className="text-white transition-colors hover:text-cream">
                             {value}
                           </a>
                         ) : (
@@ -143,14 +140,14 @@ export function Contact() {
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, ease: EASE }}
-                  className="flex min-h-[420px] flex-col items-start justify-center border border-white/10 p-8 md:p-12"
+                  className="flex min-h-[420px] flex-col items-start justify-center border border-white/25 p-8 md:p-12"
                   role="status"
                 >
-                  <span className="flex size-12 items-center justify-center rounded-full bg-ruxin">
+                  <span className="flex size-12 items-center justify-center rounded-full bg-white text-ruxin">
                     <Check className="size-5" aria-hidden="true" />
                   </span>
                   <h3 className="mt-6 text-3xl font-semibold tracking-tight">Thank you{state.name ? `, ${state.name}` : ''}.</h3>
-                  <p className="mt-3 max-w-md text-white/60">
+                  <p className="mt-3 max-w-md text-white/70">
                     Your message is on its way. A member of the Ruxin team will be in touch within one business day.
                   </p>
                 </motion.div>
@@ -161,14 +158,19 @@ export function Contact() {
                   <Field label="Phone" name="phone" type="tel" autoComplete="tel" />
                   <Field label="Company" name="company" autoComplete="organization" />
                   <div className="relative md:col-span-2">
-                    <label htmlFor={serviceId} className="absolute left-0 top-1 font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/45">
+                    <label
+                      htmlFor={serviceId}
+                      className="absolute left-0 top-1 font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/55"
+                    >
                       Service
                     </label>
                     <select
                       id={serviceId}
                       name="service"
                       defaultValue=""
-                      className="w-full appearance-none border-0 border-b border-white/15 bg-transparent px-0 pb-3 pt-7 text-base text-white outline-none focus:border-ruxin [&>option]:bg-charcoal"
+                      className={cn(
+                        'w-full appearance-none border-0 border-b border-white/30 bg-transparent px-0 pb-3 pt-7 text-base text-white outline-none focus:border-white [&>option]:bg-cream [&>option]:text-ink',
+                      )}
                     >
                       <option value="">Select a service</option>
                       {services.map((s) => (
@@ -178,13 +180,13 @@ export function Contact() {
                       ))}
                       <option value="Other">Something else</option>
                     </select>
-                    <span className="pointer-events-none absolute bottom-4 right-0 text-white/40" aria-hidden="true">
+                    <span className="pointer-events-none absolute bottom-4 right-0 text-white/50" aria-hidden="true">
                       {'↓'}
                     </span>
                   </div>
                   <Field label="Message" name="message" as="textarea" required className="md:col-span-2" error={state.errors?.message} />
                   {state.status === 'error' && state.message && (
-                    <p className="text-sm text-ruxin-bright md:col-span-2" role="alert">
+                    <p className="text-sm text-cream md:col-span-2" role="alert">
                       {state.message}
                     </p>
                   )}
@@ -193,7 +195,7 @@ export function Contact() {
                       <button
                         type="submit"
                         disabled={pending}
-                        className="group inline-flex h-14 items-center gap-3 rounded-full bg-ruxin px-8 text-sm font-medium text-white transition-colors hover:bg-ruxin-bright disabled:opacity-70"
+                        className="group inline-flex h-14 items-center gap-3 rounded-full bg-cream px-8 text-sm font-medium text-ink transition-colors hover:bg-white disabled:opacity-70"
                       >
                         {pending ? 'Sending…' : 'Start a Conversation'}
                         {pending ? (

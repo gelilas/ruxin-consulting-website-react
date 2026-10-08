@@ -7,16 +7,21 @@ import { useSiteContent } from '@/lib/site-content'
 import { cn } from '@/lib/utils'
 import { EASE, Magnetic } from '@/components/motion/primitives'
 
-export function Logo({ className, light = true }: { className?: string; light?: boolean }) {
+export function Logo({ className, light = true, mark = 'red' }: { className?: string; light?: boolean; mark?: 'red' | 'white' }) {
   return (
     <a href="#top" className={cn('group flex items-center gap-2.5', className)} aria-label="Ruxin Consulting — home">
       <span className="relative flex size-7 items-center justify-center" aria-hidden="true">
-        <span className="absolute inset-0 rounded-full border border-ruxin/70 transition-transform duration-500 group-hover:scale-110" />
-        <span className="size-2 rounded-full bg-ruxin" />
+        <span
+          className={cn(
+            'absolute inset-0 rounded-full border transition-transform duration-500 group-hover:scale-110',
+            mark === 'white' ? 'border-white/80' : 'border-ruxin/70',
+          )}
+        />
+        <span className={cn('size-2 rounded-full', mark === 'white' ? 'bg-white' : 'bg-ruxin')} />
       </span>
       <span className="flex flex-col leading-none">
         <span className={cn('text-[17px] font-bold tracking-[0.18em]', light ? 'text-white' : 'text-ink')}>RUXIN</span>
-        <span className={cn('mt-1 font-mono text-[8.5px] tracking-[0.42em]', light ? 'text-mute' : 'text-neutral-500')}>
+        <span className={cn('mt-1 font-mono text-[8.5px] tracking-[0.42em]', light ? 'text-mute' : 'text-ink/45')}>
           CONSULTING
         </span>
       </span>
@@ -63,10 +68,7 @@ export function Navbar() {
         initial={{ y: -24, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.9, ease: EASE, delay: 0.2 }}
-        className={cn(
-          'mx-auto transition-all duration-500',
-          scrolled ? 'border-b border-white/10 bg-ink/70 backdrop-blur-xl' : 'border-b border-transparent bg-transparent',
-        )}
+        className="mx-auto bg-ruxin transition-all duration-500"
       >
         <nav
           aria-label="Primary"
@@ -75,7 +77,7 @@ export function Navbar() {
             scrolled ? 'h-16' : 'h-20 md:h-24',
           )}
         >
-          <Logo />
+          <Logo light mark="white" />
           <ul className="hidden items-center gap-1 lg:flex">
             {navLinks.map((link) => {
               const isActive = active === link.href.slice(1)
@@ -85,14 +87,14 @@ export function Navbar() {
                     href={link.href}
                     className={cn(
                       'relative px-3.5 py-2 text-[13px] tracking-wide transition-colors',
-                      isActive ? 'text-white' : 'text-white/60 hover:text-white',
+                      isActive ? 'text-white' : 'text-white/75 hover:text-white',
                     )}
                   >
                     {link.label}
                     {isActive && (
                       <motion.span
                         layoutId="nav-dot"
-                        className="absolute -bottom-0.5 left-1/2 size-1 -translate-x-1/2 rounded-full bg-ruxin"
+                        className="absolute -bottom-0.5 left-1/2 size-1 -translate-x-1/2 rounded-full bg-white"
                         transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                       />
                     )}
@@ -105,7 +107,7 @@ export function Navbar() {
             <Magnetic strength={0.25} className="hidden sm:inline-block">
               <a
                 href="#contact"
-                className="group inline-flex h-10 items-center gap-2 rounded-full border border-white/15 bg-white/5 pl-5 pr-4 text-[13px] font-medium text-white transition-colors hover:border-ruxin hover:bg-ruxin"
+                className="group inline-flex h-10 items-center gap-2 rounded-full bg-cream pl-5 pr-4 text-[13px] font-medium text-ink transition-colors hover:bg-white"
               >
                 {"Let's Talk"}
                 <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
@@ -113,7 +115,7 @@ export function Navbar() {
             </Magnetic>
             <button
               type="button"
-              className="flex size-10 items-center justify-center rounded-full border border-white/15 text-white lg:hidden"
+              className="flex size-10 items-center justify-center rounded-full border border-white/30 text-white lg:hidden"
               onClick={() => setOpen((o) => !o)}
               aria-expanded={open}
               aria-controls="mobile-menu"
@@ -133,7 +135,7 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 top-0 -z-10 flex flex-col justify-between bg-ink px-6 pb-10 pt-28 lg:hidden"
+            className="fixed inset-0 top-0 -z-10 flex flex-col justify-between bg-ruxin px-6 pb-10 pt-28 text-white lg:hidden"
           >
             <ul className="flex flex-col">
               {navLinks.map((link, i) => (
@@ -142,7 +144,7 @@ export function Navbar() {
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.05 + i * 0.04, ease: EASE, duration: 0.5 }}
-                  className="border-b border-white/10"
+                  className="border-b border-white/15"
                 >
                   <a
                     href={link.href}
@@ -150,7 +152,7 @@ export function Navbar() {
                     className="flex items-baseline justify-between py-4 text-3xl font-medium tracking-tight text-white"
                   >
                     {link.label}
-                    <span className="font-mono text-xs text-mute">0{i + 1}</span>
+                    <span className="font-mono text-xs text-white/55">0{i + 1}</span>
                   </a>
                 </motion.li>
               ))}
@@ -158,7 +160,7 @@ export function Navbar() {
             <a
               href="#contact"
               onClick={() => setOpen(false)}
-              className="flex h-14 items-center justify-center gap-2 rounded-full bg-ruxin text-base font-medium text-white"
+              className="flex h-14 items-center justify-center gap-2 rounded-full bg-cream text-base font-medium text-ink"
             >
               {"Let's Talk"} <ArrowRight className="size-4" aria-hidden="true" />
             </a>

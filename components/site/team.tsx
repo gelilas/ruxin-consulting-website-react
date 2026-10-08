@@ -15,7 +15,7 @@ function Linkedin({ className }: { className?: string }) {
 export function Team() {
   const { team } = useSiteContent()
   return (
-    <section id="team" aria-labelledby="team-heading" className="bg-white py-24 text-ink md:py-36">
+    <section id="team" aria-labelledby="team-heading" className="bg-cream py-24 text-ink md:py-36">
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
         <div className="grid grid-cols-1 items-end gap-8 lg:grid-cols-12">
           <div className="lg:col-span-7">

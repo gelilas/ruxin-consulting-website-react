@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 
 export const VB_W = 640
 export const VB_H = 480
-export const RED = '#B0161E'
+export const RED = 'var(--ruxin)'
 export const EASE = [0.22, 1, 0.36, 1] as const
 
 /** Shared props: every visual receives `active` so it can stay calm until shown. */
@@ -148,7 +148,7 @@ export function StatusBadge({
 }) {
   return (
     <motion.div
-      className="absolute flex -translate-x-1/2 -translate-y-1/2 items-center gap-2.5 rounded-full border border-ruxin/50 bg-ink/90 py-1.5 pl-1.5 pr-4 shadow-[0_0_40px_-8px_rgba(176,22,30,0.7)] backdrop-blur"
+      className="absolute flex -translate-x-1/2 -translate-y-1/2 items-center gap-2.5 rounded-full border border-ruxin/50 bg-charcoal/90 py-1.5 pl-1.5 pr-4 shadow-[0_0_40px_-8px_color-mix(in_srgb,var(--ruxin)_55%,transparent)] backdrop-blur"
       style={{ left: `${(x / VB_W) * 100}%`, top: `${(y / VB_H) * 100}%` }}
       initial={{ opacity: 0, scale: 0.85, y: 8 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}

@@ -71,7 +71,7 @@ export function Assistant() {
           <motion.div
             role="dialog"
             aria-label="Ruxin Assistant"
-            className="fixed inset-x-3 bottom-3 z-[70] flex max-h-[min(640px,calc(100dvh-24px))] flex-col overflow-hidden rounded-2xl border border-white/10 bg-ink text-white shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)] sm:inset-x-auto sm:bottom-6 sm:right-6 sm:w-[400px]"
+            className="fixed inset-x-3 bottom-3 z-[70] flex max-h-[min(640px,calc(100dvh-24px))] flex-col overflow-hidden rounded-2xl border border-white/10 bg-charcoal text-white shadow-[0_30px_80px_-20px_rgba(28,25,22,0.45)] sm:inset-x-auto sm:bottom-6 sm:right-6 sm:w-[400px]"
             initial={{ opacity: 0, y: 24, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.97 }}
@@ -220,7 +220,7 @@ export function Assistant() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.4, ease: EASE, delay: 0.2 }}
-            className="group fixed bottom-5 right-5 z-[65] flex h-12 items-center gap-3 rounded-full border border-white/10 bg-ink pl-3 pr-5 text-sm font-medium text-white shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] transition-colors hover:border-ruxin/60 md:bottom-6 md:right-6"
+            className="group fixed bottom-5 right-5 z-[65] flex h-12 items-center gap-3 rounded-full border border-white/10 bg-charcoal pl-3 pr-5 text-sm font-medium text-white shadow-[0_20px_50px_-15px_rgba(28,25,22,0.35)] transition-colors hover:border-ruxin/60 md:bottom-6 md:right-6"
             aria-haspopup="dialog"
             aria-label="Ask Ruxin — open assistant"
           >

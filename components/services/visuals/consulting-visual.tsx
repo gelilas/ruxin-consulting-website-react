@@ -78,12 +78,7 @@ export function ConsultingVisual() {
               />
             )}
             <circle r={13} fill="#090909" stroke={last ? RED : 'rgba(255,255,255,0.3)'} />
-            <motion.circle
-              r={4.5}
-              initial={{ fill: '#ffffff' }}
-              animate={{ fill: last ? RED : '#ffffff' }}
-              transition={{ delay: d(3), duration: dur(0.5) }}
-            />
+            <circle r={4.5} fill={last ? RED : '#ffffff'} />
             <MonoLabel x={0} y={last ? -26 : 32} delay={d(1.6 + i * 0.1)} red={last}>
               {s.label}
             </MonoLabel>

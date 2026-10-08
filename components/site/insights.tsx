@@ -112,7 +112,7 @@ export function Insights() {
                   aria-pressed={category === c}
                   className={cn(
                     'relative shrink-0 rounded-full border px-4 py-2 text-xs transition-colors',
-                    category === c ? 'border-ink bg-ink text-white' : 'border-ink/15 text-ink/70 hover:border-ink/40',
+                    category === c ? 'border-ruxin bg-ruxin text-white' : 'border-ink/15 text-ink/70 hover:border-ruxin/40',
                   )}
                 >
                   {c}

@@ -15,8 +15,8 @@ export function Careers() {
   const lastTrigger = useRef<HTMLButtonElement | null>(null)
 
   return (
-    <section id="careers" aria-labelledby="careers-heading" className="relative overflow-hidden bg-ink py-24 text-white md:py-36">
-      <div className="pointer-events-none absolute inset-0 grid-fine opacity-60 [mask-image:linear-gradient(to_bottom,black,transparent_70%)]" aria-hidden="true" />
+    <section id="careers" aria-labelledby="careers-heading" className="relative overflow-hidden bg-stone py-24 text-ink md:py-36">
+      <div className="pointer-events-none absolute inset-0 grid-fine-dark opacity-60 [mask-image:linear-gradient(to_bottom,black,transparent_70%)]" aria-hidden="true" />
       <div className="relative mx-auto max-w-[1440px] px-5 md:px-10">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
           <div className="lg:col-span-5">
@@ -30,12 +30,12 @@ export function Careers() {
               className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
             />
             <Reveal delay={0.15}>
-              <p className="mt-8 max-w-md text-pretty text-lg leading-relaxed text-white/60">{careers.body}</p>
+              <p className="mt-8 max-w-md text-pretty text-lg leading-relaxed text-ink/60">{careers.body}</p>
             </Reveal>
             <Reveal delay={0.25}>
-              <ul className="mt-10 space-y-3 border-t border-white/10 pt-8">
+              <ul className="mt-10 space-y-3 border-t border-ink/10 pt-8">
                 {careers.benefits.map((b) => (
-                  <li key={b} className="flex items-center gap-3 text-sm text-white/70">
+                  <li key={b} className="flex items-center gap-3 text-sm text-ink/70">
                     <span className="size-1 rounded-full bg-ruxin" aria-hidden="true" />
                     {b}
                   </li>
@@ -46,7 +46,7 @@ export function Careers() {
 
           <div className="lg:col-span-7">
             <Reveal>
-              <p className="flex items-center justify-between border-b border-white/10 pb-4 font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">
+              <p className="flex items-center justify-between border-b border-ink/10 pb-4 font-mono text-[11px] uppercase tracking-[0.2em] text-ink/40">
                 <span>Open positions</span>
                 <span>{String(careers.jobs.length).padStart(2, '0')} roles</span>
               </p>
@@ -60,10 +60,10 @@ export function Careers() {
                       lastTrigger.current = e.currentTarget
                       setJob(j)
                     }}
-                    className="group relative flex w-full flex-col gap-4 overflow-hidden border-b border-white/10 py-7 text-left md:flex-row md:items-center md:justify-between"
+                    className="group relative flex w-full flex-col gap-4 overflow-hidden border-b border-ink/10 py-7 text-left md:flex-row md:items-center md:justify-between"
                     aria-haspopup="dialog"
                   >
-                    <span className="absolute inset-0 origin-left scale-x-0 bg-white/[0.03] transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100" aria-hidden="true" />
+                    <span className="absolute inset-0 origin-left scale-x-0 bg-ruxin/[0.06] transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100" aria-hidden="true" />
                     <span className="relative">
                       <span className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.18em] text-ruxin">
                         {j.department}
@@ -71,9 +71,9 @@ export function Careers() {
                       <span className="mt-2 block text-xl font-semibold tracking-tight transition-transform duration-500 group-hover:translate-x-2 md:text-2xl">
                         {j.title}
                       </span>
-                      <span className="mt-2 block max-w-lg text-sm text-white/50">{j.summary}</span>
+                      <span className="mt-2 block max-w-lg text-sm text-ink/50">{j.summary}</span>
                     </span>
-                    <span className="relative flex shrink-0 items-center gap-5 text-xs text-white/50">
+                    <span className="relative flex shrink-0 items-center gap-5 text-xs text-ink/50">
                       <span className="flex items-center gap-1.5">
                         <MapPin className="size-3.5" aria-hidden="true" />
                         {j.location}
@@ -82,7 +82,7 @@ export function Careers() {
                         <Clock className="size-3.5" aria-hidden="true" />
                         {j.type}
                       </span>
-                      <span className="flex size-10 items-center justify-center rounded-full border border-white/15 text-white transition-all duration-500 group-hover:rotate-45 group-hover:border-ruxin group-hover:bg-ruxin">
+                      <span className="flex size-10 items-center justify-center rounded-full border border-ink/15 text-ink transition-all duration-500 group-hover:rotate-45 group-hover:border-ruxin group-hover:bg-ruxin group-hover:text-white">
                         <ArrowUpRight className="size-4" aria-hidden="true" />
                       </span>
                     </span>
@@ -154,13 +154,13 @@ function JobDrawer({ job, onClose }: { job: Job | null; onClose: () => void }) {
             aria-modal="true"
             aria-labelledby="job-title"
             tabIndex={-1}
-            className="absolute inset-y-0 right-0 flex w-full max-w-xl flex-col overflow-y-auto bg-white text-ink outline-none"
+            className="absolute inset-y-0 right-0 flex w-full max-w-xl flex-col overflow-y-auto bg-cream text-ink outline-none"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ duration: 0.6, ease: EASE }}
           >
-            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-ink/8 bg-white/90 px-6 py-4 backdrop-blur md:px-10">
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-ink/8 bg-cream/90 px-6 py-4 backdrop-blur md:px-10">
               <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-ruxin">{job.department}</p>
               <button
                 type="button"
@@ -192,7 +192,7 @@ function JobDrawer({ job, onClose }: { job: Job | null; onClose: () => void }) {
               <DrawerList title="Requirements" items={job.requirements} />
               <DrawerList title="Benefits" items={careers.benefits} />
             </div>
-            <div className="sticky bottom-0 border-t border-ink/8 bg-white px-6 py-5 md:px-10">
+            <div className="sticky bottom-0 border-t border-ink/8 bg-cream px-6 py-5 md:px-10">
               <a
                 href={`mailto:careers@ruxinconsulting.com?subject=${encodeURIComponent(`Application: ${job.title}`)}`}
                 className="group flex h-14 w-full items-center justify-center gap-2 rounded-full bg-ruxin text-sm font-medium text-white transition-colors hover:bg-ruxin-bright"
