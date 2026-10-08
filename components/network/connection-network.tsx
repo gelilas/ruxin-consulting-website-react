@@ -32,7 +32,7 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const palette = { red: '196, 18, 48', ink: '#1c1916' }
+    const palette = { red: '176, 22, 30', ink: '#1c1916' }
     const readPalette = () => {
       const style = getComputedStyle(document.documentElement)
       const hex = style.getPropertyValue('--ruxin').trim().replace('#', '')
