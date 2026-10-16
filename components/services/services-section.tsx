@@ -237,7 +237,11 @@ export function ServicesSection() {
                     exit={{ opacity: 0, scale: 0.97, filter: 'blur(8px)' }}
                     transition={{ duration: 0.8, ease: EASE }}
                   >
-                    <Visual key={cycle} />
+                    {service.image ? (
+                      <img src={service.image} alt="" className="absolute inset-0 size-full object-cover" />
+                    ) : (
+                      <Visual key={cycle} />
+                    )}
                   </motion.div>
                 </AnimatePresence>
                 <AnimatePresence mode="popLayout" initial={false}>

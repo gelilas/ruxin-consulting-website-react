@@ -2,11 +2,7 @@ import { Cursor } from '@/components/motion/cursor'
 import { Navbar } from '@/components/site/navbar'
 import { Story } from '@/components/site/story'
 import { ServicesSection } from '@/components/services/services-section'
-import { Clients } from '@/components/site/clients'
-import { Testimonials } from '@/components/site/testimonials'
-import { Team } from '@/components/site/team'
-import { Careers } from '@/components/site/careers'
-import { Insights } from '@/components/site/insights'
+import { Clients, WhyChoose } from '@/components/site/clients'
 import { Contact } from '@/components/site/contact'
 import { Footer } from '@/components/site/footer'
 import { Assistant } from '@/components/site/assistant'
@@ -25,11 +21,8 @@ export default function App() {
       <main id="main">
         <Story />
         <ServicesSection />
+        <WhyChoose />
         <Clients />
-        <Testimonials />
-        <Team />
-        <Careers />
-        <Insights />
         <Contact />
       </main>
       <Footer />

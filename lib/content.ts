@@ -5,47 +5,78 @@
 
 export const company = {
   name: 'Ruxin Consulting',
-  tagline: 'Building possibilities. Delivering results.',
-  email: 'hello@ruxinconsulting.com',
-  phone: '+251 XXX XXX XXX',
-  location: 'Addis Ababa, Ethiopia',
-  socials: [
-    { label: 'LinkedIn', href: 'https://www.linkedin.com' },
-    { label: 'Instagram', href: 'https://www.instagram.com' },
-    { label: 'Facebook', href: 'https://www.facebook.com' },
-    { label: 'X', href: 'https://x.com' },
-  ],
+  tagline: 'Your partner in every step.',
+  email: 'ruxinconsulting@gmail.com',
+  phone: '+251 988 987 777',
+  location: 'Bole Rwanda, Fuad Building, Office no. 301, Addis Ababa',
+  website: 'https://www.ruxinconsulting.com',
+  socials: [] as { label: string; href: string }[],
 }
 
 export const navLinks = [
   { label: 'About', href: '#about' },
   { label: 'Services', href: '#services' },
+  { label: 'Why us', href: '#why' },
   { label: 'Clients', href: '#clients' },
-  { label: 'Team', href: '#team' },
-  { label: 'Careers', href: '#careers' },
-  { label: 'Insights', href: '#insights' },
   { label: 'Contact', href: '#contact' },
 ]
 
 export const hero = {
-  eyebrow: 'Consulting · Logistics · Recruitment · Finance · Legal',
-  headline: ['Building Possibilities.', 'Delivering Results.'],
-  body: 'Ruxin Consulting connects strategy, expertise, and execution to help organizations navigate complexity, unlock opportunities, and create lasting impact.',
+  eyebrow: 'FDI consulting · Ethiopia',
+  headline: ['Your Partner', 'in Every Step!'],
+  body: 'Ruxin Consulting is an Ethiopia-based FDI consulting firm committed to simplifying the way businesses establish, operate, and grow in Ethiopia.',
+  image: '/profile/hero.jpg',
   primaryCta: { label: 'Explore Our Services', href: '#services' },
   secondaryCta: { label: 'Talk to Ruxin', href: '#contact' },
 }
 
 export const about = {
-  eyebrow: 'About Ruxin',
-  headline: ['More than consultants.', 'We create connections.'],
-  body: 'Ruxin Consulting brings together multidisciplinary expertise to help organizations make better decisions, solve complex challenges, and turn opportunities into measurable results.',
-  stages: ['Complexity', 'Clarity', 'Action', 'Results'],
-  stats: [
-    { value: 10, suffix: '+', label: 'Years of Experience' },
-    { value: 50, suffix: '+', label: 'Projects Delivered' },
-    { value: 20, suffix: '+', label: 'Industry Experts' },
-    { value: 15, suffix: '+', label: 'Markets Connected' },
+  eyebrow: 'About Us',
+  headline: ['One partner for', 'doing business in Ethiopia.'],
+  body: 'We assist clients in navigating Ethiopia’s business environment through practical consulting, regulatory coordination, and tailored administrative solutions.',
+  paragraphs: [
+    'Navigating Ethiopia’s business environment can involve complex administrative procedures, multiple government institutions, and fragmented service systems. These challenges can create additional time, coordination, and resource demands for businesses, particularly international investors unfamiliar with the local environment.',
+    'Ruxin addresses these challenges through an integrated, one-stop service approach, bringing together essential business support services under one roof. From investment consulting and government liaison to logistics and customs clearance, financial services, recruitment, and legal support, we help clients coordinate their business needs through a single, reliable partner.',
   ],
+  image: '/profile/about.jpg',
+  visionImage: '/profile/vision.jpg',
+  vision: {
+    title: 'Vision',
+    body: 'To become Ethiopia’s trusted one-stop business solutions partner, simplifying the business environment for foreign investors and enabling international enterprises to thrive.',
+  },
+  mission: {
+    title: 'Mission',
+    body: 'To simplify foreign investment operations by integrating essential consulting and support services into a coordinated, client-centered solution that reduces complexity, improves efficiency, and supports sustainable business growth.',
+  },
+  valuesImage: '/profile/values.jpg',
+  values: [
+    {
+      title: 'Integrity',
+      body: 'We uphold honesty, transparency, and ethical conduct in every professional relationship.',
+    },
+    {
+      title: 'Efficiency',
+      body: 'We seek practical ways to simplify complex procedures, and help our clients use their time and resources effectively.',
+    },
+    {
+      title: 'Client-centricity',
+      body: 'We place our clients at the center of our work, developing responsive and tailored solutions to meet their needs.',
+    },
+    {
+      title: 'Reliability',
+      body: 'We prioritize consistent communication, careful follow-up, and dependable service delivery.',
+    },
+    {
+      title: 'Collaboration',
+      body: 'We connect services and professionals, to provide coordinated solutions and a more seamless client experience.',
+    },
+    {
+      title: 'Continuous improvement',
+      body: 'We continuously seek better ways to deliver our services, strengthen our capabilities, and create lasting value for our clients.',
+    },
+  ],
+  stages: ['Establish', 'Operate', 'Grow'],
+  stats: [] as { value: number; suffix: string; label: string }[],
 }
 
 export type ServiceId = 'consulting' | 'logistics' | 'recruitment' | 'finance' | 'legal'
@@ -58,111 +89,120 @@ export const services: {
   title: string
   description: string
   capabilities: string[]
+  image: string
 }[] = [
   {
     id: 'consulting',
     number: '01',
-    name: 'Consulting',
-    concept: ['Strategy', 'Decision', 'Growth'],
-    title: 'From challenge to clear direction.',
+    name: 'Investment Consultancy',
+    concept: ['Regulation', 'Registration', 'License'],
+    title: 'Guidance through Ethiopia’s investment process.',
     description:
-      'We help leadership teams diagnose what matters, design strategies grounded in evidence, and make confident decisions that compound into growth.',
-    capabilities: ['Business strategy', 'Market entry', 'Operational excellence', 'Transformation'],
+      'We guide foreign investors through Ethiopia’s investment regulations and requirements, providing clarity on applicable procedures and assisting them throughout the business registration and licensing process.',
+    capabilities: ['Investment regulations', 'Business registration', 'Licensing', 'Government liaison'],
+    image: '/profile/service-investment.jpg',
   },
   {
     id: 'logistics',
     number: '02',
-    name: 'Logistics',
-    concept: ['Origin', 'Route', 'Destination'],
-    title: 'Movement, engineered end to end.',
+    name: 'Customs Clearing',
+    concept: ['Documents', 'Clearance', 'Delivery'],
+    title: 'Import and export, without the delay.',
     description:
-      'We design and manage supply chains that move goods across borders reliably — from sourcing and freight coordination to customs and last-mile delivery.',
-    capabilities: ['Freight coordination', 'Customs & clearance', 'Supply chain design', 'Warehousing'],
-  },
-  {
-    id: 'recruitment',
-    number: '03',
-    name: 'Recruitment',
-    concept: ['Talent', 'Match', 'Opportunity'],
-    title: 'The right people, in the right roles.',
-    description:
-      'We connect organizations with leaders and specialists who fit both the role and the culture — through rigorous search and a deeply human process.',
-    capabilities: ['Executive search', 'Specialist hiring', 'Talent mapping', 'Workforce planning'],
+      'We facilitate customs clearance by coordinating documentation, regulatory requirements, and relevant procedures to help businesses navigate import and export processes more smoothly and reduce unnecessary delays.',
+    capabilities: ['Documentation', 'Import and export', 'Regulatory coordination', 'Clearance'],
+    image: '/profile/service-customs.jpg',
   },
   {
     id: 'finance',
-    number: '04',
-    name: 'Finance',
-    concept: ['Data', 'Insight', 'Growth'],
-    title: 'Turning numbers into decisions.',
+    number: '03',
+    name: 'Financial Reporting',
+    concept: ['Monthly', 'Annual', 'Compliance'],
+    title: 'Reports that meet local requirements.',
     description:
-      'We transform financial data into clear insight — modelling, advisory, and reporting that helps organizations allocate capital and grow with discipline.',
-    capabilities: ['Financial advisory', 'Modelling & valuation', 'Reporting', 'Investment readiness'],
+      'We assist businesses with the preparation of monthly and annual financial reports in accordance with applicable local regulations, helping clients meet their reporting obligations and maintain proper financial documentation.',
+    capabilities: ['Monthly reports', 'Annual reports', 'Local regulations', 'Financial documentation'],
+    image: '/profile/service-finance.jpg',
+  },
+  {
+    id: 'recruitment',
+    number: '04',
+    name: 'Recruitment',
+    concept: ['Source', 'Screen', 'Hire'],
+    title: 'Teams that fit the work.',
+    description:
+      'We connect businesses with qualified talent by supporting candidate sourcing, screening, and recruitment coordination — helping clients build capable teams that align with their operational needs and business goals.',
+    capabilities: ['Candidate sourcing', 'Screening', 'Recruitment coordination', 'Team building'],
+    image: '/profile/service-recruitment.jpg',
   },
   {
     id: 'legal',
     number: '05',
-    name: 'Legal',
-    concept: ['Review', 'Protection', 'Confidence'],
-    title: 'Clarity that protects what you build.',
+    name: 'Legal Advisory',
+    concept: ['Review', 'Contracts', 'Confidence'],
+    title: 'Legal clarity for doing business here.',
     description:
-      'We bring structure to complex legal matters — contracts, compliance, and corporate affairs reviewed with precision so you can move forward with confidence.',
-    capabilities: ['Contract review', 'Corporate compliance', 'Regulatory advisory', 'Risk assessment'],
+      'We provide legal guidance and document review to help businesses understand relevant legal and regulatory requirements, address contractual matters, and navigate business-related legal procedures with greater confidence.',
+    capabilities: ['Legal guidance', 'Document review', 'Contracts', 'Regulatory requirements'],
+    image: '/profile/service-legal.jpg',
   },
 ]
 
-/** Replace `logo` with a path in /public (e.g. "/clients/acme.svg") to use a real logo. */
 export const clients: { name: string; mark: string; logo?: string }[] = [
-  { name: 'Northwind Holdings', mark: 'NORTHWIND' },
-  { name: 'Axiom Industries', mark: 'AXIOM' },
-  { name: 'Meridian Group', mark: 'Meridian' },
-  { name: 'Halcyon Partners', mark: 'HALCYON' },
-  { name: 'Vertex Logistics', mark: 'vertex' },
-  { name: 'Solace Energy', mark: 'SOLACE' },
-  { name: 'Atlas Capital', mark: 'Atlas' },
-  { name: 'Kestrel Health', mark: 'KESTREL' },
-  { name: 'Orbit Telecom', mark: 'orbit' },
-  { name: 'Lumen Foods', mark: 'LUMEN' },
+  { name: 'Baijia Ceramic', mark: 'BAIJIA', logo: '/profile/logo-baijia.jpg' },
+  { name: 'Junaid Group of Companies', mark: 'JUNAID', logo: '/profile/logo-junaid.jpg' },
+  { name: 'Fuxing Plastics', mark: 'FUXING', logo: '/profile/logo-fuxing.png' },
+  { name: 'Soluxe International', mark: 'SOLUXE', logo: '/profile/logo-soluxe.jpg' },
+  { name: 'Muroo Systems', mark: 'MUROO', logo: '/profile/logo-muroo.jpg' },
+  { name: 'Ipack Packaging', mark: 'IPACK', logo: '/profile/logo-ipack.jpg' },
+  { name: 'China Southern', mark: 'CHINA SOUTHERN', logo: '/profile/logo-china-southern.jpg' },
+  { name: 'Orison LNG CNG', mark: 'ORISON', logo: '/profile/logo-orison.jpg' },
+  { name: 'DRAZ Group Co., Ltd.', mark: 'DRAZ', logo: '/profile/logo-draz.png' },
+  { name: 'Fly', mark: 'FLY', logo: '/profile/logo-fly.png' },
 ]
 
-export const testimonials = [
-  {
-    quote: 'Ruxin helped us turn a complex challenge into a clear, actionable strategy.',
-    detail:
-      'Their team connected market insight, financial modelling, and execution planning into one coherent roadmap. We moved faster — and with far more confidence.',
-    name: 'Selam Tesfaye',
-    role: 'Chief Executive Officer',
-    company: 'Northwind Holdings',
-    mark: 'NORTHWIND',
-  },
-  {
-    quote: 'They found leaders we could not have found on our own — and they fit from day one.',
-    detail:
-      'The search was rigorous, transparent, and remarkably human. Two years on, every placement is still with us and thriving.',
-    name: 'Daniel Okafor',
-    role: 'Head of People',
-    company: 'Axiom Industries',
-    mark: 'AXIOM',
-  },
-  {
-    quote: 'Our cross-border shipments went from unpredictable to precise.',
-    detail:
-      'Ruxin redesigned our routes and customs process end to end. Lead times dropped and our teams finally trust the schedule.',
-    name: 'Hanna Mekonnen',
-    role: 'Operations Director',
-    company: 'Vertex Logistics',
-    mark: 'vertex',
-  },
-  {
-    quote: 'Legal clarity at the speed our business actually moves.',
-    detail:
-      'Contracts that used to take weeks are reviewed in days, with risks explained in plain language. It changed how we negotiate.',
-    name: 'Marco Rinaldi',
-    role: 'General Counsel',
-    company: 'Atlas Capital',
-    mark: 'Atlas',
-  },
-]
+export const whyChoose = {
+  eyebrow: 'Why choose us',
+  headline: ['A local partner', 'for the whole journey.'],
+  body: 'From investment registration to ongoing compliance, we support you at every stage of doing business in Ethiopia.',
+  image: '/profile/clients.jpg',
+  items: [
+    {
+      title: 'Local expertise',
+      body: 'In-depth understanding of Ethiopia’s business environment, regulatory requirements, and administrative procedures.',
+      image: '/profile/why-local.jpg',
+    },
+    {
+      title: 'End-to-end support',
+      body: 'From investment registration to ongoing compliance, we support you at every stage of your business journey.',
+      image: '/profile/why-support.jpg',
+    },
+    {
+      title: 'Integrated service',
+      body: 'Access multiple complementary business services through one trusted partner for a seamless experience.',
+      image: '/profile/why-integrated.jpg',
+    },
+    {
+      title: 'Reliability',
+      body: 'We deliver professional, transparent, and timely services built on trust and accountability.',
+      image: '/profile/why-reliability.jpg',
+    },
+    {
+      title: 'Cross-cultural communication',
+      body: 'With a multilingual team, we connect international investors with the local market through effective communication and coordination.',
+      image: '/profile/why-culture.jpg',
+    },
+  ],
+}
+
+export const testimonials: {
+  quote: string
+  detail: string
+  name: string
+  role: string
+  company: string
+  mark: string
+}[] = []
 
 /** Placeholder team — replace names, roles, bios, and images in /public/team. */
 export const team = [
@@ -380,12 +420,11 @@ export const insights = [
 ]
 
 export const assistant = {
-  welcome: "Hello, I'm Ruxin Assistant. How can I help you today?",
+  welcome: "Hello, I'm Ruxin Assistant. How can I help you set up or grow in Ethiopia?",
   suggestions: [
     'Tell me about your services',
-    'I need consulting support',
-    "I'm interested in logistics",
-    "I'm looking for a job",
+    'I need investment consultancy',
+    'Help with customs clearing',
     'How can I contact Ruxin?',
   ],
 }

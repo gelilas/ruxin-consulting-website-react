@@ -9,6 +9,13 @@ import { EASE } from '@/components/motion/primitives'
 
 const DURATION = 7000
 
+const companyLogos: Record<string, string> = {
+  'Northwind Holdings': '/clients/northwind.svg',
+  'Axiom Industries': '/clients/axiom.svg',
+  'Vertex Logistics': '/clients/vertex.svg',
+  'Atlas Capital': '/clients/atlas.svg',
+}
+
 export function Testimonials() {
   const { testimonials } = useSiteContent()
   const [index, setIndex] = useState(0)
@@ -37,9 +44,25 @@ export function Testimonials() {
       onBlur={() => setPaused(false)}
     >
       <section aria-roledescription="carousel" aria-label="Client testimonials" className="grid grid-cols-1 gap-10 lg:grid-cols-12">
-        <div className="flex flex-row items-center justify-between gap-6 lg:col-span-3 lg:flex-col lg:items-start lg:justify-between">
+        <div className="flex flex-col justify-between gap-8 lg:col-span-3">
           <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-neutral-500">Testimonials</p>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={t.company}
+                initial={{ opacity: 0, y: reduce ? 0 : 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: reduce ? 0 : -10 }}
+                transition={{ duration: 0.45, ease: EASE }}
+              >
+                {companyLogos[t.company] ? (
+                  <img src={companyLogos[t.company]} alt="" width={128} height={128} className="size-24 lg:size-32" />
+                ) : (
+                  <span className="block size-3 rounded-full border border-ruxin bg-ruxin" aria-hidden="true" />
+                )}
+                <p className="mt-5 text-lg font-semibold tracking-[0.2em] text-ink">{t.mark}</p>
+              </motion.div>
+            </AnimatePresence>
+            <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.22em] text-neutral-500">Testimonials</p>
             <p className="mt-3 font-mono text-sm text-ink" aria-live="polite">
               <span className="font-semibold">{String(index + 1).padStart(2, '0')}</span>
               <span className="text-ink/40"> / {String(testimonials.length).padStart(2, '0')}</span>
@@ -91,11 +114,7 @@ export function Testimonials() {
                 aria-roledescription="slide"
                 aria-label={`${index + 1} of ${testimonials.length}`}
               >
-                <p className="flex items-center gap-2 text-lg font-semibold tracking-[0.2em] text-ink/50">
-                  <span className="size-2.5 rounded-full border border-ruxin bg-ruxin" aria-hidden="true" />
-                  {t.mark}
-                </p>
-                <blockquote className="mt-8">
+                <blockquote>
                   <p className="text-balance text-[clamp(1.75rem,3.6vw,3.4rem)] font-medium leading-[1.1] tracking-[-0.025em]">
                     <span className="text-ruxin">{'“'}</span>
                     {t.quote}

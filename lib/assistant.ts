@@ -6,15 +6,15 @@ const replies: { match: RegExp; reply: AssistantReply }[] = [
     match: /job|career|hiring|position|work (for|at|with)|vacanc/i,
     reply: {
       content:
-        "We're hiring across consulting, logistics, recruitment, finance, and legal. Current openings include Senior Business Consultant, Logistics Operations Manager, and Financial Analyst. You can browse every role and apply directly in the Careers section.",
-      links: [{ label: 'View open roles', href: '#careers' }],
+        'Ruxin helps foreign investors establish and operate in Ethiopia. For roles, write to ruxinconsulting@gmail.com and the team will respond.',
+      links: [{ label: 'Contact Ruxin', href: '#contact' }],
     },
   },
   {
     match: /contact|reach|email|phone|call|office|where/i,
     reply: {
       content:
-        "You can email us at hello@ruxinconsulting.com or visit us in Addis Ababa, Ethiopia. The fastest way is the contact form — tell us about your challenge and we'll respond within one business day.",
+        'Email ruxinconsulting@gmail.com, call +251 988 987 777, or visit Bole Rwanda, Fuad Building, Office no. 301 in Addis Ababa. You can also use the contact form.',
       links: [{ label: 'Open contact form', href: '#contact' }],
     },
   },
@@ -22,7 +22,7 @@ const replies: { match: RegExp; reply: AssistantReply }[] = [
     match: /logistic|shipping|freight|supply|customs|transport/i,
     reply: {
       content:
-        'Our logistics practice designs and manages cross-border supply chains — freight coordination, customs and clearance, warehousing, and supply chain design. Would you like to discuss a specific route or challenge?',
+        'We facilitate customs clearance by coordinating documentation and regulatory requirements, so import and export move with fewer delays.',
       links: [
         { label: 'Explore Logistics', href: '#services' },
         { label: 'Talk to the team', href: '#contact' },
@@ -33,7 +33,7 @@ const replies: { match: RegExp; reply: AssistantReply }[] = [
     match: /consult|strategy|growth|transform|market entry/i,
     reply: {
       content:
-        'Ruxin Consulting helps leadership teams move from challenge to clear direction: business strategy, market entry, operational excellence, and transformation. Most engagements begin with a short diagnostic conversation.',
+        'Our investment consultancy guides foreign investors through Ethiopia’s regulations, business registration, and licensing.',
       links: [
         { label: 'See how we work', href: '#services' },
         { label: 'Book a conversation', href: '#contact' },
@@ -44,7 +44,7 @@ const replies: { match: RegExp; reply: AssistantReply }[] = [
     match: /financ|invest|valuation|model|account/i,
     reply: {
       content:
-        'Our finance team provides financial advisory, modelling and valuation, reporting, and investment readiness support — turning your numbers into decisions.',
+        'We prepare monthly and annual financial reports in line with local regulations, so clients meet their reporting obligations.',
       links: [{ label: 'Explore Finance', href: '#services' }],
     },
   },
@@ -52,7 +52,7 @@ const replies: { match: RegExp; reply: AssistantReply }[] = [
     match: /legal|contract|compliance|law|regulat/i,
     reply: {
       content:
-        'Our legal advisory covers contract review, corporate compliance, regulatory advisory, and risk assessment — so you can move forward with confidence.',
+        'We provide legal guidance and document review so businesses can handle contracts and regulatory procedures with more confidence.',
       links: [{ label: 'Explore Legal', href: '#services' }],
     },
   },
@@ -60,7 +60,7 @@ const replies: { match: RegExp; reply: AssistantReply }[] = [
     match: /recruit|talent|hire|candidate|headhunt|executive search/i,
     reply: {
       content:
-        'We connect organizations with leaders and specialists through executive search, specialist hiring, talent mapping, and workforce planning.',
+        'We support candidate sourcing, screening, and recruitment coordination so clients can build teams that fit their operations.',
       links: [{ label: 'Explore Recruitment', href: '#services' }],
     },
   },
@@ -68,7 +68,7 @@ const replies: { match: RegExp; reply: AssistantReply }[] = [
     match: /service|what do you do|offer|help/i,
     reply: {
       content:
-        'Ruxin brings five connected capabilities together: Consulting, Logistics, Recruitment, Finance, and Legal. Many clients combine several — for example, a market-entry strategy supported by logistics setup, hiring, and legal structuring.',
+        'Ruxin is a one-stop partner in Ethiopia: investment consultancy, customs clearing, financial reporting, recruitment, and legal advisory.',
       links: [{ label: 'Explore all services', href: '#services' }],
     },
   },

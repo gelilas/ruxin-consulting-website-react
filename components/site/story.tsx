@@ -5,7 +5,7 @@ import { ArrowDown, ArrowRight } from 'lucide-react'
 import { useRef } from 'react'
 import { useSiteContent } from '@/lib/site-content'
 import { ConnectionNetwork } from '@/components/network/connection-network'
-import { Counter, EASE, Eyebrow, Magnetic, Reveal, SplitHeading } from '@/components/motion/primitives'
+import { EASE, Eyebrow, Magnetic, Reveal, SplitHeading } from '@/components/motion/primitives'
 /** Hero → About → Services intro share one sticky, evolving network canvas. */
 export function Story() {
   return (
@@ -25,6 +25,7 @@ export function Story() {
       </div>
       <Hero />
       <About />
+      <Values />
       <ServicesIntro />
     </div>
   )
@@ -131,7 +132,12 @@ function About() {
             className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
           />
           <Reveal delay={0.2}>
-            <p className="mt-8 max-w-lg text-pretty text-base leading-relaxed text-ink/65 md:text-lg">{about.body}</p>
+            <div className="mt-8 max-w-lg space-y-5 text-pretty text-base leading-relaxed text-ink/65 md:text-lg">
+              <p>{about.body}</p>
+              {about.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
           </Reveal>
           <Reveal delay={0.3}>
             <ol className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-ink/50 lg:hidden">
@@ -146,19 +152,60 @@ function About() {
               {about.stages.join(' → ')}
             </p>
           </Reveal>
-          <dl
-            className="mt-14 grid grid-cols-2 gap-px overflow-hidden bg-ruxin px-5 text-white sm:grid-cols-4 sm:px-6 lg:grid-cols-2 xl:grid-cols-4"
-          >
-            {about.stats.map((stat, i) => (
-              <Reveal key={stat.label} delay={0.1 * i} className="flex flex-col-reverse gap-2 py-6 pr-4">
-                <dt className="text-xs leading-snug text-white/70">{stat.label}</dt>
-                <dd className="text-4xl font-semibold tracking-tight md:text-5xl">
-                  <Counter value={stat.value} suffix={stat.suffix} />
-                </dd>
+          <div className="mt-12 grid gap-8 sm:grid-cols-2">
+            {[about.vision, about.mission].map((item) => (
+              <Reveal key={item.title}>
+                <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ruxin">{item.title}</h3>
+                <p className="mt-3 text-pretty text-sm leading-relaxed text-ink/70">{item.body}</p>
               </Reveal>
             ))}
-          </dl>
+          </div>
         </div>
+      </div>
+    </section>
+  )
+}
+
+function Values() {
+  const { about, hero } = useSiteContent()
+  const photos = [
+    { src: hero.image, alt: 'Ruxin consultants working together' },
+    { src: about.image, alt: 'A Ruxin consultant at work' },
+    { src: about.visionImage, alt: 'A client meeting at Ruxin' },
+    { src: about.valuesImage, alt: 'A handshake after a client meeting' },
+  ].filter((photo) => photo.src)
+  return (
+    <section aria-labelledby="values-heading" className="relative bg-paper">
+      <div className="mx-auto max-w-[1440px] px-5 py-28 md:px-10">
+        <div className="max-w-3xl">
+          <Reveal>
+            <Eyebrow>Our core values</Eyebrow>
+          </Reveal>
+          <SplitHeading
+            id="values-heading"
+            lines={['How we work', 'with every client.']}
+            accentLast
+            accentClassName="text-ruxin"
+            className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
+          />
+          <ul className="mt-12 grid gap-8 sm:grid-cols-2">
+            {about.values.map((value) => (
+              <li key={value.title}>
+                <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ruxin">{value.title}</h3>
+                <p className="mt-3 text-pretty text-sm leading-relaxed text-ink/70">{value.body}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {photos.length > 0 && (
+          <ul className="mt-16 grid grid-cols-2 gap-3 md:grid-cols-4">
+            {photos.map((photo) => (
+              <li key={photo.src}>
+                <img src={photo.src} alt={photo.alt} className="aspect-[4/5] w-full object-cover" />
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </section>
   )
@@ -171,18 +218,18 @@ function ServicesIntro() {
       <div className="mx-auto flex min-h-[110svh] max-w-[1440px] flex-col justify-center px-5 py-28 md:px-10">
         <div className="max-w-xl">
           <Reveal>
-            <Eyebrow dark>What we do</Eyebrow>
+            <Eyebrow dark>Our services</Eyebrow>
           </Reveal>
           <SplitHeading
             id="services-heading"
-            lines={['Expertise that moves', 'business forward.']}
+            lines={['Essential support,', 'under one roof.']}
             accentLast
             accentClassName="text-ruxin"
             className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
           />
           <Reveal delay={0.2}>
             <p className="mt-8 text-lg text-ink/65 md:text-xl">
-              Five capabilities. <span className="text-ink">One connected approach.</span>
+              Five services. <span className="text-ink">One reliable partner.</span>
             </p>
           </Reveal>
           <Reveal delay={0.3}>

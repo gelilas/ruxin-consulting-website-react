@@ -12,6 +12,7 @@ import {
   services,
   team,
   testimonials,
+  whyChoose,
 } from './content'
 
 export type SiteContent = {
@@ -22,6 +23,7 @@ export type SiteContent = {
   services: typeof services
   clients: typeof clients
   testimonials: typeof testimonials
+  whyChoose: typeof whyChoose
   team: typeof team
   careers: typeof careers
   insightCategories: string[]
@@ -37,6 +39,7 @@ const REQUIRED_KEYS = [
   'services',
   'clients',
   'testimonials',
+  'whyChoose',
   'team',
   'careers',
   'insightCategories',
@@ -53,6 +56,7 @@ export const fallback: SiteContent = {
   services,
   clients,
   testimonials,
+  whyChoose,
   team,
   careers,
   insightCategories: [...insightCategories],

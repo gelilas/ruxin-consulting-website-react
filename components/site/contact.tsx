@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion } from 'motion/react'
-import { ArrowRight, Check, Loader2, Mail, MapPin, Phone } from 'lucide-react'
+import { ArrowRight, Check, Globe, Loader2, Mail, MapPin, Phone } from 'lucide-react'
 import { useActionState, useId } from 'react'
 import { useSiteContent } from '@/lib/site-content'
 import { submitContact, type ContactState } from '@/lib/contact'
@@ -101,6 +101,7 @@ export function Contact() {
         <div className="mt-16 grid grid-cols-1 gap-16 lg:mt-24 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <Reveal>
+              <img src="/profile/contact.jpg" alt="A Ruxin consultant speaking with a client" className="mb-8 aspect-[4/3] w-full object-cover" />
               <p className="max-w-sm text-pretty text-lg leading-relaxed text-white/75">
                 Have a challenge, opportunity, or idea? {"Let's"} start a conversation.
               </p>
@@ -110,6 +111,7 @@ export function Contact() {
                 {[
                   { icon: Mail, label: 'Email', value: company.email, href: `mailto:${company.email}` },
                   { icon: Phone, label: 'Phone', value: company.phone, href: `tel:${company.phone.replace(/\s/g, '')}` },
+                  { icon: Globe, label: 'Website', value: 'www.ruxinconsulting.com', href: company.website },
                   { icon: MapPin, label: 'Location', value: company.location },
                 ].map(({ icon: Icon, label, value, href }) => (
                   <div key={label} className="flex items-start gap-4 py-5">

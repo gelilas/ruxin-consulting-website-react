@@ -4,9 +4,9 @@ import { Logo } from './navbar'
 
 const companyLinks = [
   { label: 'About', href: '#about' },
-  { label: 'Team', href: '#team' },
-  { label: 'Careers', href: '#careers' },
-  { label: 'Insights', href: '#insights' },
+  { label: 'Why us', href: '#why' },
+  { label: 'Clients', href: '#clients' },
+  { label: 'Contact', href: '#contact' },
 ]
 
 function Column({
@@ -56,9 +56,11 @@ export function Footer() {
           <div className="md:col-span-2">
             <Column title="Services" links={services.map((s) => ({ label: s.name, href: '#services' }))} />
           </div>
-          <div className="md:col-span-2 md:col-start-11">
-            <Column title="Connect" links={company.socials.map((s) => ({ ...s, external: true }))} />
-          </div>
+          {company.socials.length > 0 && (
+            <div className="md:col-span-2 md:col-start-11">
+              <Column title="Connect" links={company.socials.map((s) => ({ ...s, external: true }))} />
+            </div>
+          )}
         </div>
 
         <p

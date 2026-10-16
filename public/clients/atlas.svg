@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <clipPath id="atlas-disc">
+      <circle cx="32" cy="32" r="29"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#atlas-disc)">
+    <ellipse cx="32" cy="32" rx="13" ry="30" stroke="#1A1214" stroke-width="1.25"/>
+    <path d="M2 32 H62" stroke="#B0161E" stroke-width="1.25"/>
+    <path d="M2 21.5 H62" stroke="#1A1214" stroke-width="1"/>
+    <path d="M2 42.5 H62" stroke="#1A1214" stroke-width="1"/>
+  </g>
+  <circle cx="32" cy="32" r="30" stroke="#1A1214" stroke-width="1.5"/>
+</svg>
