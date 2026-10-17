@@ -100,7 +100,7 @@ export const services: {
     description:
       'We guide foreign investors through Ethiopia’s investment regulations and requirements, providing clarity on applicable procedures and assisting them throughout the business registration and licensing process.',
     capabilities: ['Investment regulations', 'Business registration', 'Licensing', 'Government liaison'],
-    image: '/profile/service-investment.jpg',
+    image: '/profile/vision.jpg',
   },
   {
     id: 'logistics',
@@ -111,7 +111,7 @@ export const services: {
     description:
       'We facilitate customs clearance by coordinating documentation, regulatory requirements, and relevant procedures to help businesses navigate import and export processes more smoothly and reduce unnecessary delays.',
     capabilities: ['Documentation', 'Import and export', 'Regulatory coordination', 'Clearance'],
-    image: '/profile/service-customs.jpg',
+    image: '/profile/clients.jpg',
   },
   {
     id: 'finance',
@@ -122,7 +122,7 @@ export const services: {
     description:
       'We assist businesses with the preparation of monthly and annual financial reports in accordance with applicable local regulations, helping clients meet their reporting obligations and maintain proper financial documentation.',
     capabilities: ['Monthly reports', 'Annual reports', 'Local regulations', 'Financial documentation'],
-    image: '/profile/service-finance.jpg',
+    image: '/profile/about.jpg',
   },
   {
     id: 'recruitment',
@@ -133,7 +133,7 @@ export const services: {
     description:
       'We connect businesses with qualified talent by supporting candidate sourcing, screening, and recruitment coordination — helping clients build capable teams that align with their operational needs and business goals.',
     capabilities: ['Candidate sourcing', 'Screening', 'Recruitment coordination', 'Team building'],
-    image: '/profile/service-recruitment.jpg',
+    image: '/profile/hero.jpg',
   },
   {
     id: 'legal',
@@ -144,7 +144,7 @@ export const services: {
     description:
       'We provide legal guidance and document review to help businesses understand relevant legal and regulatory requirements, address contractual matters, and navigate business-related legal procedures with greater confidence.',
     capabilities: ['Legal guidance', 'Document review', 'Contracts', 'Regulatory requirements'],
-    image: '/profile/service-legal.jpg',
+    image: '/profile/cover.jpg',
   },
 ]
 
@@ -202,7 +202,99 @@ export const testimonials: {
   role: string
   company: string
   mark: string
-}[] = []
+  logo: string
+}[] = [
+  {
+    quote: 'Ruxin walked us through registration and licensing in Ethiopia and kept every step easy to follow.',
+    detail: 'Investment consultancy',
+    name: 'Baijia Ceramic',
+    role: 'Client',
+    company: 'Baijia Ceramic',
+    mark: 'BAIJIA',
+    logo: '/profile/logo-baijia.jpg',
+  },
+  {
+    quote: 'One local partner for compliance and coordination replaced a lot of back and forth for our team.',
+    detail: 'Ongoing support',
+    name: 'Junaid Group of Companies',
+    role: 'Client',
+    company: 'Junaid Group of Companies',
+    mark: 'JUNAID',
+    logo: '/profile/logo-junaid.jpg',
+  },
+  {
+    quote: 'Customs paperwork used to stall our shipments. Ruxin now handles the clearance steps with us.',
+    detail: 'Customs clearing',
+    name: 'Fuxing Plastics',
+    role: 'Client',
+    company: 'Fuxing Plastics',
+    mark: 'FUXING',
+    logo: '/profile/logo-fuxing.png',
+  },
+  {
+    quote: 'They understand the regulations, and they explain them in a way an international team can act on.',
+    detail: 'Cross-border coordination',
+    name: 'Soluxe International',
+    role: 'Client',
+    company: 'Soluxe International',
+    mark: 'SOLUXE',
+    logo: '/profile/logo-soluxe.jpg',
+  },
+  {
+    quote: 'Careful with the documents, and easy to reach when a deadline is close.',
+    detail: 'Reliable follow-through',
+    name: 'China Southern',
+    role: 'Client',
+    company: 'China Southern',
+    mark: 'CHINA SOUTHERN',
+    logo: '/profile/logo-china-southern.jpg',
+  },
+  {
+    quote: 'From setup through ongoing reporting, Ruxin has been a steady partner in Addis Ababa.',
+    detail: 'End-to-end support',
+    name: 'DRAZ Group Co., Ltd.',
+    role: 'Client',
+    company: 'DRAZ Group Co., Ltd.',
+    mark: 'DRAZ',
+    logo: '/profile/logo-draz.png',
+  },
+  {
+    quote: 'Our monthly and annual reports are prepared to the standard local authorities expect.',
+    detail: 'Financial reporting',
+    name: 'Orison LNG CNG',
+    role: 'Client',
+    company: 'Orison LNG CNG',
+    mark: 'ORISON',
+    logo: '/profile/logo-orison.jpg',
+  },
+  {
+    quote: 'Recruitment support helped us hire people who already understood the work on the ground.',
+    detail: 'Recruitment',
+    name: 'Ipack Packaging',
+    role: 'Client',
+    company: 'Ipack Packaging',
+    mark: 'IPACK',
+    logo: '/profile/logo-ipack.jpg',
+  },
+  {
+    quote: 'Contract review gave us a clear picture before we committed to local partners.',
+    detail: 'Legal advisory',
+    name: 'Muroo Systems',
+    role: 'Client',
+    company: 'Muroo Systems',
+    mark: 'MUROO',
+    logo: '/profile/logo-muroo.jpg',
+  },
+  {
+    quote: 'A practical team. They tell you the next step, then they follow through.',
+    detail: 'Client partnership',
+    name: 'Fly',
+    role: 'Client',
+    company: 'Fly',
+    mark: 'FLY',
+    logo: '/profile/logo-fly.png',
+  },
+]
 
 /** Placeholder team — replace names, roles, bios, and images in /public/team. */
 export const team = [

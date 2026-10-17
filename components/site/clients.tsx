@@ -1,9 +1,11 @@
 'use client'
 
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { useState } from 'react'
 import { clients as clientShape } from '@/lib/content'
 import { useSiteContent } from '@/lib/site-content'
 import { cn } from '@/lib/utils'
-import { Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
+import { EASE, Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
 
 const markStyles = [
   'font-semibold tracking-[0.28em]',
@@ -87,7 +89,111 @@ export function Clients() {
         </div>
       </Reveal>
 
+      <ClientVoices />
     </section>
+  )
+}
+
+function ClientVoices() {
+  const { testimonials } = useSiteContent()
+  const [index, setIndex] = useState(0)
+  const [burst, setBurst] = useState(0)
+  const reduce = useReducedMotion()
+  const active = testimonials[index]
+  if (!active) return null
+
+  const choose = (i: number) => {
+    setIndex(i)
+    setBurst((n) => n + 1)
+  }
+
+  return (
+    <div className="mx-auto mt-20 max-w-[1440px] px-5 md:mt-28 md:px-10">
+      <Reveal>
+        <Eyebrow>Testimonials</Eyebrow>
+        <h3 className="mt-4 max-w-xl text-balance text-3xl font-semibold tracking-tight md:text-4xl">
+          In our clients’ words.
+        </h3>
+      </Reveal>
+
+      <div className="mt-10 grid items-center gap-8 lg:grid-cols-12 lg:gap-12">
+        <ul className="grid grid-cols-3 gap-3 sm:grid-cols-5 lg:col-span-5" aria-label="Choose a client">
+          {testimonials.map((item, i) => {
+            const selected = i === index
+            return (
+              <li key={item.company}>
+                <motion.button
+                  type="button"
+                  onClick={() => choose(i)}
+                  aria-pressed={selected}
+                  aria-label={`${item.company} testimonial`}
+                  whileTap={reduce ? undefined : { scale: 0.9, rotate: -2 }}
+                  animate={selected ? { y: -8, scale: 1.05 } : { y: 0, scale: 1, rotate: 0 }}
+                  transition={reduce ? { duration: 0.2 } : { type: 'spring', stiffness: 460, damping: 22 }}
+                  className={cn(
+                    'relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-2xl bg-white p-2.5 shadow-sm ring-1 ring-ink/10',
+                    selected && 'shadow-[0_16px_30px_-18px_rgba(176,22,30,0.65)] ring-2 ring-ruxin',
+                  )}
+                >
+                  {item.logo ? (
+                    <img src={item.logo} alt="" className="max-h-full max-w-full object-contain" />
+                  ) : (
+                    <span className="px-1 text-center text-[10px] font-semibold tracking-wide text-ink/70">{item.mark}</span>
+                  )}
+                  {selected && (
+                    <motion.span
+                      layoutId="client-logo-glow"
+                      className="pointer-events-none absolute inset-0 rounded-2xl ring-2 ring-ruxin"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </motion.button>
+              </li>
+            )
+          })}
+        </ul>
+
+        <div className="lg:col-span-7 [perspective:900px]">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.figure
+              key={active.company}
+              initial={reduce ? { opacity: 0 } : { opacity: 0, y: 22, rotateX: 8, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
+              exit={reduce ? { opacity: 0 } : { opacity: 0, y: -16, scale: 0.98 }}
+              transition={{ duration: 0.5, ease: EASE }}
+              className="rounded-[1.75rem] bg-white p-7 shadow-[0_28px_60px_-36px_rgba(26,18,20,0.45)] ring-1 ring-ink/8 md:p-10"
+            >
+              <div className="flex items-center gap-4">
+                {active.logo ? (
+                <motion.img
+                  key={`${active.company}-${burst}`}
+                  src={active.logo}
+                  alt=""
+                  initial={reduce ? { opacity: 1 } : { scale: 0.82, rotate: -6 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={reduce ? { duration: 0.2 } : { type: 'spring', stiffness: 420, damping: 18 }}
+                  className="h-16 w-28 rounded-2xl bg-paper object-contain p-2 ring-1 ring-ink/10"
+                />
+                ) : null}
+                <figcaption>
+                  <p className="font-semibold tracking-tight">{active.company}</p>
+                  <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.18em] text-ruxin">{active.detail}</p>
+                </figcaption>
+              </div>
+              <blockquote className="mt-6 text-pretty text-xl font-medium leading-snug tracking-tight text-ink md:text-[1.7rem] md:leading-snug">
+                <span className="text-ruxin" aria-hidden="true">
+                  {'“'}
+                </span>
+                {active.quote}
+                <span className="text-ruxin" aria-hidden="true">
+                  {'”'}
+                </span>
+              </blockquote>
+            </motion.figure>
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
   )
 }
 

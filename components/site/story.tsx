@@ -1,9 +1,10 @@
 'use client'
 
-import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { ArrowDown, ArrowRight } from 'lucide-react'
-import { useRef } from 'react'
+import { useRef, useState, type KeyboardEvent } from 'react'
 import { useSiteContent } from '@/lib/site-content'
+import { cn } from '@/lib/utils'
 import { ConnectionNetwork } from '@/components/network/connection-network'
 import { EASE, Eyebrow, Magnetic, Reveal, SplitHeading } from '@/components/motion/primitives'
 /** Hero → About → Services intro share one sticky, evolving network canvas. */
@@ -119,8 +120,8 @@ function About() {
           <ConnectionNetwork onLight />
         </div>
       </div>
-      <div className="relative z-10 mx-auto grid min-h-svh max-w-[1440px] grid-cols-1 items-center px-5 py-28 text-ink md:px-10 lg:grid-cols-12">
-        <div className="lg:col-span-6 xl:col-span-5">
+      <div className="relative z-10 mx-auto max-w-[1440px] px-5 py-28 text-ink md:px-10 md:py-36">
+        <div className="max-w-xl lg:max-w-[34rem]">
           <Reveal>
             <Eyebrow>{about.eyebrow}</Eyebrow>
           </Reveal>
@@ -132,15 +133,17 @@ function About() {
             className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
           />
           <Reveal delay={0.2}>
-            <div className="mt-8 max-w-lg space-y-5 text-pretty text-base leading-relaxed text-ink/65 md:text-lg">
-              <p>{about.body}</p>
+            <p className="mt-8 text-pretty text-base leading-relaxed text-ink/65 md:text-lg">{about.body}</p>
+          </Reveal>
+          <Reveal delay={0.25}>
+            <div className="mt-8 space-y-4 text-pretty text-sm leading-relaxed text-ink/60 md:text-base">
               {about.paragraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
           </Reveal>
           <Reveal delay={0.3}>
-            <ol className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-ink/50 lg:hidden">
+            <ol className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-ink/50">
               {about.stages.map((s, i) => (
                 <li key={s} className="flex items-center gap-3">
                   <span className={i === about.stages.length - 1 ? 'text-ruxin' : ''}>{s}</span>
@@ -148,36 +151,95 @@ function About() {
                 </li>
               ))}
             </ol>
-            <p className="sr-only lg:not-sr-only lg:mt-10 lg:font-mono lg:text-[11px] lg:uppercase lg:tracking-[0.18em] lg:text-ink/40">
-              {about.stages.join(' → ')}
-            </p>
           </Reveal>
-          <div className="mt-12 grid gap-8 sm:grid-cols-2">
-            {[about.vision, about.mission].map((item) => (
-              <Reveal key={item.title}>
-                <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ruxin">{item.title}</h3>
-                <p className="mt-3 text-pretty text-sm leading-relaxed text-ink/70">{item.body}</p>
-              </Reveal>
-            ))}
-          </div>
+          <PurposeToggle />
         </div>
       </div>
     </section>
   )
 }
 
+function PurposeToggle() {
+  const { about } = useSiteContent()
+  const reduce = useReducedMotion()
+  const panels = [
+    { id: 'vision', title: about.vision.title, body: about.vision.body },
+    { id: 'mission', title: about.mission.title, body: about.mission.body },
+  ]
+  const [activeId, setActiveId] = useState(panels[0].id)
+  const active = panels.find((panel) => panel.id === activeId) ?? panels[0]
+
+  const onKeyDown = (event: KeyboardEvent) => {
+    if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return
+    event.preventDefault()
+    const next = active.id === 'vision' ? 'mission' : 'vision'
+    setActiveId(next)
+    document.getElementById(`purpose-tab-${next}`)?.focus()
+  }
+
+  return (
+    <div className="mt-10 max-w-lg">
+      <div role="tablist" aria-label="Vision and mission" onKeyDown={onKeyDown} className="inline-flex rounded-full bg-white/80 p-1 ring-1 ring-ink/10">
+        {panels.map((panel) => {
+          const selected = panel.id === active.id
+          return (
+            <button
+              key={panel.id}
+              id={`purpose-tab-${panel.id}`}
+              type="button"
+              role="tab"
+              aria-selected={selected}
+              aria-controls="purpose-panel"
+              tabIndex={selected ? 0 : -1}
+              onClick={() => setActiveId(panel.id)}
+              className={cn(
+                'relative rounded-full px-5 py-2 text-sm font-medium transition-colors',
+                selected ? 'text-white' : 'text-ink/55 hover:text-ink',
+              )}
+            >
+              {selected && (
+                <motion.span
+                  layoutId="purpose-pill"
+                  className="absolute inset-0 rounded-full bg-ruxin"
+                  transition={reduce ? { duration: 0.2 } : { type: 'spring', stiffness: 420, damping: 32 }}
+                />
+              )}
+              <span className="relative">{panel.title}</span>
+            </button>
+          )
+        })}
+      </div>
+      <div id="purpose-panel" role="tabpanel" aria-labelledby={`purpose-tab-${active.id}`} className="relative mt-5 min-h-24">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.p
+            key={active.id}
+            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -10 }}
+            transition={{ duration: 0.4, ease: EASE }}
+            className="text-pretty text-base leading-relaxed text-ink/75"
+          >
+            {active.body}
+          </motion.p>
+        </AnimatePresence>
+      </div>
+    </div>
+  )
+}
+
 function Values() {
   const { about, hero } = useSiteContent()
   const photos = [
-    { src: hero.image, alt: 'Ruxin consultants working together' },
-    { src: about.image, alt: 'A Ruxin consultant at work' },
-    { src: about.visionImage, alt: 'A client meeting at Ruxin' },
-    { src: about.valuesImage, alt: 'A handshake after a client meeting' },
+    { src: hero.image, alt: 'Ruxin consultants working together', frame: 'col-span-7', aspect: 'aspect-[4/3]', shift: [18, -14] as const },
+    { src: about.image, alt: 'A Ruxin consultant at work', frame: 'col-span-5 mt-6', aspect: 'aspect-[3/4]', shift: [28, -8] as const },
+    { src: about.visionImage, alt: 'A client meeting at Ruxin', frame: 'col-span-5', aspect: 'aspect-[4/3]', shift: [12, -18] as const },
+    { src: about.valuesImage, alt: 'A handshake after a client meeting', frame: 'col-span-7', aspect: 'aspect-[16/10]', shift: [22, -10] as const },
   ].filter((photo) => photo.src)
+
   return (
-    <section aria-labelledby="values-heading" className="relative bg-paper">
+    <section aria-labelledby="values-heading" className="relative">
       <div className="mx-auto max-w-[1440px] px-5 py-28 md:px-10">
-        <div className="max-w-3xl">
+        <div className="max-w-xl lg:max-w-[34rem]">
           <Reveal>
             <Eyebrow>Our core values</Eyebrow>
           </Reveal>
@@ -188,26 +250,75 @@ function Values() {
             accentClassName="text-ruxin"
             className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
           />
-          <ul className="mt-12 grid gap-8 sm:grid-cols-2">
-            {about.values.map((value) => (
-              <li key={value.title}>
+          <ul className="mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+            {about.values.map((value, index) => (
+              <Reveal key={value.title} as="li" delay={index * 0.05}>
                 <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ruxin">{value.title}</h3>
-                <p className="mt-3 text-pretty text-sm leading-relaxed text-ink/70">{value.body}</p>
-              </li>
+                <p className="mt-2 text-pretty text-sm leading-relaxed text-ink/70">{value.body}</p>
+              </Reveal>
             ))}
           </ul>
+          {photos.length > 0 && (
+            <div className="mt-12">
+              <ValueCollage photos={photos} />
+            </div>
+          )}
         </div>
-        {photos.length > 0 && (
-          <ul className="mt-16 grid grid-cols-2 gap-3 md:grid-cols-4">
-            {photos.map((photo) => (
-              <li key={photo.src}>
-                <img src={photo.src} alt={photo.alt} className="aspect-[4/5] w-full object-cover" />
-              </li>
-            ))}
-          </ul>
-        )}
       </div>
     </section>
+  )
+}
+
+function ValueCollage({
+  photos,
+}: {
+  photos: { src: string; alt: string; frame: string; aspect: string; shift: readonly [number, number] }[]
+}) {
+  const reduce = useReducedMotion()
+  const ref = useRef<HTMLUListElement>(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+
+  return (
+    <ul ref={ref} className="grid grid-cols-12 gap-3 md:gap-4">
+      {photos.map((photo, index) => (
+        <CollagePhoto key={photo.src} photo={photo} index={index} progress={scrollYProgress} reduce={!!reduce} />
+      ))}
+    </ul>
+  )
+}
+
+function CollagePhoto({
+  photo,
+  index,
+  progress,
+  reduce,
+}: {
+  photo: { src: string; alt: string; frame: string; aspect: string; shift: readonly [number, number] }
+  index: number
+  progress: ReturnType<typeof useScroll>['scrollYProgress']
+  reduce: boolean
+}) {
+  const y = useTransform(progress, [0, 1], reduce ? [0, 0] : [photo.shift[0], photo.shift[1]])
+  return (
+    <motion.li
+      style={{ y }}
+      className={cn('self-start overflow-hidden rounded-[1.6rem] shadow-[0_24px_50px_-28px_rgba(26,18,20,0.55)]', photo.frame)}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, margin: '-10% 0px' }}
+      transition={{ duration: 0.7, ease: EASE, delay: index * 0.08 }}
+    >
+      <motion.img
+        src={photo.src}
+        alt={photo.alt}
+        className={cn('w-full object-cover', photo.aspect)}
+        initial={{ scale: reduce ? 1 : 1.08 }}
+        whileInView={{ scale: 1 }}
+        whileHover={reduce ? undefined : { scale: 1.06 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.9, ease: EASE }}
+      />
+    </motion.li>
   )
 }
 

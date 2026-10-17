@@ -38,20 +38,29 @@ export function ServicesSection() {
   const [playing, setPlaying] = useState(true)
   const [hoverPaused, setHoverPaused] = useState(false)
   const [cycle, setCycle] = useState(0)
+  const [burst, setBurst] = useState(0)
+  const [lifted, setLifted] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const inView = useInView(sectionRef, { margin: '-30% 0px' })
   const reduce = useReducedMotion()
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const swiped = useRef(false)
   const service = services[index] ?? services[0]
   const autoplay = playing && !hoverPaused && inView && !reduce
 
   const select = useCallback((i: number, fromUser = true) => {
+    setLifted(false)
     setIndex((prev) => {
       if (prev === i) setCycle((c) => c + 1)
       return (i + services.length) % services.length
     })
     if (fromUser) setPlaying(false)
   }, [services.length])
+
+  const focusVisual = useCallback(() => {
+    setBurst((n) => n + 1)
+    setLifted((open) => !open)
+  }, [])
 
   useEffect(() => {
     if (!autoplay) return
@@ -216,48 +225,80 @@ export function ServicesSection() {
               onMouseLeave={() => setHoverPaused(false)}
               className="relative"
             >
-              <motion.div
-                drag={reduce ? false : 'x'}
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.15}
-                onDragEnd={(_, info) => {
-                  if (info.offset.x < -60) select(index + 1)
-                  else if (info.offset.x > 60) select(index - 1)
-                }}
-                className="relative aspect-[4/3] w-full cursor-grab touch-pan-y overflow-hidden border-2 border-ruxin bg-charcoal/60 active:cursor-grabbing"
-              >
-                <div className="pointer-events-none absolute inset-0 grid-fine" aria-hidden="true" />
-                <CornerTicks />
-                <AnimatePresence mode="popLayout" initial={false}>
-                  <motion.div
-                    key={service.id}
-                    className="absolute inset-0"
-                    initial={{ opacity: 0, scale: 1.04, filter: 'blur(8px)' }}
-                    animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, scale: 0.97, filter: 'blur(8px)' }}
-                    transition={{ duration: 0.8, ease: EASE }}
-                  >
-                    {service.image ? (
-                      <img src={service.image} alt="" className="absolute inset-0 size-full object-cover" />
-                    ) : (
-                      <Visual key={cycle} />
+              <div className="relative">
+                <motion.span
+                  key={burst}
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -inset-1.5 rounded-[2.1rem] ring-2 ring-ruxin"
+                  initial={{ opacity: burst ? 0.85 : 0, scale: 0.97 }}
+                  animate={{ opacity: 0, scale: 1.03 }}
+                  transition={{ duration: 0.7, ease: EASE }}
+                />
+                <motion.button
+                  type="button"
+                  drag={reduce ? false : 'x'}
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.15}
+                  dragSnapToOrigin
+                  onClick={() => {
+                    if (swiped.current) {
+                      swiped.current = false
+                      return
+                    }
+                    focusVisual()
+                  }}
+                  onDragEnd={(_, info) => {
+                    if (info.offset.x < -60) {
+                      swiped.current = true
+                      select(index + 1)
+                    } else if (info.offset.x > 60) {
+                      swiped.current = true
+                      select(index - 1)
+                    }
+                  }}
+                  aria-pressed={lifted}
+                  aria-label={lifted ? `Show the full ${service.name} image` : `Look closer at ${service.name}`}
+                  className="relative block aspect-[4/3] w-full cursor-pointer touch-pan-y overflow-hidden rounded-[1.75rem] border-2 border-ruxin bg-white text-left shadow-[0_28px_60px_-32px_rgba(26,18,20,0.55)]"
+                >
+                  <CornerTicks />
+                  <AnimatePresence mode="popLayout" initial={false}>
+                    <motion.div
+                      key={service.id}
+                      className="absolute inset-0"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.45, ease: EASE }}
+                    >
+                      {service.image ? (
+                        <motion.img
+                          src={service.image}
+                          alt=""
+                          draggable={false}
+                          className="absolute inset-0 size-full object-cover"
+                          animate={{ scale: lifted ? 1.08 : 1 }}
+                          transition={{ type: 'spring', stiffness: 220, damping: 24 }}
+                        />
+                      ) : (
+                        <Visual key={cycle} />
+                      )}
+                    </motion.div>
+                  </AnimatePresence>
+                  <AnimatePresence>
+                    {burst > 0 && (
+                      <motion.span
+                        key={burst}
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/55 to-transparent"
+                        initial={{ x: '-130%' }}
+                        animate={{ x: '420%' }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.75, ease: EASE }}
+                      />
                     )}
-                  </motion.div>
-                </AnimatePresence>
-                <AnimatePresence mode="popLayout" initial={false}>
-                  <motion.span
-                    key={service.number}
-                    aria-hidden="true"
-                    className="pointer-events-none absolute bottom-2 right-4 select-none text-[clamp(4rem,12vw,10rem)] font-semibold leading-none tracking-tighter text-white/[0.04]"
-                    initial={{ y: 40, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -40, opacity: 0 }}
-                    transition={{ duration: 0.8, ease: EASE }}
-                  >
-                    {service.number}
-                  </motion.span>
-                </AnimatePresence>
-              </motion.div>
+                  </AnimatePresence>
+                </motion.button>
+              </div>
               <ConceptChain index={index} />
             </div>
 
