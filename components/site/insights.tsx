@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
 import { useState } from 'react'
 import { insights as insightShape } from '@/lib/content'
+import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
 import { cn } from '@/lib/utils'
 import { EASE, Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
@@ -35,7 +36,7 @@ function FeatureArticle({ item }: { item: Insight }) {
       <a href="#insights" className="block" aria-label={`Read: ${item.title}`}>
         <div className="relative aspect-[4/3] overflow-hidden bg-charcoal lg:aspect-[5/4]">
           <img
-            src={item.image || '/placeholder.svg'}
+            src={mediaUrl(item.image) || '/placeholder.svg'}
             alt=""
             className="absolute inset-0 size-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
           />
@@ -70,7 +71,7 @@ function SideArticle({ item }: { item: Insight }) {
         </div>
         <div className="relative size-24 overflow-hidden bg-paper md:size-28">
           <img
-            src={item.image || '/placeholder.svg'}
+            src={mediaUrl(item.image) || '/placeholder.svg'}
             alt=""
             className="absolute inset-0 size-full object-cover transition-transform duration-700 group-hover:scale-110"
           />

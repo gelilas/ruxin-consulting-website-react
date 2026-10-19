@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useInView, useReducedMotion } from 'motion/rea
 import { ArrowRight, Pause, Play } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState, type ComponentType } from 'react'
 import { type ServiceId } from '@/lib/content'
+import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
 import { cn } from '@/lib/utils'
 import { EASE } from '@/components/motion/primitives'
@@ -272,7 +273,7 @@ export function ServicesSection() {
                     >
                       {service.image ? (
                         <motion.img
-                          src={service.image}
+                          src={mediaUrl(service.image)}
                           alt=""
                           draggable={false}
                           className="absolute inset-0 size-full object-cover"

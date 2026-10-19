@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { useState } from 'react'
 import { clients as clientShape } from '@/lib/content'
+import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
 import { cn } from '@/lib/utils'
 import { EASE, Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
@@ -23,7 +24,7 @@ function ClientMark({ client, i }: { client: (typeof clientShape)[number]; i: nu
     >
       {client.logo ? (
         <img
-          src={client.logo}
+          src={mediaUrl(client.logo)}
           alt={client.name}
           width={140}
           height={40}
@@ -136,7 +137,7 @@ function ClientVoices() {
                   )}
                 >
                   {item.logo ? (
-                    <img src={item.logo} alt="" className="max-h-full max-w-full object-contain" />
+                    <img src={mediaUrl(item.logo)} alt="" className="max-h-full max-w-full object-contain" />
                   ) : (
                     <span className="px-1 text-center text-[10px] font-semibold tracking-wide text-ink/70">{item.mark}</span>
                   )}
@@ -167,7 +168,7 @@ function ClientVoices() {
                 {active.logo ? (
                 <motion.img
                   key={`${active.company}-${burst}`}
-                  src={active.logo}
+                  src={mediaUrl(active.logo)}
                   alt=""
                   initial={reduce ? { opacity: 1 } : { scale: 0.82, rotate: -6 }}
                   animate={{ scale: 1, rotate: 0 }}
@@ -221,7 +222,7 @@ export function WhyChoose() {
       <ul className="mt-16 grid gap-10 md:grid-cols-2">
         {whyChoose.items.map((item) => (
           <li key={item.title} className="grid gap-5 border-t border-ink/10 pt-6 sm:grid-cols-[148px_1fr]">
-            <img src={item.image} alt="" className="aspect-[4/3] w-full object-cover" />
+            <img src={mediaUrl(item.image)} alt="" className="aspect-[4/3] w-full object-cover" />
             <div>
               <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ruxin">{item.title}</h3>
               <p className="mt-3 text-pretty leading-relaxed text-ink/70">{item.body}</p>
@@ -229,7 +230,7 @@ export function WhyChoose() {
           </li>
         ))}
       </ul>
-      <img src={whyChoose.image} alt="Clients meeting with Ruxin" className="mt-16 aspect-[16/8] w-full object-cover" />
+      <img src={mediaUrl(whyChoose.image)} alt="Clients meeting with Ruxin" className="mt-16 aspect-[16/8] w-full object-cover" />
     </div>
     </section>
   )

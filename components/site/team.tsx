@@ -1,6 +1,7 @@
 'use client'
 
 import { ArrowUpRight } from 'lucide-react'
+import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
 import { Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
 
@@ -43,7 +44,7 @@ export function Team() {
               <article className="group relative">
                 <div className="relative aspect-[4/5] overflow-hidden bg-paper">
                   <img
-                    src={person.image || '/placeholder.svg'}
+                    src={mediaUrl(person.image) || '/placeholder.svg'}
                     alt={`Portrait of ${person.name}, ${person.role}`}
                     className="absolute inset-0 size-full object-cover grayscale-[35%] transition-all duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105 group-hover:grayscale-0"
                   />

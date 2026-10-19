@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { ArrowDown, ArrowRight } from 'lucide-react'
 import { useRef, useState, type KeyboardEvent } from 'react'
+import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
 import { cn } from '@/lib/utils'
 import { ConnectionNetwork } from '@/components/network/connection-network'
@@ -230,10 +231,10 @@ function PurposeToggle() {
 function Values() {
   const { about, hero } = useSiteContent()
   const photos = [
-    { src: hero.image, alt: 'Ruxin consultants working together', frame: 'col-span-7', aspect: 'aspect-[4/3]', shift: [18, -14] as const },
-    { src: about.image, alt: 'A Ruxin consultant at work', frame: 'col-span-5 mt-6', aspect: 'aspect-[3/4]', shift: [28, -8] as const },
-    { src: about.visionImage, alt: 'A client meeting at Ruxin', frame: 'col-span-5', aspect: 'aspect-[4/3]', shift: [12, -18] as const },
-    { src: about.valuesImage, alt: 'A handshake after a client meeting', frame: 'col-span-7', aspect: 'aspect-[16/10]', shift: [22, -10] as const },
+    { src: mediaUrl(hero.image), alt: 'Ruxin consultants working together', frame: 'col-span-7', aspect: 'aspect-[4/3]', shift: [18, -14] as const },
+    { src: mediaUrl(about.image), alt: 'A Ruxin consultant at work', frame: 'col-span-5 mt-6', aspect: 'aspect-[3/4]', shift: [28, -8] as const },
+    { src: mediaUrl(about.visionImage), alt: 'A client meeting at Ruxin', frame: 'col-span-5', aspect: 'aspect-[4/3]', shift: [12, -18] as const },
+    { src: mediaUrl(about.valuesImage), alt: 'A handshake after a client meeting', frame: 'col-span-7', aspect: 'aspect-[16/10]', shift: [22, -10] as const },
   ].filter((photo) => photo.src)
 
   return (
