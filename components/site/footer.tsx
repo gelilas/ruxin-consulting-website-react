@@ -64,13 +64,13 @@ export function Footer() {
         </div>
 
         <p
-          className="mt-20 select-none text-center text-[clamp(4rem,17vw,16rem)] font-bold leading-none tracking-[-0.05em] text-ruxin/15"
+          className="mt-20 select-none text-center font-heading text-[clamp(4rem,17vw,16rem)] font-bold leading-none tracking-[-0.05em] text-ruxin/15"
           aria-hidden="true"
         >
           RUXIN
         </p>
 
-        <div className="mt-6 flex flex-col-reverse items-start justify-between gap-6 border-t border-ink/10 pt-8 text-xs text-ink/45 md:flex-row md:items-center">
+        <div className="mt-6 flex flex-col-reverse items-start justify-between gap-6 border-t border-ink/10 pt-8 text-xs text-ink/65 md:flex-row md:items-center">
           <p>{'© 2026 Ruxin Consulting. All rights reserved.'}</p>
           <a href="#top" className="group inline-flex items-center gap-2 transition-colors hover:text-ruxin">
             Back to top

@@ -6,28 +6,9 @@ import { useEffect, useState } from 'react'
 import { useSiteContent } from '@/lib/site-content'
 import { cn } from '@/lib/utils'
 import { EASE, Magnetic } from '@/components/motion/primitives'
+import { Logo } from '@/components/site/logo'
 
-export function Logo({ className, light = true, mark = 'red' }: { className?: string; light?: boolean; mark?: 'red' | 'white' }) {
-  return (
-    <a href="#top" className={cn('group flex items-center gap-2.5', className)} aria-label="Ruxin Consulting — home">
-      <span className="relative flex size-7 items-center justify-center" aria-hidden="true">
-        <span
-          className={cn(
-            'absolute inset-0 rounded-full border transition-transform duration-500 group-hover:scale-110',
-            mark === 'white' ? 'border-white/80' : 'border-ruxin/70',
-          )}
-        />
-        <span className={cn('size-2 rounded-full', mark === 'white' ? 'bg-white' : 'bg-ruxin')} />
-      </span>
-      <span className="flex flex-col leading-none">
-        <span className={cn('text-[17px] font-bold tracking-[0.18em]', light ? 'text-white' : 'text-ink')}>RUXIN</span>
-        <span className={cn('mt-1 font-mono text-[8.5px] tracking-[0.42em]', light ? 'text-mute' : 'text-ink/45')}>
-          CONSULTING
-        </span>
-      </span>
-    </a>
-  )
-}
+export { Logo }
 
 export function Navbar() {
   const { navLinks } = useSiteContent()
@@ -149,10 +130,10 @@ export function Navbar() {
                   <a
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="flex items-baseline justify-between py-4 text-3xl font-medium tracking-tight text-white"
+                    className="flex items-baseline justify-between py-4 font-heading text-3xl font-medium tracking-tight text-white"
                   >
                     {link.label}
-                    <span className="font-mono text-xs text-white/55">0{i + 1}</span>
+                    <span className="font-mono text-xs text-white/80">0{i + 1}</span>
                   </a>
                 </motion.li>
               ))}

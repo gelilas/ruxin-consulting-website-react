@@ -13,7 +13,7 @@ type Insight = (typeof insightShape)[number]
 
 function Meta({ item, light = false }: { item: Insight; light?: boolean }) {
   return (
-    <p className={cn('flex items-center gap-3 font-mono text-[10.5px] uppercase tracking-[0.18em]', light ? 'text-white/70' : 'text-ink/50')}>
+    <p className={cn('flex items-center gap-3 font-mono text-[10.5px] uppercase tracking-[0.18em]', light ? 'text-white/70' : 'text-ink/70')}>
       <span className="text-ruxin">{item.category}</span>
       <span aria-hidden="true">/</span>
       <time>{item.date}</time>
@@ -64,7 +64,7 @@ function SideArticle({ item }: { item: Insight }) {
           <h3 className="mt-3 text-balance text-lg font-semibold leading-snug tracking-tight transition-colors group-hover:text-ruxin md:text-xl">
             {item.title}
           </h3>
-          <p className="mt-2 line-clamp-2 text-sm text-ink/55">{item.description}</p>
+          <p className="mt-2 line-clamp-2 text-sm text-ink/70">{item.description}</p>
           <div className="mt-4">
             <ReadMore />
           </div>
@@ -99,7 +99,7 @@ export function Insights() {
               id="insights-heading"
               lines={['Ideas that move', 'business forward.']}
               accentLast
-              accentClassName="text-ink/40"
+              accentClassName="text-ink/65"
               className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
             />
           </div>
@@ -139,7 +139,7 @@ export function Insights() {
             )}
             {rest.length > 0 && (
               <div className="lg:col-span-5">
-                <p className="border-b border-ink/10 pb-4 font-mono text-[11px] uppercase tracking-[0.2em] text-ink/45">Latest</p>
+                <p className="border-b border-ink/10 pb-4 font-mono text-[11px] uppercase tracking-[0.2em] text-ink/65">Latest</p>
                 {rest.slice(0, 4).map((item) => (
                   <SideArticle key={item.id} item={item} />
                 ))}

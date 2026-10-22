@@ -46,7 +46,7 @@ export function Careers() {
 
           <div className="lg:col-span-7">
             <Reveal>
-              <p className="flex items-center justify-between border-b border-ink/10 pb-4 font-mono text-[11px] uppercase tracking-[0.2em] text-ink/40">
+              <p className="flex items-center justify-between border-b border-ink/10 pb-4 font-mono text-[11px] uppercase tracking-[0.2em] text-ink/65">
                 <span>Open positions</span>
                 <span>{String(careers.jobs.length).padStart(2, '0')} roles</span>
               </p>
@@ -71,9 +71,9 @@ export function Careers() {
                       <span className="mt-2 block text-xl font-semibold tracking-tight transition-transform duration-500 group-hover:translate-x-2 md:text-2xl">
                         {j.title}
                       </span>
-                      <span className="mt-2 block max-w-lg text-sm text-ink/50">{j.summary}</span>
+                      <span className="mt-2 block max-w-lg text-sm text-ink/70">{j.summary}</span>
                     </span>
-                    <span className="relative flex shrink-0 items-center gap-5 text-xs text-ink/50">
+                    <span className="relative flex shrink-0 items-center gap-5 text-xs text-ink/70">
                       <span className="flex items-center gap-1.5">
                         <MapPin className="size-3.5" aria-hidden="true" />
                         {j.location}
@@ -211,7 +211,7 @@ function JobDrawer({ job, onClose }: { job: Job | null; onClose: () => void }) {
 function DrawerList({ title, items }: { title: string; items: string[] }) {
   return (
     <div className="mt-10">
-      <h4 className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink/45">{title}</h4>
+      <h4 className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink/65">{title}</h4>
       <ul className="mt-4 divide-y divide-ink/8 border-y border-ink/8">
         {items.map((item) => (
           <li key={item} className="flex gap-4 py-3.5 text-sm leading-relaxed">

@@ -120,9 +120,9 @@ export function ServicesSection() {
 
       <div className="relative mx-auto max-w-[1440px] px-5 pt-10 md:px-10">
         <div className="flex items-end justify-between border-b border-ink/10 pb-6">
-          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink/45">Capabilities</p>
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink/65">Capabilities</p>
           <div className="flex items-center gap-4">
-            <p className="font-mono text-[11px] tracking-[0.2em] text-ink/45" aria-live="polite">
+            <p className="font-mono text-[11px] tracking-[0.2em] text-ink/65" aria-live="polite">
               <span className="text-ink">{service.number}</span> / {String(services.length).padStart(2, '0')}
             </p>
             {!reduce && (
@@ -172,7 +172,7 @@ export function ServicesSection() {
                     <span
                       className={cn(
                         'font-mono text-[11px] transition-colors',
-                        isActive ? 'text-white' : 'text-ink/40',
+                        isActive ? 'text-white' : 'text-ink/65',
                       )}
                     >
                       {s.number}
@@ -180,8 +180,8 @@ export function ServicesSection() {
                     <span className={cn('hidden h-px w-6 lg:block', isActive ? 'bg-white/40' : 'bg-ink/20')} aria-hidden="true" />
                     <span
                       className={cn(
-                        'text-sm font-medium transition-all duration-500 lg:text-[clamp(1.5rem,2.4vw,2.25rem)] lg:font-semibold lg:tracking-tight',
-                        isActive ? 'text-white lg:translate-x-1' : 'text-ink/50 group-hover:text-ink/80',
+                        'font-heading text-sm font-medium transition-all duration-500 lg:text-[clamp(1.5rem,2.4vw,2.25rem)] lg:font-semibold lg:tracking-tight',
+                        isActive ? 'text-white lg:translate-x-1' : 'text-ink/70 group-hover:text-ink/80',
                       )}
                     >
                       {s.name}
@@ -353,7 +353,7 @@ function ConceptChain({ index }: { index: number }) {
   const s = services[index]
   if (!s) return null
   return (
-    <div className="mt-4 flex items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.18em] text-ink/40 md:text-[11px]">
+    <div className="mt-4 flex items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.18em] text-ink/65 md:text-[11px]">
       <AnimatePresence mode="wait">
         <motion.ol
           key={s.id}

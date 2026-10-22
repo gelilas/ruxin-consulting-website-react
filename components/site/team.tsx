@@ -27,7 +27,7 @@ export function Team() {
               id="team-heading"
               lines={['The people', 'behind Ruxin.']}
               accentLast
-              accentClassName="text-ink/40"
+              accentClassName="text-ink/65"
               className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
             />
           </div>
@@ -59,7 +59,7 @@ export function Team() {
                 <div className="mt-5 flex items-start justify-between gap-4 transition-transform duration-500 group-hover:translate-x-1">
                   <div>
                     <h3 className="text-lg font-semibold tracking-tight">{person.name}</h3>
-                    <p className="mt-1 text-sm text-ink/55">{person.role}</p>
+                    <p className="mt-1 text-sm text-ink/70">{person.role}</p>
                   </div>
                   <a
                     href={person.linkedin}

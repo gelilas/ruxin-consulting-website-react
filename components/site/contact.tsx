@@ -62,7 +62,7 @@ function Field({
       <label
         htmlFor={id}
         className={cn(
-          'pointer-events-none absolute left-0 top-1 font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/55 transition-colors peer-focus:text-white',
+          'pointer-events-none absolute left-0 top-1 font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/80 transition-colors peer-focus:text-white',
         )}
       >
         {label}
@@ -94,7 +94,7 @@ export function Contact() {
           id="contact-heading"
           lines={["Let's build", "what's next."]}
           accentLast
-          accentClassName="text-white/55"
+          accentClassName="text-white/80"
           className="mt-7 text-balance text-[clamp(3rem,9vw,8.5rem)] font-semibold leading-[0.92] tracking-[-0.045em]"
         />
 
@@ -117,7 +117,7 @@ export function Contact() {
                   <div key={label} className="flex items-start gap-4 py-5">
                     <Icon className="mt-0.5 size-4 text-white" aria-hidden="true" />
                     <div>
-                      <dt className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/55">{label}</dt>
+                      <dt className="font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/80">{label}</dt>
                       <dd className="mt-1.5">
                         {href ? (
                           <a href={href} className="text-white transition-colors hover:text-cream">
@@ -162,7 +162,7 @@ export function Contact() {
                   <div className="relative md:col-span-2">
                     <label
                       htmlFor={serviceId}
-                      className="absolute left-0 top-1 font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/55"
+                      className="absolute left-0 top-1 font-mono text-[10.5px] uppercase tracking-[0.18em] text-white/80"
                     >
                       Service
                     </label>
@@ -182,7 +182,7 @@ export function Contact() {
                       ))}
                       <option value="Other">Something else</option>
                     </select>
-                    <span className="pointer-events-none absolute bottom-4 right-0 text-white/50" aria-hidden="true">
+                    <span className="pointer-events-none absolute bottom-4 right-0 text-white/80" aria-hidden="true">
                       {'↓'}
                     </span>
                   </div>

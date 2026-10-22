@@ -32,10 +32,10 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const palette = { red: '176, 22, 30', ink: '#1c1916' }
+    const palette = { red: '171, 38, 28', ink: '#1c1210' }
     const readPalette = () => {
       const style = getComputedStyle(document.documentElement)
-      const hex = style.getPropertyValue('--ruxin').trim().replace('#', '')
+      const hex = style.getPropertyValue('--brand-bright-red').trim().replace('#', '')
       const ink = style.getPropertyValue('--ink').trim()
       if (/^[0-9a-fA-F]{6}$/.test(hex)) {
         const n = parseInt(hex, 16)
@@ -310,7 +310,7 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
 
         const serviceLabelAlpha = labelIn * (1 - pathness)
         if (serviceLabelAlpha > 0.01) {
-          ctx.font = `500 ${compact ? 9 : 10.5}px ui-monospace, "Geist Mono", monospace`
+          ctx.font = `500 ${compact ? 9 : 10.5}px "Inter Tight Variable", "Inter Tight", sans-serif`
           if ('letterSpacing' in ctx) (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = '2px'
           const label = toBranch > 0.5 ? (compact ? services[i - 1].number : `${services[i - 1].number}  ${labels[i - 1]}`) : labels[i - 1]
           let ly: number
@@ -329,7 +329,7 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
 
       // Stage labels on the pathway
       if (pathness > 0.05 && !compact) {
-        ctx.font = '500 10.5px ui-monospace, "Geist Mono", monospace'
+        ctx.font = '500 10.5px "Inter Tight Variable", "Inter Tight", sans-serif'
         if ('letterSpacing' in ctx) (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = '2px'
         about.stages.forEach((stage, k) => {
           const pp = pathPoint((k / (about.stages.length - 1)) * 5)
@@ -363,7 +363,7 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
           ctx.stroke()
         }
 
-        ctx.fillStyle = '#0c0c0c'
+        ctx.fillStyle = palette.ink
         ctx.beginPath()
         ctx.arc(c.x, c.y, r, 0, Math.PI * 2)
         ctx.fill()
@@ -373,7 +373,7 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
 
         if (r > 18) {
           ctx.fillStyle = `rgba(255,255,255,${centerIn})`
-          ctx.font = `700 ${Math.round(r * 0.3)}px ui-sans-serif, "Geist", sans-serif`
+          ctx.font = `700 ${Math.round(r * 0.3)}px "Power Grotesk", "Inter Tight Variable", "Inter Tight", sans-serif`
           if ('letterSpacing' in ctx) (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = `${Math.round(r * 0.06)}px`
           ctx.fillText('RUXIN', c.x + r * 0.03, c.y + 1)
         }

@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 
 export const VB_W = 640
 export const VB_H = 480
-export const RED = 'var(--ruxin)'
+export const RED = 'var(--brand-bright-red)'
 export const EASE = [0.22, 1, 0.36, 1] as const
 
 /** Shared props: every visual receives `active` so it can stay calm until shown. */

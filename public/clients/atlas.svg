@@ -6,7 +6,7 @@
   </defs>
   <g clip-path="url(#atlas-disc)">
     <ellipse cx="32" cy="32" rx="13" ry="30" stroke="#1A1214" stroke-width="1.25"/>
-    <path d="M2 32 H62" stroke="#B0161E" stroke-width="1.25"/>
+    <path d="M2 32 H62" stroke="#AB261C" stroke-width="1.25"/>
     <path d="M2 21.5 H62" stroke="#1A1214" stroke-width="1"/>
     <path d="M2 42.5 H62" stroke="#1A1214" stroke-width="1"/>
   </g>

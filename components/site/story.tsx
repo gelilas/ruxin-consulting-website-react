@@ -103,7 +103,7 @@ function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 3.4, duration: 1 }}
-        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-ink/40 transition-colors hover:text-ink lg:flex"
+        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-ink/65 transition-colors hover:text-ink lg:flex"
       >
         Scroll
         <ArrowDown className="size-3.5 motion-safe:animate-bounce" aria-hidden="true" />
@@ -144,7 +144,7 @@ function About() {
             </div>
           </Reveal>
           <Reveal delay={0.3}>
-            <ol className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-ink/50">
+            <ol className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-ink/70">
               {about.stages.map((s, i) => (
                 <li key={s} className="flex items-center gap-3">
                   <span className={i === about.stages.length - 1 ? 'text-ruxin' : ''}>{s}</span>
@@ -195,7 +195,7 @@ function PurposeToggle() {
               onClick={() => setActiveId(panel.id)}
               className={cn(
                 'relative rounded-full px-5 py-2 text-sm font-medium transition-colors',
-                selected ? 'text-white' : 'text-ink/55 hover:text-ink',
+                selected ? 'text-white' : 'text-ink/70 hover:text-ink',
               )}
             >
               {selected && (

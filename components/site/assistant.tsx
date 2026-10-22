@@ -7,6 +7,7 @@ import { useSiteContent } from '@/lib/site-content'
 import { requestAssistantReply, type AssistantReply, type ChatMessage } from '@/lib/assistant'
 import { cn } from '@/lib/utils'
 import { EASE } from '@/components/motion/primitives'
+import { LogoMark } from '@/components/site/logo'
 
 type UIMessage = ChatMessage & { id: number; links?: AssistantReply['links'] }
 
@@ -122,11 +123,11 @@ export function Assistant() {
             transition={{ duration: 0.4, ease: EASE }}
             style={{ transformOrigin: 'bottom right' }}
           >
-            <header className="relative bg-[linear-gradient(118deg,#8b1116_0%,#b0161e_58%,#c4383f_100%)] px-5 py-5 text-white">
+            <header className="relative bg-[linear-gradient(118deg,var(--brand-wine-red)_0%,var(--brand-bright-red)_100%)] px-5 py-5 text-white">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-white/75">Ruxin Consulting</p>
-                  <p className="mt-1 text-xl font-semibold tracking-tight">Ruxin Assistant</p>
+                  <LogoMark light className="h-8 md:h-8" />
+                  <p className="mt-3 font-heading text-xl font-semibold tracking-tight">Ruxin Assistant</p>
                   <p className="mt-1 text-sm leading-relaxed text-white/90">
                     Ask about services, documents, and how to get started in Ethiopia.
                   </p>

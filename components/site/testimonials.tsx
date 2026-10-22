@@ -65,7 +65,7 @@ export function Testimonials() {
             <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.22em] text-neutral-500">Testimonials</p>
             <p className="mt-3 font-mono text-sm text-ink" aria-live="polite">
               <span className="font-semibold">{String(index + 1).padStart(2, '0')}</span>
-              <span className="text-ink/40"> / {String(testimonials.length).padStart(2, '0')}</span>
+              <span className="text-ink/65"> / {String(testimonials.length).padStart(2, '0')}</span>
             </p>
           </div>
           <div className="flex gap-2">
@@ -126,7 +126,7 @@ export function Testimonials() {
                   <span className="h-px w-10 bg-ruxin" aria-hidden="true" />
                   <span>
                     <span className="block font-medium">{t.name}</span>
-                    <span className="block text-sm text-ink/55">
+                    <span className="block text-sm text-ink/70">
                       {t.role}, {t.company}
                     </span>
                   </span>
