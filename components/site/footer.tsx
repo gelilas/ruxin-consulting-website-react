@@ -1,5 +1,6 @@
 import { ArrowUp } from 'lucide-react'
 import { useSiteContent } from '@/lib/site-content'
+import { LogoMark } from '@/components/site/logo'
 import { Logo } from './navbar'
 
 const companyLinks = [
@@ -63,12 +64,9 @@ export function Footer() {
           )}
         </div>
 
-        <p
-          className="mt-20 select-none text-center font-heading text-[clamp(4rem,17vw,16rem)] font-bold leading-none tracking-[-0.05em] text-ruxin/15"
-          aria-hidden="true"
-        >
-          RUXIN
-        </p>
+        <LogoMark
+          className="mx-auto mt-16 h-[clamp(9rem,28vw,20rem)] w-auto max-w-full text-ruxin-bright/25 md:h-[clamp(9rem,28vw,20rem)]"
+        />
 
         <div className="mt-6 flex flex-col-reverse items-start justify-between gap-6 border-t border-ink/10 pt-8 text-xs text-ink/65 md:flex-row md:items-center">
           <p>{'© 2026 Ruxin Consulting. All rights reserved.'}</p>
