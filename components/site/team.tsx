@@ -38,6 +38,14 @@ export function Team() {
           </Reveal>
         </div>
 
+        <Reveal delay={0.1} className="mt-12 overflow-hidden border-y-8 border-ruxin">
+          <img
+            src="/profile/team-meeting.jpg"
+            alt="A team collaborating in a meeting"
+            className="aspect-[16/5] w-full object-cover"
+          />
+        </Reveal>
+
         <ul className="no-scrollbar -mx-5 mt-16 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 md:mx-0 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 lg:grid-cols-4">
           {team.map((person, i) => (
             <Reveal as="li" key={person.name} delay={i * 0.08} className={`w-[78%] shrink-0 snap-start md:w-auto ${i % 2 === 1 ? 'lg:mt-16' : ''}`}>

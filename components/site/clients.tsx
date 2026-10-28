@@ -162,7 +162,7 @@ function ClientVoices() {
               animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, y: -16, scale: 0.98 }}
               transition={{ duration: 0.5, ease: EASE }}
-              className="rounded-[1.75rem] bg-white p-7 shadow-[0_28px_60px_-36px_rgba(26,18,20,0.45)] ring-1 ring-ink/8 md:p-10"
+              className="rounded-[1.75rem] bg-white p-7 shadow-[0_28px_60px_-36px_rgba(130,7,16,0.28)] ring-1 ring-ink/8 md:p-10"
             >
               <div className="flex items-center gap-4">
                 {active.logo ? (

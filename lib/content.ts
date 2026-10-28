@@ -17,6 +17,7 @@ export const navLinks = [
   { label: 'About', href: '#about' },
   { label: 'Services', href: '#services' },
   { label: 'Why us', href: '#why' },
+  { label: 'Our team', href: '#team' },
   { label: 'Clients', href: '#clients' },
   { label: 'Contact', href: '#contact' },
 ]
@@ -38,7 +39,7 @@ export const about = {
     'Navigating Ethiopia’s business environment can involve complex administrative procedures, multiple government institutions, and fragmented service systems. These challenges can create additional time, coordination, and resource demands for businesses, particularly international investors unfamiliar with the local environment.',
     'Ruxin addresses these challenges through an integrated, one-stop service approach, bringing together essential business support services under one roof. From investment consulting and government liaison to logistics and customs clearance, financial services, recruitment, and legal support, we help clients coordinate their business needs through a single, reliable partner.',
   ],
-  image: '/profile/about.jpg',
+  image: '/profile/about-meeting.jpg',
   visionImage: '/profile/vision.jpg',
   vision: {
     title: 'Vision',
@@ -165,7 +166,7 @@ export const whyChoose = {
   eyebrow: 'Why choose us',
   headline: ['A local partner', 'for the whole journey.'],
   body: 'From investment registration to ongoing compliance, we support you at every stage of doing business in Ethiopia.',
-  image: '/profile/clients.jpg',
+  image: '/profile/why-banner.jpg',
   items: [
     {
       title: 'Local expertise',

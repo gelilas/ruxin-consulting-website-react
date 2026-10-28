@@ -32,7 +32,7 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const palette = { red: '171, 38, 28', ink: '#1c1210' }
+    const palette = { red: '171, 38, 28', ink: '#4b0b10' }
     const readPalette = () => {
       const style = getComputedStyle(document.documentElement)
       const hex = style.getPropertyValue('--brand-bright-red').trim().replace('#', '')
@@ -131,7 +131,7 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
       const pathness = clamp(1 - Math.abs(phase - 1) * 1.6)
       const alive = reduce ? 0 : ease((t - 3.2) / 1.5)
       const inkHex = palette.ink.replace('#', '')
-      const inkN = /^[0-9a-fA-F]{6}$/.test(inkHex) ? parseInt(inkHex, 16) : 0x1c1916
+      const inkN = /^[0-9a-fA-F]{6}$/.test(inkHex) ? parseInt(inkHex, 16) : 0x4b0b10
       const inkRgb = `${(inkN >> 16) & 255}, ${(inkN >> 8) & 255}, ${inkN & 255}`
       const line = (alpha: number) =>
         onLight ? `rgba(${inkRgb}, ${Math.min(1, alpha * 2.4)})` : `rgba(255, 255, 255, ${alpha})`

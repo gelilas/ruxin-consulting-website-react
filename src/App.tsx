@@ -2,10 +2,12 @@ import { Cursor } from '@/components/motion/cursor'
 import { Navbar } from '@/components/site/navbar'
 import { Story } from '@/components/site/story'
 import { ServicesSection } from '@/components/services/services-section'
+import { InvestmentIntelligence } from '@/components/site/investment-intelligence'
 import { Clients, WhyChoose } from '@/components/site/clients'
+import { Team } from '@/components/site/team'
 import { Contact } from '@/components/site/contact'
 import { Footer } from '@/components/site/footer'
-import { Assistant } from '@/components/site/assistant'
+// import { Assistant } from '@/components/site/assistant'
 
 export default function App() {
   return (
@@ -21,12 +23,15 @@ export default function App() {
       <main id="main">
         <Story />
         <ServicesSection />
+        <InvestmentIntelligence />
         <WhyChoose />
+        <Team />
         <Clients />
         <Contact />
       </main>
       <Footer />
-      <Assistant />
+      {/* Chatbot paused until the client-support workflow is ready. */}
+      {/* <Assistant /> */}
     </>
   )
 }

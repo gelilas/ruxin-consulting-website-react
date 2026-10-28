@@ -8,23 +8,10 @@ import { useSiteContent } from '@/lib/site-content'
 import { cn } from '@/lib/utils'
 import { ConnectionNetwork } from '@/components/network/connection-network'
 import { EASE, Eyebrow, Magnetic, Reveal, SplitHeading } from '@/components/motion/primitives'
-/** Hero → About → Services intro share one sticky, evolving network canvas. */
+/** Hero, About, and Services intro share the same visual language without a persistent canvas animation. */
 export function Story() {
   return (
     <div id="top" className="relative bg-paper text-ink">
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="sticky top-0 h-svh overflow-hidden">
-          <motion.div
-            className="absolute inset-0 grid-fine-dark [mask-image:radial-gradient(ellipse_at_70%_50%,black_20%,transparent_75%)]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, ease: 'easeOut' }}
-          />
-          <div className="absolute inset-0 opacity-40 lg:opacity-100">
-            <ConnectionNetwork onLight />
-          </div>
-        </div>
-      </div>
       <Hero />
       <About />
       <Values />
@@ -42,15 +29,23 @@ function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
 
   return (
-    <section ref={ref} aria-labelledby="hero-heading" className="relative flex min-h-svh items-end lg:items-center">
-      <motion.div style={{ y, opacity }} className="relative mx-auto w-full max-w-[1440px] px-5 pb-20 pt-[48svh] md:px-10 lg:pb-0 lg:pt-0">
+    <section ref={ref} aria-labelledby="hero-heading" className="relative flex min-h-svh items-end overflow-hidden bg-ruxin text-white lg:items-center">
+      <img
+        src={mediaUrl(hero.image)}
+        alt="Ruxin consultants working together"
+        className="absolute inset-0 size-full object-cover grayscale opacity-75"
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-ruxin/55 via-ruxin/20 to-ruxin/5" aria-hidden="true" />
+      <motion.div style={{ y, opacity }} className="relative z-10 mx-auto w-full max-w-[1440px] px-5 pb-20 pt-[48svh] md:px-10 lg:pb-0 lg:pt-0">
         <div className="max-w-2xl xl:max-w-3xl">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: EASE, delay: 0.5 }}
           >
-            <Eyebrow dark>{hero.eyebrow}</Eyebrow>
+            <Eyebrow dark className="text-white/80">
+              {hero.eyebrow}
+            </Eyebrow>
           </motion.div>
           <SplitHeading
             as="h1"
@@ -59,14 +54,14 @@ function Hero() {
             delay={0.7}
             lines={hero.headline}
             accentLast
-            accentClassName="text-ruxin"
-            className="mt-7 text-balance text-[clamp(2.6rem,6.4vw,6rem)] font-semibold leading-[0.98] tracking-[-0.035em]"
+            accentClassName="text-white/85"
+            className="mt-7 text-balance text-[clamp(2.6rem,6.4vw,6rem)] font-semibold leading-[0.98] tracking-[-0.035em] text-white"
           />
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: EASE, delay: 1.3 }}
-            className="mt-8 max-w-xl text-pretty text-base leading-relaxed text-ink/65 md:text-lg"
+            className="mt-8 max-w-xl text-pretty text-base leading-relaxed text-white/80 md:text-lg"
           >
             {hero.body}
           </motion.p>
@@ -79,7 +74,7 @@ function Hero() {
             <Magnetic>
               <a
                 href={hero.primaryCta.href}
-                className="group inline-flex h-13 w-full items-center justify-center gap-3 rounded-full bg-ruxin px-7 text-sm font-medium text-white transition-colors hover:bg-ruxin-bright sm:w-auto"
+                className="group inline-flex h-13 w-full items-center justify-center gap-3 rounded-full bg-white px-7 text-sm font-medium text-ruxin transition-colors hover:bg-cream sm:w-auto"
               >
                 {hero.primaryCta.label}
                 <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
@@ -88,7 +83,7 @@ function Hero() {
             <Magnetic>
               <a
                 href={hero.secondaryCta.href}
-                className="group inline-flex h-13 w-full items-center justify-center gap-3 rounded-full border border-ruxin px-7 text-sm font-medium text-ruxin transition-colors hover:bg-ruxin hover:text-white sm:w-auto"
+                className="group inline-flex h-13 w-full items-center justify-center gap-3 rounded-full border border-white/70 px-7 text-sm font-medium text-white transition-colors hover:bg-white hover:text-ruxin sm:w-auto"
               >
                 {hero.secondaryCta.label}
                 <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
@@ -103,7 +98,7 @@ function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 3.4, duration: 1 }}
-        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-ink/65 transition-colors hover:text-ink lg:flex"
+        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-white/75 transition-colors hover:text-white lg:flex"
       >
         Scroll
         <ArrowDown className="size-3.5 motion-safe:animate-bounce" aria-hidden="true" />
@@ -116,44 +111,54 @@ function About() {
   const { about } = useSiteContent()
   return (
     <section id="about" aria-labelledby="about-heading" className="relative isolate bg-cream">
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="sticky top-0 h-svh overflow-hidden">
-          <ConnectionNetwork onLight />
-        </div>
-      </div>
       <div className="relative z-10 mx-auto max-w-[1440px] px-5 py-28 text-ink md:px-10 md:py-36">
-        <div className="max-w-xl lg:max-w-[34rem]">
-          <Reveal>
-            <Eyebrow>{about.eyebrow}</Eyebrow>
+        <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="max-w-xl lg:col-span-6 lg:max-w-[34rem]">
+            <Reveal>
+              <Eyebrow>{about.eyebrow}</Eyebrow>
+            </Reveal>
+            <SplitHeading
+              id="about-heading"
+              lines={about.headline}
+              accentLast
+              accentClassName="text-ruxin"
+              className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
+            />
+            <Reveal delay={0.2}>
+              <p className="mt-8 text-pretty text-base leading-relaxed text-ink/65 md:text-lg">{about.body}</p>
+            </Reveal>
+            <Reveal delay={0.25}>
+              <div className="mt-8 space-y-4 text-pretty text-sm leading-relaxed text-ink/60 md:text-base">
+                {about.paragraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
+            </Reveal>
+            <Reveal delay={0.3}>
+              <ol className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-ink/70">
+                {about.stages.map((s, i) => (
+                  <li key={s} className="flex items-center gap-3">
+                    <span className={i === about.stages.length - 1 ? 'text-ruxin' : ''}>{s}</span>
+                    {i < about.stages.length - 1 && <ArrowRight className="size-3" aria-hidden="true" />}
+                  </li>
+                ))}
+              </ol>
+            </Reveal>
+            <PurposeToggle />
+          </div>
+          <Reveal delay={0.15} className="lg:col-span-5 lg:col-start-8 lg:pt-12">
+            <figure className="overflow-hidden rounded-[1.75rem] border-t-8 border-ruxin bg-white shadow-[0_28px_60px_-36px_rgba(130,7,16,0.45)]">
+              <img
+                src={mediaUrl(about.image)}
+                alt="Business consultants collaborating around a table"
+                className="aspect-[4/5] w-full object-cover"
+              />
+              <figcaption className="flex items-center justify-between gap-4 px-5 py-4 text-xs uppercase tracking-[0.16em] text-ruxin">
+                <span>One trusted partner</span>
+                <span>01 / 03</span>
+              </figcaption>
+            </figure>
           </Reveal>
-          <SplitHeading
-            id="about-heading"
-            lines={about.headline}
-            accentLast
-            accentClassName="text-ruxin"
-            className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
-          />
-          <Reveal delay={0.2}>
-            <p className="mt-8 text-pretty text-base leading-relaxed text-ink/65 md:text-lg">{about.body}</p>
-          </Reveal>
-          <Reveal delay={0.25}>
-            <div className="mt-8 space-y-4 text-pretty text-sm leading-relaxed text-ink/60 md:text-base">
-              {about.paragraphs.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-            </div>
-          </Reveal>
-          <Reveal delay={0.3}>
-            <ol className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-ink/70">
-              {about.stages.map((s, i) => (
-                <li key={s} className="flex items-center gap-3">
-                  <span className={i === about.stages.length - 1 ? 'text-ruxin' : ''}>{s}</span>
-                  {i < about.stages.length - 1 && <ArrowRight className="size-3" aria-hidden="true" />}
-                </li>
-              ))}
-            </ol>
-          </Reveal>
-          <PurposeToggle />
         </div>
       </div>
     </section>
@@ -238,8 +243,11 @@ function Values() {
   ].filter((photo) => photo.src)
 
   return (
-    <section aria-labelledby="values-heading" className="relative">
-      <div className="mx-auto max-w-[1440px] px-5 py-28 md:px-10">
+    <section aria-labelledby="values-heading" className="relative isolate overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 opacity-25 lg:opacity-45" aria-hidden="true">
+        <ConnectionNetwork onLight />
+      </div>
+      <div className="relative z-10 mx-auto max-w-[1440px] px-5 py-28 md:px-10">
         <div className="max-w-xl lg:max-w-[34rem]">
           <Reveal>
             <Eyebrow>Our core values</Eyebrow>
@@ -303,7 +311,7 @@ function CollagePhoto({
   return (
     <motion.li
       style={{ y }}
-      className={cn('self-start overflow-hidden rounded-[1.6rem] shadow-[0_24px_50px_-28px_rgba(26,18,20,0.55)]', photo.frame)}
+      className={cn('self-start overflow-hidden rounded-[1.6rem] shadow-[0_24px_50px_-28px_rgba(130,7,16,0.34)]', photo.frame)}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, margin: '-10% 0px' }}
@@ -326,8 +334,11 @@ function CollagePhoto({
 function ServicesIntro() {
   const { services } = useSiteContent()
   return (
-    <section id="services-intro" aria-labelledby="services-heading" className="relative">
-      <div className="mx-auto flex min-h-[110svh] max-w-[1440px] flex-col justify-center px-5 py-28 md:px-10">
+    <section id="services-intro" aria-labelledby="services-heading" className="relative isolate overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 opacity-25 lg:opacity-45" aria-hidden="true">
+        <ConnectionNetwork onLight />
+      </div>
+      <div className="relative z-10 mx-auto flex min-h-[110svh] max-w-[1440px] flex-col justify-center px-5 py-28 md:px-10">
         <div className="max-w-xl">
           <Reveal>
             <Eyebrow dark>Our services</Eyebrow>

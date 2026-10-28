@@ -162,7 +162,7 @@ export function Assistant() {
             <div ref={listRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-4" aria-live="polite">
               {showSuggestions && (
                 <>
-                  <div className="rounded-2xl border border-ink/10 bg-white px-4 py-3 text-sm leading-relaxed text-ink/80 shadow-[0_4px_12px_rgba(26,18,20,0.04)]">
+                  <div className="rounded-2xl border border-ink/10 bg-white px-4 py-3 text-sm leading-relaxed text-ink/80 shadow-[0_4px_12px_rgba(130,7,16,0.06)]">
                     <span className="mr-1.5 font-semibold text-emerald-600" aria-hidden="true">
                       ●
                     </span>
@@ -193,7 +193,7 @@ export function Assistant() {
                 >
                   <div
                     className={cn(
-                      'max-w-[88%] rounded-2xl border px-4 py-3 text-sm leading-relaxed shadow-[0_4px_12px_rgba(26,18,20,0.04)]',
+                      'max-w-[88%] rounded-2xl border px-4 py-3 text-sm leading-relaxed shadow-[0_4px_12px_rgba(130,7,16,0.06)]',
                       m.role === 'user'
                         ? 'rounded-br-md border-transparent bg-ruxin text-white'
                         : 'rounded-bl-md border-ink/10 bg-white text-ink/85',

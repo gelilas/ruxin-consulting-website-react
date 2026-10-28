@@ -6,6 +6,7 @@ import { Logo } from './navbar'
 const companyLinks = [
   { label: 'About', href: '#about' },
   { label: 'Why us', href: '#why' },
+  { label: 'Our team', href: '#team' },
   { label: 'Clients', href: '#clients' },
   { label: 'Contact', href: '#contact' },
 ]

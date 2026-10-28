@@ -213,6 +213,28 @@ export function Contact() {
             </AnimatePresence>
           </Reveal>
         </div>
+
+        <Reveal delay={0.2} className="mt-16 border-t border-white/20 pt-8 md:mt-24">
+          <div className="grid gap-6 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:items-end">
+            <div>
+              <Eyebrow dark mark="white" className="text-white/70">
+                Find us in Addis Ababa
+              </Eyebrow>
+              <p className="mt-4 max-w-md text-sm leading-relaxed text-white/70">
+                Visit our office at Fuad Building, Office 301, Bole Rwanda, Addis Ababa.
+              </p>
+            </div>
+            <div className="overflow-hidden border border-white/25 bg-white/10">
+              <iframe
+                title="Ruxin Consulting location in Bole Rwanda, Addis Ababa"
+                src="https://www.google.com/maps?q=Fuad+Building+Bole+Rwanda+Addis+Ababa&output=embed"
+                className="h-64 w-full border-0 grayscale-[20%] md:h-80"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   )

@@ -259,7 +259,7 @@ export function ServicesSection() {
                   }}
                   aria-pressed={lifted}
                   aria-label={lifted ? `Show the full ${service.name} image` : `Look closer at ${service.name}`}
-                  className="relative block aspect-[4/3] w-full cursor-pointer touch-pan-y overflow-hidden rounded-[1.75rem] border-2 border-ruxin bg-white text-left shadow-[0_28px_60px_-32px_rgba(26,18,20,0.55)]"
+                  className="relative block aspect-[4/3] w-full cursor-pointer touch-pan-y overflow-hidden rounded-[1.75rem] border-2 border-ruxin bg-white text-left shadow-[0_28px_60px_-32px_rgba(130,7,16,0.32)]"
                 >
                   <CornerTicks />
                   <AnimatePresence mode="popLayout" initial={false}>
