@@ -5,12 +5,14 @@ import { ArrowRight, ArrowUpRight, Briefcase, Clock, MapPin, X } from 'lucide-re
 import { useEffect, useRef, useState } from 'react'
 import { careers as careersShape } from '@/lib/content'
 import { useSiteContent } from '@/lib/site-content'
+import { useUiCopy } from '@/lib/ui-copy'
 import { EASE, Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
 
 type Job = (typeof careersShape.jobs)[number]
 
 export function Careers() {
   const { careers } = useSiteContent()
+  const copy = useUiCopy()
   const [job, setJob] = useState<Job | null>(null)
   const lastTrigger = useRef<HTMLButtonElement | null>(null)
 
@@ -21,11 +23,11 @@ export function Careers() {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <Reveal>
-              <Eyebrow dark>Careers</Eyebrow>
+              <Eyebrow dark>{copy.careers}</Eyebrow>
             </Reveal>
             <SplitHeading
               id="careers-heading"
-              lines={['Build your future', 'with us.']}
+              lines={[careers.headline]}
               accentLast
               className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
             />
@@ -47,8 +49,8 @@ export function Careers() {
           <div className="lg:col-span-7">
             <Reveal>
               <p className="flex items-center justify-between border-b border-ink/10 pb-4 font-mono text-[11px] uppercase tracking-[0.2em] text-ink/65">
-                <span>Open positions</span>
-                <span>{String(careers.jobs.length).padStart(2, '0')} roles</span>
+                <span>{copy.openPositions}</span>
+                <span>{String(careers.jobs.length).padStart(2, '0')} {copy.roles}</span>
               </p>
             </Reveal>
             <ul>
@@ -107,6 +109,7 @@ export function Careers() {
 
 function JobDrawer({ job, onClose }: { job: Job | null; onClose: () => void }) {
   const { careers } = useSiteContent()
+  const copy = useUiCopy()
   const panelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -166,7 +169,7 @@ function JobDrawer({ job, onClose }: { job: Job | null; onClose: () => void }) {
                 type="button"
                 onClick={onClose}
                 className="flex size-10 items-center justify-center rounded-full border border-ink/12 transition-colors hover:bg-ink hover:text-white"
-                aria-label="Close job details"
+                aria-label={copy.close}
               >
                 <X className="size-4" />
               </button>
@@ -188,16 +191,16 @@ function JobDrawer({ job, onClose }: { job: Job | null; onClose: () => void }) {
                 ))}
               </div>
               <p className="mt-8 text-pretty leading-relaxed text-ink/70">{job.description}</p>
-              <DrawerList title="Responsibilities" items={job.responsibilities} />
-              <DrawerList title="Requirements" items={job.requirements} />
-              <DrawerList title="Benefits" items={careers.benefits} />
+              <DrawerList title={copy.responsibilities} items={job.responsibilities} />
+              <DrawerList title={copy.requirements} items={job.requirements} />
+              <DrawerList title={copy.benefits} items={careers.benefits} />
             </div>
             <div className="sticky bottom-0 border-t border-ink/8 bg-cream px-6 py-5 md:px-10">
               <a
                 href={`mailto:careers@ruxinconsulting.com?subject=${encodeURIComponent(`Application: ${job.title}`)}`}
                 className="group flex h-14 w-full items-center justify-center gap-2 rounded-full bg-ruxin text-sm font-medium text-white transition-colors hover:bg-ruxin-bright"
               >
-                Apply for this role
+                {copy.apply}
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
               </a>
             </div>

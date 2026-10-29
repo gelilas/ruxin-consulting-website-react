@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { useSiteContent } from '@/lib/site-content'
+import { useUiCopy } from '@/lib/ui-copy'
 import { cn } from '@/lib/utils'
 import { EASE } from '@/components/motion/primitives'
 
@@ -18,6 +19,7 @@ const companyLogos: Record<string, string> = {
 
 export function Testimonials() {
   const { testimonials } = useSiteContent()
+  const copy = useUiCopy()
   const [index, setIndex] = useState(0)
   const [direction, setDirection] = useState(1)
   const [paused, setPaused] = useState(false)
@@ -43,7 +45,7 @@ export function Testimonials() {
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
-      <section aria-roledescription="carousel" aria-label="Client testimonials" className="grid grid-cols-1 gap-10 lg:grid-cols-12">
+      <section aria-roledescription="carousel" aria-label={copy.testimonialsLabel} className="grid grid-cols-1 gap-10 lg:grid-cols-12">
         <div className="flex flex-col justify-between gap-8 lg:col-span-3">
           <div>
             <AnimatePresence mode="wait" initial={false}>
@@ -62,7 +64,7 @@ export function Testimonials() {
                 <p className="mt-5 text-lg font-semibold tracking-[0.2em] text-ink">{t.mark}</p>
               </motion.div>
             </AnimatePresence>
-            <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.22em] text-neutral-500">Testimonials</p>
+            <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.22em] text-neutral-500">{copy.testimonialsLabel}</p>
             <p className="mt-3 font-mono text-sm text-ink" aria-live="polite">
               <span className="font-semibold">{String(index + 1).padStart(2, '0')}</span>
               <span className="text-ink/65"> / {String(testimonials.length).padStart(2, '0')}</span>
@@ -73,7 +75,7 @@ export function Testimonials() {
               type="button"
               onClick={() => go(-1)}
               className="flex size-12 items-center justify-center rounded-full border border-ink/15 transition-colors hover:border-ink hover:bg-ink hover:text-white"
-              aria-label="Previous testimonial"
+              aria-label={copy.previous}
             >
               <ArrowLeft className="size-4" />
             </button>
@@ -81,7 +83,7 @@ export function Testimonials() {
               type="button"
               onClick={() => go(1)}
               className="flex size-12 items-center justify-center rounded-full border border-ink/15 transition-colors hover:border-ink hover:bg-ink hover:text-white"
-              aria-label="Next testimonial"
+              aria-label={copy.next}
             >
               <ArrowRight className="size-4" />
             </button>
@@ -135,14 +137,14 @@ export function Testimonials() {
             </AnimatePresence>
           </div>
 
-          <div className="mt-8 flex gap-2" role="tablist" aria-label="Select testimonial">
+          <div className="mt-8 flex gap-2" role="tablist" aria-label={copy.selectTestimonial}>
             {testimonials.map((_, i) => (
               <button
                 key={i}
                 type="button"
                 role="tab"
                 aria-selected={i === index}
-                aria-label={`Show testimonial ${i + 1}`}
+                aria-label={`${copy.selectTestimonial} ${i + 1}`}
                 onClick={() => go(i - index || 0)}
                 className="relative h-8 flex-1"
               >

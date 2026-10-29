@@ -1,15 +1,8 @@
 import { ArrowUp } from 'lucide-react'
 import { useSiteContent } from '@/lib/site-content'
+import { useUiCopy } from '@/lib/ui-copy'
 import { LogoMark } from '@/components/site/logo'
 import { Logo } from './navbar'
-
-const companyLinks = [
-  { label: 'About', href: '#about' },
-  { label: 'Why us', href: '#why' },
-  { label: 'Our team', href: '#team' },
-  { label: 'Clients', href: '#clients' },
-  { label: 'Contact', href: '#contact' },
-]
 
 function Column({
   title,
@@ -40,7 +33,9 @@ function Column({
 }
 
 export function Footer() {
-  const { company, services } = useSiteContent()
+  const { company, navLinks, services } = useSiteContent()
+  const copy = useUiCopy()
+  const companyLinks = navLinks.filter((link) => link.href !== '#services')
   return (
     <footer className="relative border-t-[3px] border-ruxin bg-paper text-ink">
       <div className="mx-auto max-w-[1440px] px-5 pb-10 pt-20 md:px-10">
@@ -53,14 +48,14 @@ export function Footer() {
             </a>
           </div>
           <div className="md:col-span-2">
-            <Column title="Company" links={companyLinks} />
+            <Column title={copy.company} links={companyLinks} />
           </div>
           <div className="md:col-span-2">
-            <Column title="Services" links={services.map((s) => ({ label: s.name, href: '#services' }))} />
+            <Column title={copy.services} links={services.map((s) => ({ label: s.name, href: '#services' }))} />
           </div>
           {company.socials.length > 0 && (
             <div className="md:col-span-2 md:col-start-11">
-              <Column title="Connect" links={company.socials.map((s) => ({ ...s, external: true }))} />
+              <Column title={copy.connect} links={company.socials.map((s) => ({ ...s, external: true }))} />
             </div>
           )}
         </div>
@@ -72,7 +67,7 @@ export function Footer() {
         <div className="mt-6 flex flex-col-reverse items-start justify-between gap-6 border-t border-ink/10 pt-8 text-xs text-ink/65 md:flex-row md:items-center">
           <p>{'© 2026 Ruxin Consulting. All rights reserved.'}</p>
           <a href="#top" className="group inline-flex items-center gap-2 transition-colors hover:text-ruxin">
-            Back to top
+            {copy.backToTop}
             <ArrowUp className="size-3.5 transition-transform group-hover:-translate-y-0.5" aria-hidden="true" />
           </a>
         </div>

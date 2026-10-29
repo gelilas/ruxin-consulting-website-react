@@ -7,6 +7,7 @@ import { Clients, WhyChoose } from '@/components/site/clients'
 import { Team } from '@/components/site/team'
 import { Contact } from '@/components/site/contact'
 import { Footer } from '@/components/site/footer'
+import { AnalyticsTracker } from '@/lib/analytics'
 // import { Assistant } from '@/components/site/assistant'
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      <AnalyticsTracker />
       {/* Chatbot paused until the client-support workflow is ready. */}
       {/* <Assistant /> */}
     </>

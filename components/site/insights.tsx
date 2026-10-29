@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { insights as insightShape } from '@/lib/content'
 import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
+import { useUiCopy } from '@/lib/ui-copy'
 import { cn } from '@/lib/utils'
 import { EASE, Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
 
@@ -22,9 +23,10 @@ function Meta({ item, light = false }: { item: Insight; light?: boolean }) {
 }
 
 function ReadMore({ light = false }: { light?: boolean }) {
+  const copy = useUiCopy()
   return (
     <span className={cn('inline-flex items-center gap-2 text-sm font-medium', light ? 'text-white' : 'text-ink')}>
-      Read more
+      {copy.readMore}
       <ArrowUpRight className="size-4 text-ruxin transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
     </span>
   )
@@ -83,8 +85,10 @@ function SideArticle({ item }: { item: Insight }) {
 
 export function Insights() {
   const { insightCategories, insights } = useSiteContent()
-  const [category, setCategory] = useState('All')
-  const filtered = category === 'All' ? insights : insights.filter((i) => i.category === category)
+  const copy = useUiCopy()
+  const [category, setCategory] = useState('')
+  const selectedCategory = insightCategories.includes(category) ? category : insightCategories[0]
+  const filtered = selectedCategory === insightCategories[0] ? insights : insights.filter((i) => i.category === selectedCategory)
   const [feature, ...rest] = filtered
 
   return (
@@ -93,27 +97,27 @@ export function Insights() {
         <div className="grid grid-cols-1 items-end gap-8 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <Reveal>
-              <Eyebrow>Insights &amp; Updates</Eyebrow>
+              <Eyebrow>{copy.insights}</Eyebrow>
             </Reveal>
             <SplitHeading
               id="insights-heading"
-              lines={['Ideas that move', 'business forward.']}
+              lines={copy.insightsHeadline}
               accentLast
               accentClassName="text-ink/65"
               className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
             />
           </div>
           <Reveal delay={0.1} className="lg:col-span-5">
-            <div role="group" aria-label="Filter insights by category" className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 lg:mx-0 lg:flex-wrap lg:justify-end lg:px-0">
+            <div role="group" aria-label={copy.filterInsights} className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 lg:mx-0 lg:flex-wrap lg:justify-end lg:px-0">
               {insightCategories.map((c) => (
                 <button
                   key={c}
                   type="button"
                   onClick={() => setCategory(c)}
-                  aria-pressed={category === c}
+                  aria-pressed={selectedCategory === c}
                   className={cn(
                     'relative shrink-0 rounded-full border px-4 py-2 text-xs transition-colors',
-                    category === c ? 'border-ruxin bg-ruxin text-white' : 'border-ink/15 text-ink/70 hover:border-ruxin/40',
+                    selectedCategory === c ? 'border-ruxin bg-ruxin text-white' : 'border-ink/15 text-ink/70 hover:border-ruxin/40',
                   )}
                 >
                   {c}
@@ -125,7 +129,7 @@ export function Insights() {
 
         <AnimatePresence mode="wait">
           <motion.div
-            key={category}
+            key={selectedCategory}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -139,7 +143,7 @@ export function Insights() {
             )}
             {rest.length > 0 && (
               <div className="lg:col-span-5">
-                <p className="border-b border-ink/10 pb-4 font-mono text-[11px] uppercase tracking-[0.2em] text-ink/65">Latest</p>
+                <p className="border-b border-ink/10 pb-4 font-mono text-[11px] uppercase tracking-[0.2em] text-ink/65">{copy.latest}</p>
                 {rest.slice(0, 4).map((item) => (
                   <SideArticle key={item.id} item={item} />
                 ))}

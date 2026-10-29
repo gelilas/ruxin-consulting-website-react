@@ -9,6 +9,7 @@ export const company = {
   email: 'ruxinconsulting@gmail.com',
   phone: '+251 988 987 777',
   location: 'Bole Rwanda, Fuad Building, Office no. 301, Addis Ababa',
+  mapEmbedUrl: 'https://www.google.com/maps?q=Fuad+Building+Bole+Rwanda+Addis+Ababa&output=embed',
   website: 'https://www.ruxinconsulting.com',
   socials: [] as { label: string; href: string }[],
 }
@@ -193,6 +194,23 @@ export const whyChoose = {
       body: 'With a multilingual team, we connect international investors with the local market through effective communication and coordination.',
       image: '/profile/why-culture.jpg',
     },
+  ],
+}
+
+export const investmentIntelligence = {
+  eyebrow: 'Investment intelligence',
+  headline: ['Make decisions', 'with a clearer view.'],
+  body: 'Ruxin can turn the moving parts of an investment journey into a simple decision view — helping leadership see what is ready, what is at risk, and what needs attention next.',
+  image: '/profile/investment-intelligence.jpg',
+  imageAlt: 'Business partners reviewing financial reports and growth plans',
+  ctaLabel: 'Build an investor dashboard with us',
+  ctaHref: '#contact',
+  frameworkLabel: 'Illustrative framework',
+  frameworkBody: 'A dashboard built around the decisions your business actually needs to make.',
+  lenses: [
+    { label: 'Market entry readiness', body: 'Track registrations, licenses, regulatory actions, and the next steps needed to establish in Ethiopia.' },
+    { label: 'Operating performance', body: 'Bring reporting, compliance, customs, and administrative milestones into one clear operating view.' },
+    { label: 'Growth visibility', body: 'Turn finance, people, and expansion priorities into a practical roadmap for the next decision.' },
   ],
 }
 

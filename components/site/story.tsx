@@ -5,10 +5,11 @@ import { ArrowDown, ArrowRight } from 'lucide-react'
 import { useRef, useState, type KeyboardEvent } from 'react'
 import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
+import { useUiCopy } from '@/lib/ui-copy'
 import { cn } from '@/lib/utils'
 import { ConnectionNetwork } from '@/components/network/connection-network'
 import { EASE, Eyebrow, Magnetic, Reveal, SplitHeading } from '@/components/motion/primitives'
-/** Hero, About, and Services intro share the same visual language without a persistent canvas animation. */
+/** Core Values uses the former hero network as a static visual; Services uses static imagery. */
 export function Story() {
   return (
     <div id="top" className="relative bg-paper text-ink">
@@ -22,6 +23,7 @@ export function Story() {
 
 function Hero() {
   const { hero } = useSiteContent()
+  const copy = useUiCopy()
   const ref = useRef<HTMLElement>(null)
   const reduce = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
@@ -29,7 +31,7 @@ function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
 
   return (
-    <section ref={ref} aria-labelledby="hero-heading" className="relative flex min-h-svh items-end overflow-hidden bg-ruxin text-white lg:items-center">
+    <section id="hero" ref={ref} aria-labelledby="hero-heading" className="relative flex min-h-svh items-end overflow-hidden bg-ruxin text-white lg:items-center">
       <img
         src={mediaUrl(hero.image)}
         alt="Ruxin consultants working together"
@@ -74,6 +76,7 @@ function Hero() {
             <Magnetic>
               <a
                 href={hero.primaryCta.href}
+                data-analytics-location="hero"
                 className="group inline-flex h-13 w-full items-center justify-center gap-3 rounded-full bg-white px-7 text-sm font-medium text-ruxin transition-colors hover:bg-cream sm:w-auto"
               >
                 {hero.primaryCta.label}
@@ -83,6 +86,7 @@ function Hero() {
             <Magnetic>
               <a
                 href={hero.secondaryCta.href}
+                data-analytics-location="hero"
                 className="group inline-flex h-13 w-full items-center justify-center gap-3 rounded-full border border-white/70 px-7 text-sm font-medium text-white transition-colors hover:bg-white hover:text-ruxin sm:w-auto"
               >
                 {hero.secondaryCta.label}
@@ -100,7 +104,7 @@ function Hero() {
         transition={{ delay: 3.4, duration: 1 }}
         className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-white/75 transition-colors hover:text-white lg:flex"
       >
-        Scroll
+        {copy.scroll}
         <ArrowDown className="size-3.5 motion-safe:animate-bounce" aria-hidden="true" />
       </motion.a>
     </section>
@@ -235,6 +239,7 @@ function PurposeToggle() {
 
 function Values() {
   const { about, hero } = useSiteContent()
+  const copy = useUiCopy()
   const photos = [
     { src: mediaUrl(hero.image), alt: 'Ruxin consultants working together', frame: 'col-span-7', aspect: 'aspect-[4/3]', shift: [18, -14] as const },
     { src: mediaUrl(about.image), alt: 'A Ruxin consultant at work', frame: 'col-span-5 mt-6', aspect: 'aspect-[3/4]', shift: [28, -8] as const },
@@ -243,18 +248,18 @@ function Values() {
   ].filter((photo) => photo.src)
 
   return (
-    <section aria-labelledby="values-heading" className="relative isolate overflow-hidden">
+    <section id="values" aria-labelledby="values-heading" className="relative isolate overflow-hidden">
       <div className="pointer-events-none absolute inset-0 opacity-25 lg:opacity-45" aria-hidden="true">
-        <ConnectionNetwork onLight />
+        <ConnectionNetwork onLight static />
       </div>
       <div className="relative z-10 mx-auto max-w-[1440px] px-5 py-28 md:px-10">
         <div className="max-w-xl lg:max-w-[34rem]">
           <Reveal>
-            <Eyebrow>Our core values</Eyebrow>
+            <Eyebrow>{copy.coreValues}</Eyebrow>
           </Reveal>
           <SplitHeading
             id="values-heading"
-            lines={['How we work', 'with every client.']}
+            lines={copy.howWeWork}
             accentLast
             accentClassName="text-ruxin"
             className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
@@ -333,51 +338,67 @@ function CollagePhoto({
 
 function ServicesIntro() {
   const { services } = useSiteContent()
+  const copy = useUiCopy()
   return (
     <section id="services-intro" aria-labelledby="services-heading" className="relative isolate overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 opacity-25 lg:opacity-45" aria-hidden="true">
-        <ConnectionNetwork onLight />
-      </div>
       <div className="relative z-10 mx-auto flex min-h-[110svh] max-w-[1440px] flex-col justify-center px-5 py-28 md:px-10">
-        <div className="max-w-xl">
-          <Reveal>
-            <Eyebrow dark>Our services</Eyebrow>
-          </Reveal>
-          <SplitHeading
-            id="services-heading"
-            lines={['Essential support,', 'under one roof.']}
-            accentLast
-            accentClassName="text-ruxin"
-            className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
-          />
-          <Reveal delay={0.2}>
-            <p className="mt-8 text-lg text-ink/65 md:text-xl">
-              Five services. <span className="text-ink">One reliable partner.</span>
-            </p>
-          </Reveal>
-          <Reveal delay={0.3}>
-            <ul className="mt-12 flex flex-col border-t border-ink/10">
-              {services.map((s) => (
-                <li key={s.id}>
-                  <a
-                    href="#services"
-                    onClick={() => window.dispatchEvent(new CustomEvent('ruxin:service', { detail: s.id }))}
-                    className="group flex items-center justify-between border-b border-ink/10 py-4 text-sm text-ink/70 transition-colors hover:text-ink"
-                  >
-                    <span className="flex items-center gap-5">
-                      <span className="flex size-7 items-center justify-center bg-ruxin font-mono text-[10px] text-white">
-                        {s.number}
+        <div className="grid w-full gap-14 lg:grid-cols-12 lg:items-center lg:gap-16">
+          <div className="max-w-xl lg:col-span-6">
+            <Reveal>
+              <Eyebrow dark>{copy.services}</Eyebrow>
+            </Reveal>
+            <SplitHeading
+              id="services-heading"
+              lines={copy.essentialSupport}
+              accentLast
+              accentClassName="text-ruxin"
+              className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
+            />
+            <Reveal delay={0.2}>
+              <p className="mt-8 text-lg text-ink/65 md:text-xl">
+                {copy.servicesLead}
+              </p>
+            </Reveal>
+            <Reveal delay={0.3}>
+              <ul className="mt-12 flex flex-col border-t border-ink/10">
+                {services.map((s) => (
+                  <li key={s.id}>
+                    <a
+                      href="#services"
+                      onClick={() => window.dispatchEvent(new CustomEvent('ruxin:service', { detail: s.id }))}
+                      className="group flex items-center justify-between border-b border-ink/10 py-4 text-sm text-ink/70 transition-colors hover:text-ink"
+                    >
+                      <span className="flex items-center gap-5">
+                        <span className="flex size-7 items-center justify-center bg-ruxin font-mono text-[10px] text-white">
+                          {s.number}
+                        </span>
+                        {s.name}
                       </span>
-                      {s.name}
-                    </span>
-                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink/35">
-                      {s.concept.join(' → ')}
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink/35">
+                        {s.concept.join(' → ')}
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          </div>
+          <div className="grid grid-cols-2 gap-3 lg:col-span-5 lg:col-start-8">
+            {services.map((service, index) => (
+              <Reveal key={service.id} delay={index * 0.05} className={index === 0 ? 'col-span-2' : ''}>
+                <figure className="group relative overflow-hidden border-2 border-ruxin bg-ruxin">
+                  <img
+                    src={mediaUrl(service.image)}
+                    alt={`${service.name} in practice`}
+                    className={cn('w-full object-cover grayscale transition-[filter,transform] duration-700 group-hover:scale-105 group-hover:grayscale-0', index === 0 ? 'aspect-[16/8]' : 'aspect-[4/3]')}
+                  />
+                  <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ruxin/90 to-transparent px-4 pb-3 pt-8 text-xs font-medium uppercase tracking-[0.14em] text-white">
+                    {service.name}
+                  </figcaption>
+                </figure>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </div>
     </section>

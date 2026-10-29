@@ -3,6 +3,7 @@
 import { ArrowUpRight } from 'lucide-react'
 import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
+import { useUiCopy } from '@/lib/ui-copy'
 import { Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
 
 function Linkedin({ className }: { className?: string }) {
@@ -15,17 +16,18 @@ function Linkedin({ className }: { className?: string }) {
 
 export function Team() {
   const { team } = useSiteContent()
+  const copy = useUiCopy()
   return (
     <section id="team" aria-labelledby="team-heading" className="bg-cream py-24 text-ink md:py-36">
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
         <div className="grid grid-cols-1 items-end gap-8 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <Reveal>
-              <Eyebrow>Our Team</Eyebrow>
+              <Eyebrow>{copy.team}</Eyebrow>
             </Reveal>
             <SplitHeading
               id="team-heading"
-              lines={['The people', 'behind Ruxin.']}
+              lines={copy.teamHeadline}
               accentLast
               accentClassName="text-ink/65"
               className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
@@ -33,7 +35,7 @@ export function Team() {
           </div>
           <Reveal delay={0.15} className="lg:col-span-4 lg:col-start-9">
             <p className="text-pretty leading-relaxed text-ink/60">
-              Strategists, operators, analysts, and advisors — a multidisciplinary team connected by one standard: results that last.
+              {copy.teamIntro}
             </p>
           </Reveal>
         </div>

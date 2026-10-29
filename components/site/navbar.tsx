@@ -3,8 +3,9 @@
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { ArrowRight, Menu, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useSiteContent } from '@/lib/site-content'
+import { useLocale, useSiteContent } from '@/lib/site-content'
 import { cn } from '@/lib/utils'
+import { useUiCopy } from '@/lib/ui-copy'
 import { EASE, Magnetic } from '@/components/motion/primitives'
 import { Logo } from '@/components/site/logo'
 
@@ -12,6 +13,8 @@ export { Logo }
 
 export function Navbar() {
   const { navLinks } = useSiteContent()
+  const { locale, setLocale } = useLocale()
+  const copy = useUiCopy()
   const { scrollY } = useScroll()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
@@ -60,7 +63,7 @@ export function Navbar() {
         >
           <Logo light mark="white" />
           <ul className="hidden items-center gap-1 lg:flex">
-            {navLinks.map((link) => {
+            {navLinks.map((link, index) => {
               const isActive = active === link.href.slice(1)
               return (
                 <li key={link.href}>
@@ -71,7 +74,7 @@ export function Navbar() {
                       isActive ? 'text-white' : 'text-white/75 hover:text-white',
                     )}
                   >
-                    {link.label}
+                    {copy.navLabels[index] || link.label}
                     {isActive && (
                       <motion.span
                         layoutId="nav-dot"
@@ -85,12 +88,29 @@ export function Navbar() {
             })}
           </ul>
           <div className="flex items-center gap-3">
+            <div role="group" aria-label="Language" className="flex items-center gap-1 rounded-full border border-white/25 p-1">
+              {(['en', 'am', 'zh'] as const).map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  aria-pressed={locale === item}
+                  onClick={() => setLocale(item)}
+                  className={cn(
+                    'rounded-full px-2 py-1 text-[10px] font-medium transition-colors',
+                    locale === item ? 'bg-white text-ruxin' : 'text-white/70 hover:text-white',
+                  )}
+                >
+                  {item === 'en' ? 'EN' : item === 'am' ? 'አማ' : '中'}
+                </button>
+              ))}
+            </div>
             <Magnetic strength={0.25} className="hidden sm:inline-block">
               <a
                 href="#contact"
+                data-analytics-location="navbar"
                 className="group inline-flex h-10 items-center gap-2 rounded-full bg-cream pl-5 pr-4 text-[13px] font-medium text-ink transition-colors hover:bg-white"
               >
-                {"Let's Talk"}
+                {copy.talk}
                 <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
               </a>
             </Magnetic>
@@ -100,7 +120,7 @@ export function Navbar() {
               onClick={() => setOpen((o) => !o)}
               aria-expanded={open}
               aria-controls="mobile-menu"
-              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-label={open ? copy.close : copy.openMenu}
             >
               {open ? <X className="size-4" /> : <Menu className="size-4" />}
             </button>
@@ -132,7 +152,7 @@ export function Navbar() {
                     onClick={() => setOpen(false)}
                     className="flex items-baseline justify-between py-4 font-heading text-3xl font-medium tracking-tight text-white"
                   >
-                    {link.label}
+                    {copy.navLabels[i] || link.label}
                     <span className="font-mono text-xs text-white/80">0{i + 1}</span>
                   </a>
                 </motion.li>
@@ -140,10 +160,11 @@ export function Navbar() {
             </ul>
             <a
               href="#contact"
+              data-analytics-location="mobile-menu"
               onClick={() => setOpen(false)}
               className="flex h-14 items-center justify-center gap-2 rounded-full bg-cream text-base font-medium text-ink"
             >
-              {"Let's Talk"} <ArrowRight className="size-4" aria-hidden="true" />
+              {copy.talk} <ArrowRight className="size-4" aria-hidden="true" />
             </a>
           </motion.div>
         )}

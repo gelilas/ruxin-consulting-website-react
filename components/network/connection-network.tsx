@@ -22,7 +22,7 @@ function quad(p0: Vec, c: Vec, p1: Vec, t: number): Vec {
  * phase 0 = radial network (hero) → phase 1 = organized pathway (about) → phase 2 = five branches (services).
  * Phase anchors are read from elements with ids `about` and `services-intro`.
  */
-export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
+export function ConnectionNetwork({ onLight = false, static: isStatic = false }: { onLight?: boolean; static?: boolean }) {
   const { about, services } = useSiteContent()
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -45,8 +45,8 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
     }
     readPalette()
 
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const fine = window.matchMedia('(pointer: fine)').matches
+    const reduce = isStatic || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const fine = !isStatic && window.matchMedia('(pointer: fine)').matches
     let w = 0
     let h = 0
     let compact = false
@@ -115,7 +115,7 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
     const draw = (now: number) => {
       const t = reduce ? 100 : (now - start) / 1000
       const target = readPhase()
-      phase = reduce ? target : lerp(phase, target, 0.07)
+      phase = isStatic ? 0 : reduce ? target : lerp(phase, target, 0.07)
       const { cx, cy, R } = layout()
 
       mouse.x = lerp(mouse.x || cx, mouse.active ? mouse.tx : cx, 0.06)
@@ -379,15 +379,18 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
         }
       }
 
-      if (running) raf = requestAnimationFrame(draw)
+      if (running && !isStatic) raf = requestAnimationFrame(draw)
     }
 
     resize()
-    const ro = new ResizeObserver(resize)
+    const ro = new ResizeObserver(() => {
+      resize()
+      if (isStatic) requestAnimationFrame(draw)
+    })
     ro.observe(canvas)
     const io = new IntersectionObserver(([entry]) => {
       const shouldRun = entry.isIntersecting && !document.hidden
-      if (shouldRun && !running) {
+      if (shouldRun && !running && !isStatic) {
         running = true
         raf = requestAnimationFrame(draw)
       } else if (!shouldRun) {
@@ -398,7 +401,8 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
     io.observe(canvas)
     window.addEventListener('pointermove', onMove, { passive: true })
     document.addEventListener('pointerleave', onLeave)
-    raf = requestAnimationFrame(draw)
+    if (isStatic) requestAnimationFrame(draw)
+    else raf = requestAnimationFrame(draw)
 
     return () => {
       running = false
@@ -408,7 +412,7 @@ export function ConnectionNetwork({ onLight = false }: { onLight?: boolean }) {
       window.removeEventListener('pointermove', onMove)
       document.removeEventListener('pointerleave', onLeave)
     }
-  }, [onLight, about, services])
+  }, [onLight, about, services, isStatic])
 
   return <canvas ref={canvasRef} className="block size-full" aria-hidden="true" />
 }

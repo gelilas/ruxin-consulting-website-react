@@ -6,6 +6,7 @@ import {
   clients,
   company,
   hero,
+  investmentIntelligence,
   insightCategories,
   insights,
   navLinks,
@@ -15,10 +16,13 @@ import {
   whyChoose,
 } from './content'
 
+export type Locale = 'en' | 'am' | 'zh'
+
 export type SiteContent = {
   company: typeof company
   navLinks: typeof navLinks
   hero: typeof hero
+  investmentIntelligence: typeof investmentIntelligence
   about: typeof about
   services: typeof services
   clients: typeof clients
@@ -35,6 +39,7 @@ const REQUIRED_KEYS = [
   'company',
   'navLinks',
   'hero',
+  'investmentIntelligence',
   'about',
   'services',
   'clients',
@@ -52,6 +57,7 @@ export const fallback: SiteContent = {
   company,
   navLinks,
   hero,
+  investmentIntelligence,
   about,
   services,
   clients,
@@ -106,8 +112,8 @@ const SiteContentContext = createContext<SiteContent>(fallback)
 
 const cmsUrl = (import.meta.env.VITE_CMS_URL as string | undefined)?.replace(/\/$/, '') || 'http://localhost:4001'
 
-async function loadCmsContent(signal: AbortSignal): Promise<SiteContent | null> {
-  const response = await fetch(`${cmsUrl}/api/content`, { signal })
+async function loadCmsContent(signal: AbortSignal, locale: Locale): Promise<SiteContent | null> {
+  const response = await fetch(`${cmsUrl}/api/content?lang=${locale}`, { signal })
   if (!response.ok) return null
   const data: unknown = await response.json()
   return isSiteContent(data) ? data : null
@@ -115,10 +121,17 @@ async function loadCmsContent(signal: AbortSignal): Promise<SiteContent | null> 
 
 export function SiteContentProvider({ children }: { children: ReactNode }) {
   const [content, setContent] = useState<SiteContent>(fallback)
+  const [locale, setLocale] = useState<Locale>(() => {
+    if (typeof window === 'undefined') return 'en'
+    const saved = window.localStorage.getItem('ruxin_locale')
+    return saved === 'am' || saved === 'zh' ? saved : 'en'
+  })
 
   useEffect(() => {
+    window.localStorage.setItem('ruxin_locale', locale)
+    document.documentElement.lang = locale
     const controller = new AbortController()
-    loadCmsContent(controller.signal)
+    loadCmsContent(controller.signal, locale)
       .then((data) => {
         if (data) setContent(data)
       })
@@ -126,11 +139,26 @@ export function SiteContentProvider({ children }: { children: ReactNode }) {
         // Network / abort — keep defaults
       })
     return () => controller.abort()
-  }, [])
+  }, [locale])
 
-  return <SiteContentContext.Provider value={content}>{children}</SiteContentContext.Provider>
+  return (
+    <SiteContentContext.Provider value={content}>
+      <LocaleContext.Provider value={{ locale, setLocale }}>
+        {children}
+      </LocaleContext.Provider>
+    </SiteContentContext.Provider>
+  )
 }
 
 export function useSiteContent() {
   return useContext(SiteContentContext)
+}
+
+const LocaleContext = createContext<{ locale: Locale; setLocale: (locale: Locale) => void }>({
+  locale: 'en',
+  setLocale: () => undefined,
+})
+
+export function useLocale() {
+  return useContext(LocaleContext)
 }

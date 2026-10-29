@@ -45,7 +45,7 @@ export function SplitHeading({
   id,
   accentClassName = 'text-mute',
 }: {
-  lines: string[]
+  lines: readonly string[]
   className?: string
   as?: 'h1' | 'h2' | 'h3'
   delay?: number

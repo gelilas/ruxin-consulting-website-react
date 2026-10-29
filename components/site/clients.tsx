@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { clients as clientShape } from '@/lib/content'
 import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
+import { useUiCopy } from '@/lib/ui-copy'
 import { cn } from '@/lib/utils'
 import { EASE, Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
 
@@ -51,6 +52,7 @@ function ClientMark({ client, i }: { client: (typeof clientShape)[number]; i: nu
 
 export function Clients() {
   const { clients } = useSiteContent()
+  const copy = useUiCopy()
   const row = [...clients, ...clients]
   return (
     <section id="clients" aria-labelledby="clients-heading" className="relative bg-paper py-24 text-ink md:py-36">
@@ -58,19 +60,19 @@ export function Clients() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
           <div className="lg:col-span-3">
             <Reveal>
-              <Eyebrow>Clients</Eyebrow>
+              <Eyebrow>{copy.clients}</Eyebrow>
             </Reveal>
           </div>
           <div className="lg:col-span-9">
             <SplitHeading
               id="clients-heading"
-              lines={['Proudly serving clients', 'across industries.']}
+              lines={copy.clientsHeadline}
               accentLast
               accentClassName="text-ruxin"
               className="text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
             />
             <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-ink/65">
-              Varying scales and complexities, with tailored solutions for each business.
+              {copy.clientsIntro}
             </p>
           </div>
         </div>
@@ -97,6 +99,7 @@ export function Clients() {
 
 function ClientVoices() {
   const { testimonials } = useSiteContent()
+  const copy = useUiCopy()
   const [index, setIndex] = useState(0)
   const [burst, setBurst] = useState(0)
   const reduce = useReducedMotion()
@@ -111,7 +114,7 @@ function ClientVoices() {
   return (
     <div className="mx-auto mt-20 max-w-[1440px] px-5 md:mt-28 md:px-10">
       <Reveal>
-        <Eyebrow>Testimonials</Eyebrow>
+        <Eyebrow>{copy.testimonials}</Eyebrow>
         <h3 className="mt-4 max-w-xl text-balance text-3xl font-semibold tracking-tight md:text-4xl">
           In our clients’ words.
         </h3>

@@ -4,8 +4,10 @@ import { AnimatePresence, motion, useInView, useReducedMotion } from 'motion/rea
 import { ArrowRight, Pause, Play } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState, type ComponentType } from 'react'
 import { type ServiceId } from '@/lib/content'
+import { trackAnalytics } from '@/lib/analytics'
 import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
+import { useUiCopy } from '@/lib/ui-copy'
 import { cn } from '@/lib/utils'
 import { EASE } from '@/components/motion/primitives'
 import { ConsultingVisual } from './visuals/consulting-visual'
@@ -35,6 +37,7 @@ const CYCLE_MS = 9000
 
 export function ServicesSection() {
   const { services } = useSiteContent()
+  const copy = useUiCopy()
   const [index, setIndex] = useState(0)
   const [playing, setPlaying] = useState(true)
   const [hoverPaused, setHoverPaused] = useState(false)
@@ -50,6 +53,8 @@ export function ServicesSection() {
   const autoplay = playing && !hoverPaused && inView && !reduce
 
   const select = useCallback((i: number, fromUser = true) => {
+    const nextService = services[(i + services.length) % services.length]
+    if (fromUser && nextService) trackAnalytics('service_interest', { service: nextService.id })
     setLifted(false)
     setIndex((prev) => {
       if (prev === i) setCycle((c) => c + 1)
@@ -57,6 +62,10 @@ export function ServicesSection() {
     })
     if (fromUser) setPlaying(false)
   }, [services.length])
+
+  useEffect(() => {
+    if (service) trackAnalytics('service_viewed', { service: service.id })
+  }, [service?.id])
 
   const focusVisual = useCallback(() => {
     setBurst((n) => n + 1)
@@ -120,7 +129,7 @@ export function ServicesSection() {
 
       <div className="relative mx-auto max-w-[1440px] px-5 pt-10 md:px-10">
         <div className="flex items-end justify-between border-b border-ink/10 pb-6">
-          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink/65">Capabilities</p>
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink/65">{copy.capabilities}</p>
           <div className="flex items-center gap-4">
             <p className="font-mono text-[11px] tracking-[0.2em] text-ink/65" aria-live="polite">
               <span className="text-ink">{service.number}</span> / {String(services.length).padStart(2, '0')}
@@ -324,6 +333,7 @@ export function ServicesSection() {
 
 function ServiceDetails({ index }: { index: number }) {
   const { services } = useSiteContent()
+  const copy = useUiCopy()
   const s = services[index]
   if (!s) return null
   return (
@@ -341,7 +351,7 @@ function ServiceDetails({ index }: { index: number }) {
         href="#contact"
         className="group mt-8 inline-flex items-center gap-2 text-sm font-medium text-ink underline-offset-8 hover:underline"
       >
-        Discuss {s.name.toLowerCase()}
+        {copy.discuss} {s.name.toLowerCase()}
         <ArrowRight className="size-4 text-ruxin transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
       </a>
     </div>
@@ -350,6 +360,7 @@ function ServiceDetails({ index }: { index: number }) {
 
 function ConceptChain({ index }: { index: number }) {
   const { services } = useSiteContent()
+  const copy = useUiCopy()
   const s = services[index]
   if (!s) return null
   return (
@@ -371,7 +382,7 @@ function ConceptChain({ index }: { index: number }) {
           ))}
         </motion.ol>
       </AnimatePresence>
-      <span className="hidden shrink-0 sm:block">Swipe or select to explore</span>
+      <span className="hidden shrink-0 sm:block">{copy.swipeOrSelect}</span>
     </div>
   )
 }
