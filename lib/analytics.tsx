@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useUiCopy } from './ui-copy'
 
 export type AnalyticsEventName =
   | 'page_view'
@@ -16,8 +17,6 @@ export type AnalyticsEventName =
 type AnalyticsProperties = {
   section?: string
   service?: string
-  label?: string
-  location?: string
   value?: number
 }
 
@@ -71,11 +70,8 @@ export function trackAnalytics(name: AnalyticsEventName, properties: AnalyticsPr
   }).catch(() => undefined)
 }
 
-function slug(value: string) {
-  return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80)
-}
-
 export function AnalyticsTracker() {
+  const copy = useUiCopy()
   const [consent, setConsent] = useState<Consent>('unknown')
 
   useEffect(() => {
@@ -116,8 +112,7 @@ export function AnalyticsTracker() {
       if (customEvent) {
         trackAnalytics(customEvent, {
           service: target.dataset.analyticsService,
-          label: target.dataset.analyticsLabel,
-          location: target.dataset.analyticsLocation,
+          section: target.dataset.analyticsLocation,
         })
         return
       }
@@ -128,8 +123,7 @@ export function AnalyticsTracker() {
       if (href.startsWith('mailto:')) trackAnalytics('email_clicked')
       if (href.includes('#contact')) {
         trackAnalytics('cta_clicked', {
-          label: slug(target.textContent || 'contact'),
-          location: target.dataset.analyticsLocation || 'unknown',
+          section: target.dataset.analyticsLocation || 'unknown',
         })
       }
     }
@@ -170,10 +164,10 @@ export function AnalyticsTracker() {
 
   return (
     <aside className="fixed inset-x-4 bottom-4 z-[80] mx-auto flex max-w-xl flex-col gap-4 border border-ink/15 bg-cream p-5 text-ink shadow-[0_18px_50px_-24px_rgba(0,0,0,0.45)] sm:flex-row sm:items-center sm:justify-between">
-      <p className="max-w-md text-sm leading-relaxed">May we use anonymous analytics to understand which parts of the website are useful? We do not collect form names, contact details, or messages.</p>
+      <p className="max-w-md text-sm leading-relaxed">{copy.analyticsConsent.message}</p>
       <div className="flex shrink-0 gap-2">
-        <button type="button" onClick={() => choose('denied')} className="rounded-full border border-ink/15 px-4 py-2 text-xs font-medium hover:border-ink/40">Not now</button>
-        <button type="button" onClick={() => choose('granted')} className="rounded-full bg-ruxin px-4 py-2 text-xs font-medium text-white hover:bg-ruxin-bright">Allow analytics</button>
+        <button type="button" onClick={() => choose('denied')} className="rounded-full border border-ink/15 px-4 py-2 text-xs font-medium hover:border-ink/40">{copy.analyticsConsent.notNow}</button>
+        <button type="button" onClick={() => choose('granted')} className="rounded-full bg-ruxin px-4 py-2 text-xs font-medium text-white hover:bg-ruxin-bright">{copy.analyticsConsent.allow}</button>
       </div>
     </aside>
   )

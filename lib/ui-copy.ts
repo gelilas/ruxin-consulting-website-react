@@ -65,6 +65,11 @@ const copy = {
     thankYou: 'Thank you',
     messageSent: 'Your message is on its way. A member of the Ruxin team will be in touch within one business day.',
     copyright: '© 2026 Ruxin Consulting. All rights reserved.',
+    analyticsConsent: {
+      message: 'May we use anonymous analytics to understand which parts of the website are useful? We do not collect names, contact details, or messages.',
+      notNow: 'Not now',
+      allow: 'Allow analytics',
+    },
   },
   am: {
     navLabels: ['ስለ እኛ', 'አገልግሎቶች', 'ለምን እኛ', 'ቡድናችን', 'ደንበኞች', 'ያግኙን'],
@@ -130,6 +135,11 @@ const copy = {
     thankYou: 'እናመሰግናለን',
     messageSent: 'መልዕክትዎ ተልኳል። የRuxin ቡድን አባል በአንድ የሥራ ቀን ውስጥ ያነጋግርዎታል።',
     copyright: '© 2026 Ruxin Consulting። መብቱ በሙሉ የተጠበቀ ነው።',
+    analyticsConsent: {
+      message: 'የድረ-ገጹ የትኞቹ ክፍሎች ጠቃሚ እንደሆኑ ለመረዳት ስም የማይገልጽ ትንታኔ እንድንጠቀም ይፈቅዱልን? ስም፣ የግንኙነት መረጃ ወይም መልዕክቶችን አንሰበስብም።',
+      notNow: 'አሁን አይደለም',
+      allow: 'ትንታኔ ፍቀድ',
+    },
   },
   zh: {
     navLabels: ['关于我们', '服务', '为什么选择我们', '我们的团队', '客户', '联系我们'],
@@ -195,6 +205,11 @@ const copy = {
     thankYou: '谢谢您',
     messageSent: '您的消息已发送。Ruxin 团队成员将在一个工作日内与您联系。',
     copyright: '© 2026 Ruxin Consulting。保留所有权利。',
+    analyticsConsent: {
+      message: '我们可以使用匿名分析来了解网站哪些部分最有用吗？我们不会收集姓名、联系方式或消息内容。',
+      notNow: '暂不',
+      allow: '允许分析',
+    },
   },
 } as const
 
