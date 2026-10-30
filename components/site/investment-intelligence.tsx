@@ -1,7 +1,6 @@
 import { ArrowUpRight, BarChart3, BriefcaseBusiness, ChartNoAxesCombined } from 'lucide-react'
 import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
-import { ConnectionNetwork } from '@/components/network/connection-network'
 import { Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
 
 const lensIcons = [BriefcaseBusiness, BarChart3, ChartNoAxesCombined]
@@ -11,9 +10,6 @@ export function InvestmentIntelligence() {
 
   return (
     <section id="investment-intelligence" aria-labelledby="investment-intelligence-heading" className="relative isolate overflow-hidden bg-paper py-24 text-ink md:py-36">
-      <div className="pointer-events-none absolute inset-0 opacity-20" aria-hidden="true">
-        <ConnectionNetwork onLight static />
-      </div>
       <div className="relative z-10 mx-auto max-w-[1440px] px-5 md:px-10">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-16">
           <div className="lg:col-span-6">

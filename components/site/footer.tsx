@@ -65,7 +65,7 @@ export function Footer() {
         />
 
         <div className="mt-6 flex flex-col-reverse items-start justify-between gap-6 border-t border-ink/10 pt-8 text-xs text-ink/65 md:flex-row md:items-center">
-          <p>{'© 2026 Ruxin Consulting. All rights reserved.'}</p>
+          <p>{copy.copyright}</p>
           <a href="#top" className="group inline-flex items-center gap-2 transition-colors hover:text-ruxin">
             {copy.backToTop}
             <ArrowUp className="size-3.5 transition-transform group-hover:-translate-y-0.5" aria-hidden="true" />

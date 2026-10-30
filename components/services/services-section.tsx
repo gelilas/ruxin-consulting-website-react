@@ -116,7 +116,7 @@ export function ServicesSection() {
     <section
       ref={sectionRef}
       id="services"
-      aria-label="Services"
+      aria-label={copy.services}
       className="relative overflow-hidden bg-stone pb-24 text-ink md:pb-32"
     >
       <motion.div
@@ -139,7 +139,7 @@ export function ServicesSection() {
                 type="button"
                 onClick={() => setPlaying((p) => !p)}
                 className="flex size-8 items-center justify-center rounded-full border border-ink/15 text-ink/70 transition-colors hover:border-ink/40 hover:text-ink"
-                aria-label={playing ? 'Pause service rotation' : 'Play service rotation'}
+                aria-label={playing ? copy.pauseService : copy.playService}
               >
                 {playing ? <Pause className="size-3" /> : <Play className="size-3" />}
               </button>
@@ -152,7 +152,7 @@ export function ServicesSection() {
           <div className="lg:col-span-4">
             <div
               role="tablist"
-              aria-label="Ruxin services"
+              aria-label={copy.services}
               aria-orientation="vertical"
               onKeyDown={onTabKey}
               className="no-scrollbar -mx-5 flex snap-x gap-2 overflow-x-auto px-5 lg:mx-0 lg:flex-col lg:gap-0 lg:overflow-visible lg:px-0"

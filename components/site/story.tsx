@@ -7,7 +7,6 @@ import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
 import { useUiCopy } from '@/lib/ui-copy'
 import { cn } from '@/lib/utils'
-import { ConnectionNetwork } from '@/components/network/connection-network'
 import { EASE, Eyebrow, Magnetic, Reveal, SplitHeading } from '@/components/motion/primitives'
 /** Core Values uses the former hero network as a static visual; Services uses static imagery. */
 export function Story() {
@@ -113,6 +112,7 @@ function Hero() {
 
 function About() {
   const { about } = useSiteContent()
+  const copy = useUiCopy()
   return (
     <section id="about" aria-labelledby="about-heading" className="relative isolate bg-cream">
       <div className="relative z-10 mx-auto max-w-[1440px] px-5 py-28 text-ink md:px-10 md:py-36">
@@ -158,7 +158,7 @@ function About() {
                 className="aspect-[4/5] w-full object-cover"
               />
               <figcaption className="flex items-center justify-between gap-4 px-5 py-4 text-xs uppercase tracking-[0.16em] text-ruxin">
-                <span>One trusted partner</span>
+                <span>{copy.oneTrustedPartner}</span>
                 <span>01 / 03</span>
               </figcaption>
             </figure>
@@ -249,34 +249,46 @@ function Values() {
 
   return (
     <section id="values" aria-labelledby="values-heading" className="relative isolate overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 opacity-25 lg:opacity-45" aria-hidden="true">
-        <ConnectionNetwork onLight static />
-      </div>
       <div className="relative z-10 mx-auto max-w-[1440px] px-5 py-28 md:px-10">
-        <div className="max-w-xl lg:max-w-[34rem]">
-          <Reveal>
-            <Eyebrow>{copy.coreValues}</Eyebrow>
-          </Reveal>
-          <SplitHeading
-            id="values-heading"
-            lines={copy.howWeWork}
-            accentLast
-            accentClassName="text-ruxin"
-            className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
-          />
-          <ul className="mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2">
-            {about.values.map((value, index) => (
-              <Reveal key={value.title} as="li" delay={index * 0.05}>
-                <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ruxin">{value.title}</h3>
-                <p className="mt-2 text-pretty text-sm leading-relaxed text-ink/70">{value.body}</p>
-              </Reveal>
-            ))}
-          </ul>
-          {photos.length > 0 && (
-            <div className="mt-12">
-              <ValueCollage photos={photos} />
+        <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
+          <div className="max-w-xl lg:col-span-6 lg:max-w-[34rem]">
+            <Reveal>
+              <Eyebrow>{copy.coreValues}</Eyebrow>
+            </Reveal>
+            <SplitHeading
+              id="values-heading"
+              lines={copy.howWeWork}
+              accentLast
+              accentClassName="text-ruxin"
+              className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
+            />
+            <ul className="mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              {about.values.map((value, index) => (
+                <Reveal key={value.title} as="li" delay={index * 0.05}>
+                  <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ruxin">{value.title}</h3>
+                  <p className="mt-2 text-pretty text-sm leading-relaxed text-ink/70">{value.body}</p>
+                </Reveal>
+              ))}
+            </ul>
+            {photos.length > 0 && (
+              <div className="mt-12">
+                <ValueCollage photos={photos} />
+              </div>
+            )}
+          </div>
+
+          <div className="relative aspect-[1050/897] w-full max-w-[42rem] lg:col-span-6 lg:col-start-7 lg:justify-self-end">
+            <div className="pointer-events-none absolute inset-0 overflow-visible" aria-hidden="true">
+              <div className="network-image-halo absolute inset-[10%] rounded-full bg-ruxin/10 blur-3xl" />
+              <img
+                src="/profile/ruxin-network.png"
+                alt=""
+                className="network-image-art network-image-glow absolute inset-0 size-full object-contain mix-blend-multiply"
+              />
+              <div className="network-image-core absolute size-5 rounded-full bg-ruxin/60 blur-[2px]" />
+              <div className="network-image-pulse absolute size-24 rounded-full border border-ruxin/50" />
             </div>
-          )}
+          </div>
         </div>
       </div>
     </section>
