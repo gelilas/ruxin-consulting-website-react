@@ -1,0 +1,38 @@
+services:
+  backend:
+    build:
+      context: ../ruxin-consulting-cms
+      dockerfile: Dockerfile
+    env_file:
+      - ../ruxin-consulting-cms/.env
+    environment:
+      API_PORT: 4001
+      CMS_ORIGIN: ${CMS_ORIGIN:-http://localhost:3030}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
+    ports:
+      - "4001:4001"
+    volumes:
+      - ../ruxin-consulting-cms/data/uploads:/app/data/uploads
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_CMS_URL: ${VITE_CMS_URL:-http://localhost:4001}
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  cms:
+    build:
+      context: ../ruxin-consulting-cms
+      dockerfile: Dockerfile.ui
+    ports:
+      - "3030:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

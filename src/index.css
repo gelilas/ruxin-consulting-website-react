@@ -102,25 +102,25 @@
 @keyframes network-image-glow {
   0%,
   100% {
-    opacity: 0.5;
+    opacity: 0.94;
     transform: scale(0.985);
-    filter: drop-shadow(0 0 0 rgba(171, 38, 28, 0));
+    filter: contrast(1.12) saturate(1.05);
   }
   50% {
-    opacity: 0.82;
+    opacity: 1;
     transform: scale(1.015);
-    filter: drop-shadow(0 0 32px rgba(171, 38, 28, 0.22));
+    filter: contrast(1.24) saturate(1.12);
   }
 }
 
 @keyframes network-image-halo {
   0%,
   100% {
-    opacity: 0.22;
+    opacity: 0.34;
     transform: scale(0.92);
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.68;
     transform: scale(1.08);
   }
 }
@@ -156,8 +156,8 @@
 }
 
 .network-image-art {
-  -webkit-mask-image: radial-gradient(ellipse at center, #000 48%, rgba(0, 0, 0, 0.96) 67%, transparent 100%);
-  mask-image: radial-gradient(ellipse at center, #000 48%, rgba(0, 0, 0, 0.96) 67%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 62%, rgba(0, 0, 0, 0.98) 84%, transparent 100%);
+  mask-image: radial-gradient(ellipse at center, #000 62%, rgba(0, 0, 0, 0.98) 84%, transparent 100%);
 }
 
 .network-image-halo {
@@ -169,6 +169,7 @@
   top: 47.5%;
   margin-left: -3rem;
   margin-top: -3rem;
+  border-width: 2px;
   animation: network-image-pulse 3.8s ease-out infinite;
 }
 

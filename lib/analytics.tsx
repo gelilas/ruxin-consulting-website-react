@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import { useUiCopy } from './ui-copy'
+import { useEffect } from 'react'
 
 export type AnalyticsEventName =
   | 'page_view'
@@ -21,20 +20,8 @@ type AnalyticsProperties = {
 }
 
 const cmsUrl = (import.meta.env.VITE_CMS_URL as string | undefined)?.replace(/\/$/, '') || 'http://localhost:4001'
-type Consent = 'unknown' | 'granted' | 'denied'
 
 let pageViewSent = false
-let runtimeConsent: Consent | null = null
-
-function readConsent(): Consent {
-  if (runtimeConsent) return runtimeConsent
-  try {
-    const value = window.localStorage.getItem('ruxin_analytics_consent')
-    return value === 'granted' || value === 'denied' ? value : 'unknown'
-  } catch {
-    return 'unknown'
-  }
-}
 
 function getVisitorId() {
   try {
@@ -51,7 +38,6 @@ function getVisitorId() {
 
 export function trackAnalytics(name: AnalyticsEventName, properties: AnalyticsProperties = {}) {
   if (typeof window === 'undefined') return
-  if (readConsent() !== 'granted') return
 
   const payload = {
     name,
@@ -71,15 +57,7 @@ export function trackAnalytics(name: AnalyticsEventName, properties: AnalyticsPr
 }
 
 export function AnalyticsTracker() {
-  const copy = useUiCopy()
-  const [consent, setConsent] = useState<Consent>('unknown')
-
   useEffect(() => {
-    setConsent(readConsent())
-  }, [])
-
-  useEffect(() => {
-    if (consent !== 'granted') return
     if (!pageViewSent) {
       pageViewSent = true
       trackAnalytics('page_view')
@@ -148,27 +126,7 @@ export function AnalyticsTracker() {
       document.removeEventListener('visibilitychange', onVisibilityChange)
       window.removeEventListener('pagehide', sendEngagement)
     }
-  }, [consent])
+  }, [])
 
-  if (consent !== 'unknown') return null
-
-  const choose = (value: Exclude<Consent, 'unknown'>) => {
-    runtimeConsent = value
-    try {
-      window.localStorage.setItem('ruxin_analytics_consent', value)
-    } catch {
-      // Continue without persistence if storage is unavailable.
-    }
-    setConsent(value)
-  }
-
-  return (
-    <aside className="fixed inset-x-4 bottom-4 z-[80] mx-auto flex max-w-xl flex-col gap-4 border border-ink/15 bg-cream p-5 text-ink shadow-[0_18px_50px_-24px_rgba(0,0,0,0.45)] sm:flex-row sm:items-center sm:justify-between">
-      <p className="max-w-md text-sm leading-relaxed">{copy.analyticsConsent.message}</p>
-      <div className="flex shrink-0 gap-2">
-        <button type="button" onClick={() => choose('denied')} className="rounded-full border border-ink/15 px-4 py-2 text-xs font-medium hover:border-ink/40">{copy.analyticsConsent.notNow}</button>
-        <button type="button" onClick={() => choose('granted')} className="rounded-full bg-ruxin px-4 py-2 text-xs font-medium text-white hover:bg-ruxin-bright">{copy.analyticsConsent.allow}</button>
-      </div>
-    </aside>
-  )
+  return null
 }
