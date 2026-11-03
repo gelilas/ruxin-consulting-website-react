@@ -1,8 +1,8 @@
 'use client'
 
-import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
-import { ArrowDown, ArrowRight } from 'lucide-react'
-import { useRef, useState, type KeyboardEvent } from 'react'
+import { AnimatePresence, motion, useInView, useReducedMotion, useScroll, useTransform } from 'motion/react'
+import { ArrowDown, ArrowRight, BadgeCheck, Gauge, HeartHandshake, Handshake, ShieldCheck, TrendingUp, type LucideIcon } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
 import { useUiCopy } from '@/lib/ui-copy'
@@ -15,7 +15,6 @@ export function Story() {
       <Hero />
       <About />
       <Values />
-      <ServicesIntro />
     </div>
   )
 }
@@ -39,15 +38,17 @@ function Hero() {
       <div className="absolute inset-0 bg-gradient-to-r from-ruxin/55 via-ruxin/20 to-ruxin/5" aria-hidden="true" />
       <motion.div style={{ y, opacity }} className="relative z-10 mx-auto w-full max-w-[1440px] px-5 pb-20 pt-[48svh] md:px-10 lg:pb-0 lg:pt-0">
         <div className="max-w-2xl xl:max-w-3xl">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: EASE, delay: 0.5 }}
-          >
-            <Eyebrow dark className="text-white/80">
-              {hero.eyebrow}
-            </Eyebrow>
-          </motion.div>
+          {hero.eyebrow && (
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: EASE, delay: 0.5 }}
+            >
+              <Eyebrow dark className="text-white/80">
+                {hero.eyebrow}
+              </Eyebrow>
+            </motion.div>
+          )}
           <SplitHeading
             as="h1"
             id="hero-heading"
@@ -56,7 +57,7 @@ function Hero() {
             lines={hero.headline}
             accentLast
             accentClassName="text-white/85"
-            className="mt-7 text-balance text-[clamp(2.6rem,6.4vw,6rem)] font-semibold leading-[0.98] tracking-[-0.035em] text-white"
+            className={cn(hero.eyebrow && 'mt-7', 'text-balance text-[clamp(2.6rem,6.4vw,6rem)] font-semibold leading-[0.98] tracking-[-0.035em] text-white')}
           />
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -113,11 +114,18 @@ function Hero() {
 function About() {
   const { about } = useSiteContent()
   const copy = useUiCopy()
+  const reduce = useReducedMotion()
+  const stageRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: stageRef, offset: ['start end', 'end start'] })
+  const yMain = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [40, -40])
+  const ySecond = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [-30, 50])
+
   return (
-    <section id="about" aria-labelledby="about-heading" className="relative isolate bg-cream">
+    <section id="about" aria-labelledby="about-heading" className="relative isolate overflow-hidden bg-cream">
+      <div className="pointer-events-none absolute -right-32 top-24 -z-10 size-[520px] rounded-full bg-ruxin/10 blur-3xl" aria-hidden="true" />
       <div className="relative z-10 mx-auto max-w-[1440px] px-5 py-28 text-ink md:px-10 md:py-36">
-        <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
-          <div className="max-w-xl lg:col-span-6 lg:max-w-[34rem]">
+        <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-8">
             <Reveal>
               <Eyebrow>{about.eyebrow}</Eyebrow>
             </Reveal>
@@ -126,131 +134,162 @@ function About() {
               lines={about.headline}
               accentLast
               accentClassName="text-ruxin"
-              className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
+              className="mt-7 text-balance text-[clamp(2.4rem,5.4vw,5.5rem)] font-semibold leading-[1] tracking-[-0.035em]"
             />
-            <Reveal delay={0.2}>
-              <p className="mt-8 text-pretty text-base leading-relaxed text-ink/65 md:text-lg">{about.body}</p>
+          </div>
+          <Reveal delay={0.2} className="lg:col-span-4">
+            <p className="text-pretty text-base leading-relaxed text-ink/65 md:text-lg">{about.body}</p>
+          </Reveal>
+        </div>
+
+        <div className="mt-16 grid items-center gap-16 lg:mt-24 lg:grid-cols-12 lg:gap-20">
+          <div ref={stageRef} className="relative mx-auto w-full max-w-xl pb-16 lg:col-span-6 lg:max-w-none lg:pb-20">
+            <Reveal>
+              <motion.figure style={{ y: yMain }} className="relative w-[82%] overflow-hidden rounded-[1.75rem] border-t-8 border-ruxin bg-white shadow-[0_28px_60px_-36px_rgba(130,7,16,0.45)]">
+                <img src={mediaUrl(about.image)} alt="Business consultants collaborating around a table" className="aspect-[4/5] w-full object-cover" />
+              </motion.figure>
             </Reveal>
-            <Reveal delay={0.25}>
-              <div className="mt-8 space-y-4 text-pretty text-sm leading-relaxed text-ink/60 md:text-base">
+            {about.visionImage && (
+              <motion.div
+                style={{ y: ySecond }}
+                className="absolute bottom-0 right-0 w-[52%] overflow-hidden rounded-[1.5rem] border-4 border-cream shadow-[0_28px_60px_-30px_rgba(130,7,16,0.5)]"
+              >
+                <img src={mediaUrl(about.visionImage)} alt="A client meeting at Ruxin" className="aspect-[4/3] w-full object-cover transition-transform duration-700 hover:scale-105" />
+              </motion.div>
+            )}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5, duration: 0.7, ease: EASE }}
+              className="absolute left-[62%] top-6 flex size-28 items-center justify-center rounded-full bg-ruxin p-4 text-center text-[10px] font-medium uppercase leading-snug tracking-[0.16em] text-white shadow-[0_20px_40px_-20px_rgba(130,7,16,0.7)] md:size-36 md:text-[11px]"
+            >
+              <motion.span
+                aria-hidden="true"
+                className="absolute inset-1.5 rounded-full border border-dashed border-white/40"
+                animate={reduce ? undefined : { rotate: 360 }}
+                transition={{ duration: 40, ease: 'linear', repeat: Infinity }}
+              />
+              <span className="relative">{copy.oneTrustedPartner}</span>
+            </motion.div>
+          </div>
+
+          <div className="lg:col-span-6">
+            <Reveal delay={0.1}>
+              <div className="space-y-4 text-pretty text-sm leading-relaxed text-ink/65 md:text-base">
                 {about.paragraphs.map((paragraph) => (
                   <p key={paragraph}>{paragraph}</p>
                 ))}
               </div>
             </Reveal>
-            <Reveal delay={0.3}>
-              <ol className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-ink/70">
-                {about.stages.map((s, i) => (
-                  <li key={s} className="flex items-center gap-3">
-                    <span className={i === about.stages.length - 1 ? 'text-ruxin' : ''}>{s}</span>
-                    {i < about.stages.length - 1 && <ArrowRight className="size-3" aria-hidden="true" />}
-                  </li>
-                ))}
-              </ol>
-            </Reveal>
-            <PurposeToggle />
+            <JourneySteps stages={about.stages} />
+            <PurposeCards />
           </div>
-          <Reveal delay={0.15} className="lg:col-span-5 lg:col-start-8 lg:pt-12">
-            <figure className="overflow-hidden rounded-[1.75rem] border-t-8 border-ruxin bg-white shadow-[0_28px_60px_-36px_rgba(130,7,16,0.45)]">
-              <img
-                src={mediaUrl(about.image)}
-                alt="Business consultants collaborating around a table"
-                className="aspect-[4/5] w-full object-cover"
-              />
-              <figcaption className="flex items-center justify-between gap-4 px-5 py-4 text-xs uppercase tracking-[0.16em] text-ruxin">
-                <span>{copy.oneTrustedPartner}</span>
-                <span>01 / 03</span>
-              </figcaption>
-            </figure>
-          </Reveal>
         </div>
       </div>
     </section>
   )
 }
 
-function PurposeToggle() {
+function JourneySteps({ stages }: { stages: string[] }) {
+  const [hovered, setHovered] = useState<number | null>(null)
+  const ref = useRef<HTMLOListElement>(null)
+  const seen = useInView(ref, { once: true, margin: '-15% 0px' })
+  const last = stages.length - 1
+  const lit = hovered ?? last
+
+  return (
+    <Reveal delay={0.15}>
+      <ol ref={ref} className="relative mt-12 grid" style={{ gridTemplateColumns: `repeat(${stages.length}, minmax(0, 1fr))` }}>
+        <span
+          className="absolute top-5 h-px bg-ink/15"
+          style={{ left: `${50 / stages.length}%`, right: `${50 / stages.length}%` }}
+          aria-hidden="true"
+        >
+          <motion.span
+            className="block h-full bg-ruxin"
+            initial={{ width: 0 }}
+            animate={{ width: seen ? `${(lit / Math.max(last, 1)) * 100}%` : 0 }}
+            transition={{ duration: 0.9, ease: EASE }}
+          />
+        </span>
+        {stages.map((stage, i) => (
+          <li
+            key={stage}
+            onMouseEnter={() => setHovered(i)}
+            onMouseLeave={() => setHovered(null)}
+            className="relative flex flex-col items-center gap-3 text-center"
+          >
+            <span
+              className={cn(
+                'relative flex size-10 items-center justify-center rounded-full border font-mono text-xs transition-all duration-500',
+                i <= lit ? 'scale-105 border-ruxin bg-ruxin text-white' : 'border-ink/20 bg-cream text-ink/50',
+              )}
+            >
+              {i + 1}
+            </span>
+            <span className={cn('font-mono text-[11px] uppercase tracking-[0.18em] transition-colors', i <= lit ? 'text-ruxin' : 'text-ink/60')}>{stage}</span>
+          </li>
+        ))}
+      </ol>
+    </Reveal>
+  )
+}
+
+function PurposeCards() {
   const { about } = useSiteContent()
-  const reduce = useReducedMotion()
   const panels = [
     { id: 'vision', title: about.vision.title, body: about.vision.body },
     { id: 'mission', title: about.mission.title, body: about.mission.body },
   ]
-  const [activeId, setActiveId] = useState(panels[0].id)
-  const active = panels.find((panel) => panel.id === activeId) ?? panels[0]
-
-  const onKeyDown = (event: KeyboardEvent) => {
-    if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return
-    event.preventDefault()
-    const next = active.id === 'vision' ? 'mission' : 'vision'
-    setActiveId(next)
-    document.getElementById(`purpose-tab-${next}`)?.focus()
-  }
 
   return (
-    <div className="mt-10 max-w-lg">
-      <div role="tablist" aria-label="Vision and mission" onKeyDown={onKeyDown} className="inline-flex rounded-full bg-white/80 p-1 ring-1 ring-ink/10">
-        {panels.map((panel) => {
-          const selected = panel.id === active.id
-          return (
-            <button
-              key={panel.id}
-              id={`purpose-tab-${panel.id}`}
-              type="button"
-              role="tab"
-              aria-selected={selected}
-              aria-controls="purpose-panel"
-              tabIndex={selected ? 0 : -1}
-              onClick={() => setActiveId(panel.id)}
-              className={cn(
-                'relative rounded-full px-5 py-2 text-sm font-medium transition-colors',
-                selected ? 'text-white' : 'text-ink/70 hover:text-ink',
-              )}
-            >
-              {selected && (
-                <motion.span
-                  layoutId="purpose-pill"
-                  className="absolute inset-0 rounded-full bg-ruxin"
-                  transition={reduce ? { duration: 0.2 } : { type: 'spring', stiffness: 420, damping: 32 }}
-                />
-              )}
-              <span className="relative">{panel.title}</span>
-            </button>
-          )
-        })}
-      </div>
-      <div id="purpose-panel" role="tabpanel" aria-labelledby={`purpose-tab-${active.id}`} className="relative mt-5 min-h-24">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.p
-            key={active.id}
-            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -10 }}
-            transition={{ duration: 0.4, ease: EASE }}
-            className="text-pretty text-base leading-relaxed text-ink/75"
-          >
-            {active.body}
-          </motion.p>
-        </AnimatePresence>
-      </div>
+    <div className="mt-12 grid gap-4 sm:grid-cols-2">
+      {panels.map((panel, i) => (
+        <Reveal key={panel.id} delay={0.1 + i * 0.1}>
+          <article className="group relative h-full overflow-hidden rounded-2xl border border-ink/10 bg-white p-6 transition-all duration-500 hover:-translate-y-1 hover:border-ruxin hover:bg-ruxin hover:shadow-[0_28px_50px_-30px_rgba(130,7,16,0.6)]">
+            <span className="absolute -right-3 -top-5 font-heading text-8xl font-semibold leading-none text-ruxin/8 transition-colors duration-500 group-hover:text-white/10" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 className="relative font-mono text-[11px] uppercase tracking-[0.18em] text-ruxin transition-colors duration-500 group-hover:text-white">{panel.title}</h3>
+            <p className="relative mt-3 text-pretty text-sm leading-relaxed text-ink/70 transition-colors duration-500 group-hover:text-white/85">{panel.body}</p>
+          </article>
+        </Reveal>
+      ))}
     </div>
   )
 }
 
+const valueIcons: LucideIcon[] = [ShieldCheck, Gauge, HeartHandshake, BadgeCheck, Handshake, TrendingUp]
+const VALUE_CYCLE_MS = 4500
+
 function Values() {
-  const { about, hero } = useSiteContent()
+  const { about } = useSiteContent()
   const copy = useUiCopy()
-  const photos = [
-    { src: mediaUrl(hero.image), alt: 'Ruxin consultants working together', frame: 'col-span-7', aspect: 'aspect-[4/3]', shift: [18, -14] as const },
-    { src: mediaUrl(about.image), alt: 'A Ruxin consultant at work', frame: 'col-span-5 mt-6', aspect: 'aspect-[3/4]', shift: [28, -8] as const },
-    { src: mediaUrl(about.visionImage), alt: 'A client meeting at Ruxin', frame: 'col-span-5', aspect: 'aspect-[4/3]', shift: [12, -18] as const },
-    { src: mediaUrl(about.valuesImage), alt: 'A handshake after a client meeting', frame: 'col-span-7', aspect: 'aspect-[16/10]', shift: [22, -10] as const },
-  ].filter((photo) => photo.src)
+  const reduce = useReducedMotion()
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { margin: '-20% 0px' })
+  const [active, setActive] = useState(0)
+  const [hovering, setHovering] = useState(false)
+  const values = about.values
+  const running = inView && !hovering && !reduce
+
+  useEffect(() => {
+    if (!running || values.length === 0) return
+    const id = setTimeout(() => setActive((i) => (i + 1) % values.length), VALUE_CYCLE_MS)
+    return () => clearTimeout(id)
+  }, [running, active, values.length])
+
+  const current = values[active] ?? values[0]
 
   return (
     <section id="values" aria-labelledby="values-heading" className="relative isolate overflow-hidden">
       <div className="relative z-10 mx-auto max-w-[1440px] px-5 py-28 md:px-10">
-        <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
+        <div
+          className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16"
+          onMouseEnter={() => setHovering(true)}
+          onMouseLeave={() => setHovering(false)}
+        >
           <div className="max-w-xl lg:col-span-6 lg:max-w-[34rem]">
             <Reveal>
               <Eyebrow>{copy.coreValues}</Eyebrow>
@@ -262,32 +301,30 @@ function Values() {
               accentClassName="text-ruxin"
               className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
             />
-            <ul className="mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2">
-              {about.values.map((value, index) => (
+            <ul className="mt-10 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+              {values.map((value, index) => (
                 <Reveal key={value.title} as="li" delay={index * 0.05}>
-                  <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ruxin">{value.title}</h3>
-                  <p className="mt-2 text-pretty text-sm leading-relaxed text-ink/70">{value.body}</p>
+                  <div
+                    tabIndex={0}
+                    onMouseEnter={() => setActive(index)}
+                    onFocus={() => setActive(index)}
+                    className={cn(
+                      'rounded-xl border-l-2 px-4 py-3 transition-all duration-500 outline-none focus-visible:ring-2 focus-visible:ring-ruxin',
+                      index === active ? 'border-ruxin bg-white shadow-[0_18px_40px_-28px_rgba(130,7,16,0.5)]' : 'border-transparent',
+                    )}
+                  >
+                    <h3 className={cn('font-mono text-[11px] uppercase tracking-[0.18em] transition-colors', index === active ? 'text-ruxin' : 'text-ruxin/70')}>
+                      {value.title}
+                    </h3>
+                    <p className="mt-2 text-pretty text-sm leading-relaxed text-ink/70">{value.body}</p>
+                  </div>
                 </Reveal>
               ))}
             </ul>
-            {photos.length > 0 && (
-              <div className="mt-12">
-                <ValueCollage photos={photos} />
-              </div>
-            )}
           </div>
 
-          <div className="relative aspect-[1050/897] w-full max-w-[42rem] lg:col-span-6 lg:col-start-7 lg:justify-self-end">
-            <div className="pointer-events-none absolute inset-0 overflow-visible" aria-hidden="true">
-              <div className="network-image-halo absolute inset-[10%] rounded-full bg-ruxin/10 blur-3xl" />
-              <img
-                src="/profile/ruxin-network.png"
-                alt=""
-                className="network-image-art network-image-glow absolute inset-0 size-full object-contain mix-blend-multiply"
-              />
-              <div className="network-image-core absolute size-5 rounded-full bg-ruxin/60 blur-[2px]" />
-              <div className="network-image-pulse absolute size-24 rounded-full border border-ruxin/50" />
-            </div>
+          <div ref={ref} className="relative mx-auto aspect-square w-full max-w-[34rem] lg:col-span-6 lg:col-start-7 lg:max-w-none">
+            <ValueOrbit values={values} active={active} onSelect={setActive} current={current} reduce={!!reduce} />
           </div>
         </div>
       </div>
@@ -295,124 +332,114 @@ function Values() {
   )
 }
 
-function ValueCollage({
-  photos,
-}: {
-  photos: { src: string; alt: string; frame: string; aspect: string; shift: readonly [number, number] }[]
-}) {
-  const reduce = useReducedMotion()
-  const ref = useRef<HTMLUListElement>(null)
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-
-  return (
-    <ul ref={ref} className="grid grid-cols-12 gap-3 md:gap-4">
-      {photos.map((photo, index) => (
-        <CollagePhoto key={photo.src} photo={photo} index={index} progress={scrollYProgress} reduce={!!reduce} />
-      ))}
-    </ul>
-  )
-}
-
-function CollagePhoto({
-  photo,
-  index,
-  progress,
+function ValueOrbit({
+  values,
+  active,
+  onSelect,
+  current,
   reduce,
 }: {
-  photo: { src: string; alt: string; frame: string; aspect: string; shift: readonly [number, number] }
-  index: number
-  progress: ReturnType<typeof useScroll>['scrollYProgress']
+  values: { title: string; body: string }[]
+  active: number
+  onSelect: (i: number) => void
+  current?: { title: string; body: string }
   reduce: boolean
 }) {
-  const y = useTransform(progress, [0, 1], reduce ? [0, 0] : [photo.shift[0], photo.shift[1]])
-  return (
-    <motion.li
-      style={{ y }}
-      className={cn('self-start overflow-hidden rounded-[1.6rem] shadow-[0_24px_50px_-28px_rgba(130,7,16,0.34)]', photo.frame)}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true, margin: '-10% 0px' }}
-      transition={{ duration: 0.7, ease: EASE, delay: index * 0.08 }}
-    >
-      <motion.img
-        src={photo.src}
-        alt={photo.alt}
-        className={cn('w-full object-cover', photo.aspect)}
-        initial={{ scale: reduce ? 1 : 1.08 }}
-        whileInView={{ scale: 1 }}
-        whileHover={reduce ? undefined : { scale: 1.06 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.9, ease: EASE }}
-      />
-    </motion.li>
-  )
-}
+  const count = values.length || 1
+  const point = (i: number, radius: number) => {
+    const angle = (i / count) * Math.PI * 2 - Math.PI / 2
+    return { x: 50 + Math.cos(angle) * radius, y: 50 + Math.sin(angle) * radius }
+  }
+  const target = point(active, 40)
 
-function ServicesIntro() {
-  const { services } = useSiteContent()
-  const copy = useUiCopy()
   return (
-    <section id="services-intro" aria-labelledby="services-heading" className="relative isolate overflow-hidden">
-      <div className="relative z-10 mx-auto flex min-h-[110svh] max-w-[1440px] flex-col justify-center px-5 py-28 md:px-10">
-        <div className="grid w-full gap-14 lg:grid-cols-12 lg:items-center lg:gap-16">
-          <div className="max-w-xl lg:col-span-6">
-            <Reveal>
-              <Eyebrow dark>{copy.services}</Eyebrow>
-            </Reveal>
-            <SplitHeading
-              id="services-heading"
-              lines={copy.essentialSupport}
-              accentLast
-              accentClassName="text-ruxin"
-              className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
-            />
-            <Reveal delay={0.2}>
-              <p className="mt-8 text-lg text-ink/65 md:text-xl">
-                {copy.servicesLead}
+    <div className="absolute inset-0">
+      <div className="absolute inset-[6%] rounded-full bg-gradient-to-br from-ruxin/12 via-ruxin/5 to-transparent blur-2xl" aria-hidden="true" />
+
+      <motion.div
+        aria-hidden="true"
+        className="absolute inset-[10%] rounded-full border border-dashed border-ruxin/30"
+        animate={reduce ? undefined : { rotate: 360 }}
+        transition={{ duration: 90, ease: 'linear', repeat: Infinity }}
+      />
+      <motion.div
+        aria-hidden="true"
+        className="absolute inset-[24%] rounded-full border border-ruxin/20"
+        animate={reduce ? undefined : { rotate: -360 }}
+        transition={{ duration: 120, ease: 'linear', repeat: Infinity }}
+      >
+        <span className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ruxin/60" />
+        <span className="absolute bottom-0 left-1/2 size-1.5 -translate-x-1/2 translate-y-1/2 rounded-full bg-ruxin/40" />
+      </motion.div>
+
+      <svg viewBox="0 0 100 100" className="absolute inset-0 size-full" aria-hidden="true">
+        <motion.line
+          x1="50"
+          y1="50"
+          animate={{ x2: target.x, y2: target.y }}
+          transition={{ duration: 0.7, ease: EASE }}
+          stroke="var(--ruxin)"
+          strokeWidth="0.35"
+          strokeLinecap="round"
+          strokeDasharray="1.2 1.2"
+        />
+      </svg>
+
+      {values.map((value, i) => {
+        const Icon = valueIcons[i % valueIcons.length]
+        const { x, y } = point(i, 40)
+        const isActive = i === active
+        return (
+          <button
+            key={value.title}
+            type="button"
+            onClick={() => onSelect(i)}
+            onMouseEnter={() => onSelect(i)}
+            aria-label={value.title}
+            aria-pressed={isActive}
+            style={{ left: `${x}%`, top: `${y}%` }}
+            className="group absolute -translate-x-1/2 -translate-y-1/2"
+          >
+            {isActive && (
+              <span className="absolute inset-0 -z-10 animate-ping rounded-full bg-ruxin/25 motion-reduce:hidden" aria-hidden="true" />
+            )}
+            <motion.span
+              animate={{ scale: isActive ? 1.18 : 1 }}
+              transition={{ type: 'spring', stiffness: 320, damping: 22 }}
+              className={cn(
+                'flex size-12 items-center justify-center rounded-full border shadow-[0_14px_30px_-16px_rgba(130,7,16,0.55)] transition-colors duration-500 md:size-16',
+                isActive ? 'border-ruxin bg-ruxin text-white' : 'border-ruxin/20 bg-white text-ruxin group-hover:border-ruxin/50',
+              )}
+            >
+              <Icon className="size-5 md:size-6" aria-hidden="true" />
+            </motion.span>
+          </button>
+        )
+      })}
+
+      <div className="absolute left-1/2 top-1/2 flex aspect-square w-[46%] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-ruxin/15 bg-white p-[5%] text-center shadow-[0_40px_80px_-40px_rgba(130,7,16,0.55)]">
+        <span className="absolute inset-[5px] rounded-full border border-ruxin/10" aria-hidden="true" />
+        <AnimatePresence mode="wait">
+          {current && (
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, y: 10, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.4, ease: EASE }}
+              aria-live="polite"
+            >
+              <p className="font-mono text-[10px] tracking-[0.2em] text-ruxin/60">
+                {String(active + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}
               </p>
-            </Reveal>
-            <Reveal delay={0.3}>
-              <ul className="mt-12 flex flex-col border-t border-ink/10">
-                {services.map((s) => (
-                  <li key={s.id}>
-                    <a
-                      href="#services"
-                      onClick={() => window.dispatchEvent(new CustomEvent('ruxin:service', { detail: s.id }))}
-                      className="group flex items-center justify-between border-b border-ink/10 py-4 text-sm text-ink/70 transition-colors hover:text-ink"
-                    >
-                      <span className="flex items-center gap-5">
-                        <span className="flex size-7 items-center justify-center bg-ruxin font-mono text-[10px] text-white">
-                          {s.number}
-                        </span>
-                        {s.name}
-                      </span>
-                      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink/35">
-                        {s.concept.join(' → ')}
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-          </div>
-          <div className="grid grid-cols-2 gap-3 lg:col-span-5 lg:col-start-8">
-            {services.map((service, index) => (
-              <Reveal key={service.id} delay={index * 0.05} className={index === 0 ? 'col-span-2' : ''}>
-                <figure className="group relative overflow-hidden border-2 border-ruxin bg-ruxin">
-                  <img
-                    src={mediaUrl(service.image)}
-                    alt={`${service.name} in practice`}
-                    className={cn('w-full object-cover grayscale transition-[filter,transform] duration-700 group-hover:scale-105 group-hover:grayscale-0', index === 0 ? 'aspect-[16/8]' : 'aspect-[4/3]')}
-                  />
-                  <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ruxin/90 to-transparent px-4 pb-3 pt-8 text-xs font-medium uppercase tracking-[0.14em] text-white">
-                    {service.name}
-                  </figcaption>
-                </figure>
-              </Reveal>
-            ))}
-          </div>
-        </div>
+              <p className="mt-2 text-balance font-heading text-[clamp(1rem,2vw,1.75rem)] font-semibold leading-tight tracking-tight text-ruxin">
+                {current.title}
+              </p>
+              <p className="mt-2 hidden text-pretty text-xs leading-relaxed text-ink/60 xl:block">{current.body}</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </section>
+    </div>
   )
 }

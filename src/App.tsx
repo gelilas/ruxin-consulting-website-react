@@ -2,7 +2,6 @@ import { Cursor } from '@/components/motion/cursor'
 import { Navbar } from '@/components/site/navbar'
 import { Story } from '@/components/site/story'
 import { ServicesSection } from '@/components/services/services-section'
-import { InvestmentIntelligence } from '@/components/site/investment-intelligence'
 import { Clients, WhyChoose } from '@/components/site/clients'
 import { Team } from '@/components/site/team'
 import { Contact } from '@/components/site/contact'
@@ -24,7 +23,6 @@ export default function App() {
       <main id="main">
         <Story />
         <ServicesSection />
-        <InvestmentIntelligence />
         <WhyChoose />
         <Team />
         <Clients />

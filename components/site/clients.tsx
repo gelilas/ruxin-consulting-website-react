@@ -1,13 +1,14 @@
 'use client'
 
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import { useState } from 'react'
+import { AnimatePresence, motion, useInView, useReducedMotion } from 'motion/react'
+import { ArrowRight } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import { clients as clientShape } from '@/lib/content'
 import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
 import { useUiCopy } from '@/lib/ui-copy'
 import { cn } from '@/lib/utils'
-import { EASE, Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
+import { EASE, Eyebrow, Magnetic, Reveal, SplitHeading } from '@/components/motion/primitives'
 
 const markStyles = [
   'font-semibold tracking-[0.28em]',
@@ -201,40 +202,184 @@ function ClientVoices() {
   )
 }
 
+const WHY_CYCLE_MS = 7000
+
 export function WhyChoose() {
   const { whyChoose } = useSiteContent()
+  const copy = useUiCopy()
+  const reduce = useReducedMotion()
+  const ref = useRef<HTMLElement>(null)
+  const inView = useInView(ref, { margin: '-25% 0px' })
+  const [active, setActive] = useState(0)
+  const [auto, setAuto] = useState(true)
+  const [hovering, setHovering] = useState(false)
+  const items = whyChoose.items
+  const item = items[active] ?? items[0]
+  const running = auto && !hovering && inView && !reduce
+
+  useEffect(() => {
+    if (!running) return
+    const id = setTimeout(() => setActive((i) => (i + 1) % items.length), WHY_CYCLE_MS)
+    return () => clearTimeout(id)
+  }, [running, active, items.length])
+
+  const pick = (i: number) => {
+    setActive(i)
+    setAuto(false)
+  }
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    const step = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? -1 : 0
+    if (!step) return
+    e.preventDefault()
+    const next = (active + step + items.length) % items.length
+    pick(next)
+    document.getElementById(`why-tab-${next}`)?.focus()
+  }
+
+  if (!item) return null
+
   return (
-    <section id="why" className="bg-cream py-24 text-ink md:py-36">
-    <div className="mx-auto max-w-[1440px] px-5 md:px-10">
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
-        <div className="lg:col-span-3">
-          <Reveal>
-            <Eyebrow>{whyChoose.eyebrow}</Eyebrow>
-          </Reveal>
+    <section ref={ref} id="why" aria-labelledby="why-heading" className="relative isolate overflow-hidden bg-ruxin py-24 text-white md:py-36">
+      <div
+        className="pointer-events-none absolute -right-40 -top-40 -z-10 size-[640px] rounded-full opacity-40 blur-3xl"
+        style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.22), transparent 65%)' }}
+        aria-hidden="true"
+      />
+      <div className="mx-auto max-w-[1440px] px-5 md:px-10">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-3">
+            <Reveal>
+              <Eyebrow dark mark="white" className="text-white/80">{whyChoose.eyebrow}</Eyebrow>
+            </Reveal>
+          </div>
+          <div className="lg:col-span-9">
+            <SplitHeading
+              id="why-heading"
+              lines={whyChoose.headline}
+              accentLast
+              accentClassName="text-white/70"
+              className="text-balance text-[clamp(2.4rem,5.4vw,5.5rem)] font-semibold leading-[1] tracking-[-0.035em] text-white"
+            />
+            <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-white/75">{whyChoose.body}</p>
+          </div>
         </div>
-        <div className="lg:col-span-9">
-          <SplitHeading
-            lines={whyChoose.headline}
-            accentLast
-            accentClassName="text-ruxin"
-            className="text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
-          />
-          <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-ink/65">{whyChoose.body}</p>
+
+        <div
+          className="mt-14 grid grid-cols-1 gap-10 lg:mt-20 lg:grid-cols-12 lg:gap-14"
+          onMouseEnter={() => setHovering(true)}
+          onMouseLeave={() => setHovering(false)}
+        >
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[1.75rem] bg-black/20 lg:col-span-7 lg:order-2 lg:aspect-auto lg:min-h-[34rem]">
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.div
+                key={active}
+                className="absolute inset-0"
+                initial={{ opacity: 0, scale: reduce ? 1 : 1.08 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.8, ease: EASE }}
+              >
+                <img src={mediaUrl(item.image)} alt="" className="size-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-ruxin/90 via-ruxin/20 to-transparent" aria-hidden="true" />
+              </motion.div>
+            </AnimatePresence>
+            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6 md:p-8">
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={active}
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.45, ease: EASE }}
+                  className="max-w-md text-balance text-2xl font-semibold leading-tight tracking-tight md:text-3xl"
+                >
+                  {item.title}
+                </motion.p>
+              </AnimatePresence>
+              <span className="font-heading text-6xl font-semibold leading-none text-white/25 md:text-8xl" aria-hidden="true">
+                {String(active + 1).padStart(2, '0')}
+              </span>
+            </div>
+          </div>
+
+          <div className="lg:col-span-5 lg:order-1">
+            <div role="tablist" aria-orientation="vertical" onKeyDown={onKeyDown} className="flex flex-col">
+              {items.map((it, i) => {
+                const isActive = i === active
+                return (
+                  <div key={it.title} className="relative border-t border-white/20 last:border-b">
+                    <button
+                      id={`why-tab-${i}`}
+                      role="tab"
+                      type="button"
+                      aria-selected={isActive}
+                      aria-controls="why-panel"
+                      tabIndex={isActive ? 0 : -1}
+                      onClick={() => pick(i)}
+                      onMouseEnter={() => {
+                        if (!isActive) pick(i)
+                      }}
+                      className="group flex w-full items-center gap-5 py-5 text-left"
+                    >
+                      <span className={cn('font-mono text-[11px] transition-colors', isActive ? 'text-white' : 'text-white/50')}>
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <span
+                        className={cn(
+                          'font-heading text-xl font-semibold tracking-tight transition-all duration-500 md:text-2xl',
+                          isActive ? 'translate-x-1 text-white' : 'text-white/55 group-hover:text-white/85',
+                        )}
+                      >
+                        {it.title}
+                      </span>
+                    </button>
+                    <AnimatePresence initial={false}>
+                      {isActive && (
+                        <motion.div
+                          id="why-panel"
+                          role="tabpanel"
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.45, ease: EASE }}
+                          className="overflow-hidden"
+                        >
+                          <p className="pb-6 pl-10 pr-2 text-pretty leading-relaxed text-white/75">{it.body}</p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                    {isActive && (
+                      <span className="absolute inset-x-0 -top-px h-px overflow-hidden" aria-hidden="true">
+                        <motion.span
+                          key={`${active}-${running}`}
+                          className="block h-full origin-left bg-white"
+                          initial={{ scaleX: running ? 0 : 1 }}
+                          animate={{ scaleX: 1 }}
+                          transition={{ duration: running ? WHY_CYCLE_MS / 1000 : 0.4, ease: 'linear' }}
+                        />
+                      </span>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <Magnetic>
+                <a
+                  href="#contact"
+                  data-analytics-location="why"
+                  className="group inline-flex h-13 items-center justify-center gap-3 rounded-full bg-white px-7 text-sm font-medium text-ruxin transition-colors hover:bg-cream"
+                >
+                  {copy.talk}
+                  <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+                </a>
+              </Magnetic>
+            </div>
+          </div>
         </div>
       </div>
-      <ul className="mt-16 grid gap-10 md:grid-cols-2">
-        {whyChoose.items.map((item) => (
-          <li key={item.title} className="grid gap-5 border-t border-ink/10 pt-6 sm:grid-cols-[148px_1fr]">
-            <img src={mediaUrl(item.image)} alt="" className="aspect-[4/3] w-full object-cover" />
-            <div>
-              <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ruxin">{item.title}</h3>
-              <p className="mt-3 text-pretty leading-relaxed text-ink/70">{item.body}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-      <img src={mediaUrl(whyChoose.image)} alt="Clients meeting with Ruxin" className="mt-16 aspect-[16/8] w-full object-cover" />
-    </div>
     </section>
   )
 }

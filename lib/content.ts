@@ -24,7 +24,7 @@ export const navLinks = [
 ]
 
 export const hero = {
-  eyebrow: 'FDI consulting · Ethiopia',
+  eyebrow: '',
   headline: ['Your Partner', 'in Every Step!'],
   body: 'Ruxin Consulting is an Ethiopia-based FDI consulting firm committed to simplifying the way businesses establish, operate, and grow in Ethiopia.',
   image: '/profile/hero.jpg',
@@ -102,7 +102,7 @@ export const services: {
     description:
       'We guide foreign investors through Ethiopia’s investment regulations and requirements, providing clarity on applicable procedures and assisting them throughout the business registration and licensing process.',
     capabilities: ['Investment regulations', 'Business registration', 'Licensing', 'Government liaison'],
-    image: '/profile/vision.jpg',
+    image: '/profile/consulting-team.jpg',
   },
   {
     id: 'logistics',
@@ -113,7 +113,7 @@ export const services: {
     description:
       'We facilitate customs clearance by coordinating documentation, regulatory requirements, and relevant procedures to help businesses navigate import and export processes more smoothly and reduce unnecessary delays.',
     capabilities: ['Documentation', 'Import and export', 'Regulatory coordination', 'Clearance'],
-    image: '/profile/clients.jpg',
+    image: '/profile/customs-port.jpg',
   },
   {
     id: 'finance',
@@ -124,7 +124,7 @@ export const services: {
     description:
       'We assist businesses with the preparation of monthly and annual financial reports in accordance with applicable local regulations, helping clients meet their reporting obligations and maintain proper financial documentation.',
     capabilities: ['Monthly reports', 'Annual reports', 'Local regulations', 'Financial documentation'],
-    image: '/profile/about.jpg',
+    image: '/profile/finance-lead.jpg',
   },
   {
     id: 'recruitment',
@@ -135,7 +135,7 @@ export const services: {
     description:
       'We connect businesses with qualified talent by supporting candidate sourcing, screening, and recruitment coordination — helping clients build capable teams that align with their operational needs and business goals.',
     capabilities: ['Candidate sourcing', 'Screening', 'Recruitment coordination', 'Team building'],
-    image: '/profile/hero.jpg',
+    image: '/profile/recruitment-team.jpg',
   },
   {
     id: 'legal',
@@ -146,7 +146,7 @@ export const services: {
     description:
       'We provide legal guidance and document review to help businesses understand relevant legal and regulatory requirements, address contractual matters, and navigate business-related legal procedures with greater confidence.',
     capabilities: ['Legal guidance', 'Document review', 'Contracts', 'Regulatory requirements'],
-    image: '/profile/cover.jpg',
+    image: '/profile/legal-advisor.jpg',
   },
 ]
 

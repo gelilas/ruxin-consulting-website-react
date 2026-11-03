@@ -9,7 +9,7 @@ import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
 import { useUiCopy } from '@/lib/ui-copy'
 import { cn } from '@/lib/utils'
-import { EASE } from '@/components/motion/primitives'
+import { EASE, Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
 import { ConsultingVisual } from './visuals/consulting-visual'
 import { FinanceVisual } from './visuals/finance-visual'
 import { LegalVisual } from './visuals/legal-visual'
@@ -117,7 +117,7 @@ export function ServicesSection() {
       ref={sectionRef}
       id="services"
       aria-label={copy.services}
-      className="relative overflow-hidden bg-stone pb-24 text-ink md:pb-32"
+      className="relative overflow-hidden bg-stone pb-24 pt-24 text-ink md:pb-32 md:pt-32"
     >
       <motion.div
         aria-hidden="true"
@@ -127,7 +127,21 @@ export function ServicesSection() {
         transition={{ duration: 1.6, ease: EASE }}
       />
 
-      <div className="relative mx-auto max-w-[1440px] px-5 pt-10 md:px-10">
+      <div className="relative mx-auto max-w-[1440px] px-5 md:px-10">
+        <div className="mb-14 max-w-3xl">
+          <Reveal>
+            <Eyebrow>{copy.services}</Eyebrow>
+          </Reveal>
+          <SplitHeading
+            lines={copy.essentialSupport}
+            accentLast
+            accentClassName="text-ruxin"
+            className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
+          />
+          <Reveal delay={0.2}>
+            <p className="mt-6 text-lg text-ink/65 md:text-xl">{copy.servicesLead}</p>
+          </Reveal>
+        </div>
         <div className="flex items-end justify-between border-b border-ink/10 pb-6">
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink/65">{copy.capabilities}</p>
           <div className="flex items-center gap-4">

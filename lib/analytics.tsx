@@ -64,7 +64,7 @@ export function AnalyticsTracker() {
     }
 
     const seenSections = new Set<string>()
-    const sections = ['hero', 'about', 'values', 'services', 'investment-intelligence', 'why', 'team', 'clients', 'contact']
+    const sections = ['hero', 'about', 'values', 'services', 'why', 'team', 'clients', 'contact']
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
