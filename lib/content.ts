@@ -8,8 +8,8 @@ export const company = {
   tagline: 'Your partner in every step.',
   email: 'ruxinconsulting@gmail.com',
   phone: '+251 988 987 777',
-  location: 'Bole Rwanda, Fuad Building, Office no. 301, Addis Ababa',
-  mapEmbedUrl: 'https://www.google.com/maps?q=Fuad+Building+Bole+Rwanda+Addis+Ababa&output=embed',
+  location: 'Rwanda St, Addis Ababa',
+  mapEmbedUrl: 'https://www.google.com/maps?q=8.992503,38.778893&output=embed',
   website: 'https://www.ruxinconsulting.com',
   socials: [] as { label: string; href: string }[],
 }
@@ -40,7 +40,7 @@ export const about = {
     'Navigating Ethiopia’s business environment can involve complex administrative procedures, multiple government institutions, and fragmented service systems. These challenges can create additional time, coordination, and resource demands for businesses, particularly international investors unfamiliar with the local environment.',
     'Ruxin addresses these challenges through an integrated, one-stop service approach, bringing together essential business support services under one roof. From investment consulting and government liaison to logistics and customs clearance, financial services, recruitment, and legal support, we help clients coordinate their business needs through a single, reliable partner.',
   ],
-  image: '/profile/about-meeting.jpg',
+  image: '/profile/contact-handshake.jpg',
   visionImage: '/profile/vision.jpg',
   vision: {
     title: 'Vision',

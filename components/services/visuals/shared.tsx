@@ -126,8 +126,8 @@ export function PathFollower({
 export function Node({ r = 4, red = false, ring = true }: { r?: number; red?: boolean; ring?: boolean }) {
   return (
     <>
-      {ring && <circle r={r * 3} fill="none" stroke={red ? RED : 'rgba(255,255,255,0.22)'} strokeWidth={1} />}
-      <circle r={r} fill={red ? RED : '#fff'} />
+      {ring && <circle r={r * 3} fill="none" stroke={red ? RED : 'rgba(240,237,232,0.22)'} strokeWidth={1} />}
+      <circle r={r} fill={red ? RED : '#f0ede8'} />
     </>
   )
 }

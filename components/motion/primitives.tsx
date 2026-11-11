@@ -156,12 +156,12 @@ export function Eyebrow({
   return (
     <p
       className={cn(
-        'flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em]',
+        'flex items-center gap-3 font-heading text-lg font-semibold uppercase tracking-[0.14em] md:text-xl',
         dark ? 'text-mute' : 'text-ink/70',
         className,
       )}
     >
-      <span className="relative flex size-1.5">
+      <span className="relative flex size-2.5">
         <span className={cn('absolute inset-0 rounded-full', mark === 'white' ? 'bg-white' : 'bg-ruxin')} />
       </span>
       {children}

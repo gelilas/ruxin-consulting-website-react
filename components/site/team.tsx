@@ -158,7 +158,7 @@ export function Team() {
                 className="group relative flex items-center justify-between gap-4 overflow-hidden rounded-2xl border border-ink/15 px-6 py-5 text-white"
               >
                 <img
-                  src="/profile/team-meeting.jpg"
+                  src="/profile/team-collab.jpg"
                   alt=""
                   className="absolute inset-0 size-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />

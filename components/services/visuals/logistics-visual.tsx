@@ -39,8 +39,8 @@ export function LogisticsVisual() {
           </clipPath>
         </defs>
         <motion.g initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: dur(1.2), ease: EASE }} style={{ transformOrigin: `${C.x}px ${C.y}px` }}>
-          <circle cx={C.x} cy={C.y} r={R} fill="rgba(255,255,255,0.015)" stroke="rgba(255,255,255,0.18)" />
-          <g clipPath="url(#globe-clip)" stroke="rgba(255,255,255,0.08)" fill="none">
+          <circle cx={C.x} cy={C.y} r={R} fill="rgba(240,237,232,0.015)" stroke="rgba(240,237,232,0.18)" />
+          <g clipPath="url(#globe-clip)" stroke="rgba(240,237,232,0.08)" fill="none">
             {parallels.map((lat) => {
               const rad = (lat * Math.PI) / 180
               const rx = R * Math.cos(rad)
@@ -63,14 +63,14 @@ export function LogisticsVisual() {
             <motion.path
               d={p}
               fill="none"
-              stroke="rgba(255,255,255,0.22)"
+              stroke="rgba(240,237,232,0.22)"
               strokeDasharray="3 5"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
               transition={{ delay: d(0.8 + i * 0.15), duration: dur(1.2), ease: EASE }}
             />
             <PathFollower d={p} duration={3 + i * 0.6} delay={d(1.6 + i * 0.3)} repeat>
-              <circle r={2} fill="#fff" />
+              <circle r={2} fill="#f0ede8" />
             </PathFollower>
           </g>
         ))}
@@ -107,8 +107,8 @@ export function LogisticsVisual() {
                   transition={{ delay: d(4.2), duration: 1.4, repeat: reduce ? 0 : Infinity, repeatDelay: 0.6 }}
                 />
               )}
-              <circle cx={h.x} cy={h.y} r={isStart || isEnd ? 5 : 3} fill={isStart || isEnd ? '#fff' : 'rgba(255,255,255,0.6)'} />
-              {(isStart || isEnd) && <circle cx={h.x} cy={h.y} r={11} fill="none" stroke="rgba(255,255,255,0.3)" />}
+              <circle cx={h.x} cy={h.y} r={isStart || isEnd ? 5 : 3} fill={isStart || isEnd ? '#f0ede8' : 'rgba(240,237,232,0.6)'} />
+              {(isStart || isEnd) && <circle cx={h.x} cy={h.y} r={11} fill="none" stroke="rgba(240,237,232,0.3)" />}
               <text x={h.x + 12} y={h.y + 4} className="fill-white/60 font-mono text-[10px] tracking-[0.14em]">
                 {h.code}
               </text>
@@ -118,7 +118,7 @@ export function LogisticsVisual() {
 
         <PathFollower d={mainRoute} duration={dur(2.6)} delay={d(1.7)}>
           <g>
-            <rect x={-7} y={-5} width={14} height={10} fill="#090909" stroke={RED} strokeWidth={1.5} />
+            <rect x={-7} y={-5} width={14} height={10} fill="#820710" stroke={RED} strokeWidth={1.5} />
             <line x1={-7} y1={0} x2={7} y2={0} stroke={RED} strokeWidth={0.75} />
           </g>
         </PathFollower>

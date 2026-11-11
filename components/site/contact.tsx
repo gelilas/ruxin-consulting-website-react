@@ -254,7 +254,7 @@ export function Contact() {
                 referrerPolicy="no-referrer-when-downgrade"
               />
               <a
-                href={company.mapEmbedUrl}
+                href={company.mapEmbedUrl.replace('&output=embed', '')}
                 target="_blank"
                 rel="noreferrer"
                 data-analytics-event="map_clicked"

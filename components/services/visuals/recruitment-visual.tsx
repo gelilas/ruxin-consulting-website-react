@@ -23,9 +23,9 @@ const opportunity = { x: 540, y: 300 }
 function Person({ highlight }: { highlight?: boolean }) {
   return (
     <g>
-      <circle r={20} fill="#0c0c0c" stroke={highlight ? RED : 'rgba(255,255,255,0.25)'} strokeWidth={highlight ? 1.5 : 1} />
-      <circle cy={-5} r={5.5} fill={highlight ? '#fff' : 'rgba(255,255,255,0.7)'} />
-      <path d="M -10 12 Q -10 2 0 2 Q 10 2 10 12" fill={highlight ? '#fff' : 'rgba(255,255,255,0.7)'} />
+      <circle r={20} fill="#820710" stroke={highlight ? RED : 'rgba(240,237,232,0.25)'} strokeWidth={highlight ? 1.5 : 1} />
+      <circle cy={-5} r={5.5} fill={highlight ? '#f0ede8' : 'rgba(240,237,232,0.7)'} />
+      <path d="M -10 12 Q -10 2 0 2 Q 10 2 10 12" fill={highlight ? '#f0ede8' : 'rgba(240,237,232,0.7)'} />
     </g>
   )
 }
@@ -41,7 +41,7 @@ export function RecruitmentVisual() {
       <VisualSvg label="Abstract talent network: candidate profiles linked to skills are scanned until one candidate is connected to an opportunity as a perfect match.">
         {skills.map((s, i) => (
           <motion.g key={s} initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: d(0.1 + i * 0.08), duration: dur(0.6), ease: EASE }}>
-            <rect x={skillX(i) - 50} y={78} width={100} height={26} rx={13} fill="none" stroke={i === candidates[MATCH].skill ? RED : 'rgba(255,255,255,0.18)'} />
+            <rect x={skillX(i) - 50} y={78} width={100} height={26} rx={13} fill="none" stroke={i === candidates[MATCH].skill ? RED : 'rgba(240,237,232,0.18)'} />
             <text x={skillX(i)} y={95} textAnchor="middle" className="fill-white/70 font-mono text-[9.5px] uppercase tracking-[0.14em]">
               {s}
             </text>
@@ -55,7 +55,7 @@ export function RecruitmentVisual() {
             y1={104}
             x2={c.x}
             y2={c.y - 20}
-            stroke={i === MATCH ? RED : 'rgba(255,255,255,0.08)'}
+            stroke={i === MATCH ? RED : 'rgba(240,237,232,0.08)'}
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: i === MATCH ? [0, 0.3, 0.9] : 1 }}
             transition={{ delay: d(0.6 + i * 0.05), duration: dur(i === MATCH ? 3.2 : 1), ease: EASE }}
@@ -109,9 +109,9 @@ export function RecruitmentVisual() {
             animate={{ opacity: 1 }}
             transition={{ delay: d(4.3), duration: dur(0.8) }}
           />
-          <rect x={opportunity.x - 28} y={opportunity.y - 28} width={56} height={56} fill="#0c0c0c" stroke="rgba(255,255,255,0.35)" />
-          <rect x={opportunity.x - 12} y={opportunity.y - 6} width={24} height={16} fill="none" stroke="#fff" strokeWidth={1.25} />
-          <path d={`M ${opportunity.x - 5} ${opportunity.y - 6} v -4 h 10 v 4`} fill="none" stroke="#fff" strokeWidth={1.25} />
+          <rect x={opportunity.x - 28} y={opportunity.y - 28} width={56} height={56} fill="#820710" stroke="rgba(240,237,232,0.35)" />
+          <rect x={opportunity.x - 12} y={opportunity.y - 6} width={24} height={16} fill="none" stroke="#f0ede8" strokeWidth={1.25} />
+          <path d={`M ${opportunity.x - 5} ${opportunity.y - 6} v -4 h 10 v 4`} fill="none" stroke="#f0ede8" strokeWidth={1.25} />
           <text x={opportunity.x} y={opportunity.y + 50} textAnchor="middle" className="fill-white/70 font-mono text-[10px] uppercase tracking-[0.14em]">
             Opportunity
           </text>

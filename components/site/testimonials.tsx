@@ -64,7 +64,7 @@ export function Testimonials() {
                 <p className="mt-5 text-lg font-semibold tracking-[0.2em] text-ink">{t.mark}</p>
               </motion.div>
             </AnimatePresence>
-            <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.22em] text-neutral-500">{copy.testimonialsLabel}</p>
+            <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.22em] text-ruxin">{copy.testimonialsLabel}</p>
             <p className="mt-3 font-mono text-sm text-ink" aria-live="polite">
               <span className="font-semibold">{String(index + 1).padStart(2, '0')}</span>
               <span className="text-ink/65"> / {String(testimonials.length).padStart(2, '0')}</span>

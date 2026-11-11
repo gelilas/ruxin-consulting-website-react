@@ -10,6 +10,9 @@
   --font-heading: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-body), ui-sans-serif, system-ui, sans-serif;
 
+  /* Brand-only palette: Tailwind's white/black resolve to Vanilla White / Wine Red */
+  --color-white: var(--brand-vanilla-white);
+  --color-black: var(--brand-wine-red);
   --color-ruxin: var(--ruxin);
   --color-wine: var(--wine);
   --color-ruxin-bright: var(--ruxin-bright);
@@ -57,19 +60,19 @@
   --font-display: var(--font-heading);
   color-scheme: light;
   --radius: 0.375rem;
-  --brand-vanilla-white: #fffaf8;
+  --brand-vanilla-white: #f0ede8;
   --brand-bright-red: #ab261c;
   --brand-wine-red: #820710;
   --vanilla: var(--brand-vanilla-white);
   --ruxin: var(--brand-wine-red);
   --wine: var(--brand-wine-red);
   --ruxin-bright: var(--brand-bright-red);
-  --ink: #4b0b10;
-  --charcoal: #4b0b10;
+  --ink: var(--brand-wine-red);
+  --charcoal: var(--brand-wine-red);
   --paper: var(--brand-vanilla-white);
-  --cream: #ffffff;
-  --stone: #f3e6e4;
-  --mute: #8b5856;
+  --cream: var(--brand-vanilla-white);
+  --stone: var(--brand-vanilla-white);
+  --mute: var(--brand-bright-red);
   --background: var(--paper);
   --foreground: var(--ink);
   --card: var(--cream);
@@ -77,11 +80,11 @@
   --popover: var(--cream);
   --popover-foreground: var(--ink);
   --primary: var(--brand-wine-red);
-  --primary-foreground: #ffffff;
+  --primary-foreground: var(--brand-vanilla-white);
   --secondary: var(--stone);
   --secondary-foreground: var(--ink);
   --muted: var(--stone);
-  --muted-foreground: #5c514c;
+  --muted-foreground: var(--brand-wine-red);
   --accent: var(--stone);
   --accent-foreground: var(--ink);
   --destructive: var(--brand-wine-red);
@@ -209,7 +212,7 @@
   }
   ::selection {
     background: var(--brand-wine-red);
-    color: #fff;
+    color: var(--brand-vanilla-white);
   }
   :focus-visible {
     outline: 2px solid var(--brand-wine-red);
@@ -234,8 +237,8 @@
 
 @utility grid-fine {
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    linear-gradient(to right, rgba(240, 237, 232, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(240, 237, 232, 0.045) 1px, transparent 1px);
   background-size: 64px 64px;
 }
 

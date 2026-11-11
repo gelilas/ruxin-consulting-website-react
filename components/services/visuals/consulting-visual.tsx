@@ -23,20 +23,20 @@ export function ConsultingVisual() {
       <motion.g initial={{ opacity: 0.5 }} animate={{ opacity: 0 }} transition={{ delay: d(1), duration: dur(0.8) }}>
         {steps.map((a, i) =>
           steps.slice(i + 1).map((b, j) => (
-            <line key={`${i}-${j}`} x1={a.from.x} y1={a.from.y} x2={b.from.x} y2={b.from.y} stroke="rgba(255,255,255,0.12)" strokeDasharray="2 5" />
+            <line key={`${i}-${j}`} x1={a.from.x} y1={a.from.y} x2={b.from.x} y2={b.from.y} stroke="rgba(240,237,232,0.12)" strokeDasharray="2 5" />
           )),
         )}
       </motion.g>
 
       {/* axis + bars */}
       <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: d(1.8), duration: dur(0.8) }}>
-        <line x1={60} y1={420} x2={590} y2={420} stroke="rgba(255,255,255,0.18)" />
+        <line x1={60} y1={420} x2={590} y2={420} stroke="rgba(240,237,232,0.18)" />
         {bars.map((h, i) => (
           <motion.rect
             key={i}
             x={92 + i * 48}
             width={10}
-            fill="rgba(255,255,255,0.08)"
+            fill="rgba(240,237,232,0.08)"
             initial={{ y: 420, height: 0 }}
             animate={{ y: 420 - h * 180, height: h * 180 }}
             transition={{ delay: d(1.9 + i * 0.05), duration: dur(0.9), ease: EASE }}
@@ -48,7 +48,7 @@ export function ConsultingVisual() {
       <motion.path
         d={pathD}
         fill="none"
-        stroke="#fff"
+        stroke="#f0ede8"
         strokeWidth={1.5}
         initial={{ pathLength: 0 }}
         animate={{ pathLength: 1 }}
@@ -77,8 +77,8 @@ export function ConsultingVisual() {
                 transition={{ delay: d(3), duration: dur(1.4) }}
               />
             )}
-            <circle r={13} fill="#090909" stroke={last ? RED : 'rgba(255,255,255,0.3)'} />
-            <circle r={4.5} fill={last ? RED : '#ffffff'} />
+            <circle r={13} fill="#820710" stroke={last ? RED : 'rgba(240,237,232,0.3)'} />
+            <circle r={4.5} fill={last ? RED : '#f0ede8'} />
             <MonoLabel x={0} y={last ? -26 : 32} delay={d(1.6 + i * 0.1)} red={last}>
               {s.label}
             </MonoLabel>

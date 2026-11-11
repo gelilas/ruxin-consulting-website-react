@@ -14,7 +14,7 @@ const replies: { match: RegExp; reply: AssistantReply }[] = [
     match: /contact|reach|email|phone|call|office|where/i,
     reply: {
       content:
-        'Email ruxinconsulting@gmail.com, call +251 988 987 777, or visit Bole Rwanda, Fuad Building, Office no. 301 in Addis Ababa. You can also use the contact form.',
+        'Email ruxinconsulting@gmail.com, call +251 988 987 777, or visit us on Rwanda St, Addis Ababa. You can also use the contact form.',
       links: [{ label: 'Open contact form', href: '#contact' }],
     },
   },

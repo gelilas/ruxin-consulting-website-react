@@ -145,8 +145,8 @@ export function Assistant() {
                 </button>
               </div>
               <div className="mt-4 flex items-center justify-between gap-3">
-                <p className="flex items-center gap-1.5 text-xs font-semibold text-[#7dffa8]">
-                  <span className="size-1.5 rounded-full bg-[#42e892]" aria-hidden="true" />
+                <p className="flex items-center gap-1.5 text-xs font-semibold text-white">
+                  <span className="size-1.5 rounded-full bg-white" aria-hidden="true" />
                   Online
                 </p>
                 <button
@@ -163,7 +163,7 @@ export function Assistant() {
               {showSuggestions && (
                 <>
                   <div className="rounded-2xl border border-ink/10 bg-white px-4 py-3 text-sm leading-relaxed text-ink/80 shadow-[0_4px_12px_rgba(130,7,16,0.06)]">
-                    <span className="mr-1.5 font-semibold text-emerald-600" aria-hidden="true">
+                    <span className="mr-1.5 font-semibold text-ruxin" aria-hidden="true">
                       ●
                     </span>
                     {welcome}
@@ -281,7 +281,7 @@ export function Assistant() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.4, ease: EASE, delay: 0.2 }}
-            className="group fixed bottom-5 right-5 z-[65] flex h-12 items-center gap-3 rounded-full border border-white/10 bg-charcoal pl-3 pr-5 text-sm font-medium text-white shadow-[0_20px_50px_-15px_rgba(28,25,22,0.35)] transition-colors hover:border-ruxin/60 md:bottom-6 md:right-6"
+            className="group fixed bottom-5 right-5 z-[65] flex h-12 items-center gap-3 rounded-full border border-white/10 bg-charcoal pl-3 pr-5 text-sm font-medium text-white shadow-[0_20px_50px_-15px_rgba(130,7,16,0.35)] transition-colors hover:border-ruxin/60 md:bottom-6 md:right-6"
             aria-haspopup="dialog"
             aria-label="Ask Ruxin — open assistant"
           >

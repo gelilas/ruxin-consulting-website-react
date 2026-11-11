@@ -37,9 +37,9 @@ export function LegalVisual() {
               default: { delay: d(0.4 + i * 0.1), duration: dur(1.2), ease: EASE },
             }}
           >
-            <rect width={120} height={156} fill="#0e0e0e" stroke="rgba(255,255,255,0.2)" />
+            <rect width={120} height={156} fill="#820710" stroke="rgba(240,237,232,0.2)" />
             {[22, 36, 50, 64, 78, 92, 106].map((y, k) => (
-              <rect key={y} x={14} y={y} width={k % 3 === 2 ? 60 : 90} height={3} fill="rgba(255,255,255,0.12)" />
+              <rect key={y} x={14} y={y} width={k % 3 === 2 ? 60 : 90} height={3} fill="rgba(240,237,232,0.12)" />
             ))}
           </motion.g>
         ))}
@@ -47,7 +47,7 @@ export function LegalVisual() {
         <motion.path
           d={`M 226 260 C 256 260, 260 ${doc.y + 160}, ${doc.x} ${doc.y + 160}`}
           fill="none"
-          stroke="rgba(255,255,255,0.25)"
+          stroke="rgba(240,237,232,0.25)"
           strokeDasharray="3 4"
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
@@ -55,11 +55,11 @@ export function LegalVisual() {
         />
 
         <motion.g initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: d(1.4), duration: dur(0.8), ease: EASE }}>
-          <rect x={doc.x} y={doc.y} width={doc.w} height={doc.h} fill="#0c0c0c" stroke="rgba(255,255,255,0.3)" />
-          <rect x={doc.x + 20} y={doc.y + 24} width={110} height={6} fill="rgba(255,255,255,0.6)" />
-          <rect x={doc.x + 20} y={doc.y + 40} width={70} height={3} fill="rgba(255,255,255,0.2)" />
+          <rect x={doc.x} y={doc.y} width={doc.w} height={doc.h} fill="#820710" stroke="rgba(240,237,232,0.3)" />
+          <rect x={doc.x + 20} y={doc.y + 24} width={110} height={6} fill="rgba(240,237,232,0.6)" />
+          <rect x={doc.x + 20} y={doc.y + 40} width={70} height={3} fill="rgba(240,237,232,0.2)" />
           {clauses.map((c, i) => (
-            <rect key={i} x={doc.x + 20} y={c.y} width={(doc.w - 56) * c.w} height={4} fill="rgba(255,255,255,0.16)" />
+            <rect key={i} x={doc.x + 20} y={c.y} width={(doc.w - 56) * c.w} height={4} fill="rgba(240,237,232,0.16)" />
           ))}
         </motion.g>
 
@@ -93,7 +93,7 @@ export function LegalVisual() {
               />
               <motion.g initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: delay + d(0.45), duration: dur(0.4) }}>
                 <circle cx={doc.x + doc.w + 34} cy={noteY} r={7} fill="none" stroke={RED} />
-                <path d={`M ${doc.x + doc.w + 30.5} ${noteY} l 2.5 2.5 l 4.5 -5`} fill="none" stroke="#fff" strokeWidth={1.25} />
+                <path d={`M ${doc.x + doc.w + 30.5} ${noteY} l 2.5 2.5 l 4.5 -5`} fill="none" stroke="#f0ede8" strokeWidth={1.25} />
                 <text x={doc.x + doc.w + 46} y={noteY + 3.5} className="fill-white/70 font-mono text-[9.5px] uppercase tracking-[0.14em]">
                   {h.note}
                 </text>

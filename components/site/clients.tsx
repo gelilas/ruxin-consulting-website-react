@@ -137,7 +137,7 @@ function ClientVoices() {
                   transition={reduce ? { duration: 0.2 } : { type: 'spring', stiffness: 460, damping: 22 }}
                   className={cn(
                     'relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-2xl bg-white p-2.5 shadow-sm ring-1 ring-ink/10',
-                    selected && 'shadow-[0_16px_30px_-18px_rgba(176,22,30,0.65)] ring-2 ring-ruxin',
+                    selected && 'shadow-[0_16px_30px_-18px_rgba(171,38,28,0.65)] ring-2 ring-ruxin',
                   )}
                 >
                   {item.logo ? (
@@ -270,7 +270,7 @@ export function WhyChoose() {
           onMouseEnter={() => setHovering(true)}
           onMouseLeave={() => setHovering(false)}
         >
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[1.75rem] bg-black/20 lg:col-span-7 lg:order-2 lg:aspect-auto lg:min-h-[34rem]">
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[1.75rem] bg-ruxin/20 lg:col-span-7 lg:order-2 lg:aspect-auto lg:min-h-[34rem]">
             <AnimatePresence mode="popLayout" initial={false}>
               <motion.div
                 key={active}

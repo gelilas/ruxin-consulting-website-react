@@ -36,9 +36,9 @@ export function FinanceVisual() {
     <div className="absolute inset-0">
       <VisualSvg label="Financial data visualization: scattered data points organize into a clean upward trend line. Illustrative demo data.">
         {[150, 230, 310, 390].map((y) => (
-          <line key={y} x1={60} x2={580} y1={y} y2={y} stroke="rgba(255,255,255,0.06)" />
+          <line key={y} x1={60} x2={580} y1={y} y2={y} stroke="rgba(240,237,232,0.06)" />
         ))}
-        <line x1={60} x2={580} y1={410} y2={410} stroke="rgba(255,255,255,0.18)" />
+        <line x1={60} x2={580} y1={410} y2={410} stroke="rgba(240,237,232,0.18)" />
 
         {floatingNumbers.map((n, i) => (
           <motion.text
@@ -59,7 +59,7 @@ export function FinanceVisual() {
             key={`bar-${i}`}
             x={p.to.x - 3}
             width={6}
-            fill="rgba(255,255,255,0.07)"
+            fill="rgba(240,237,232,0.07)"
             initial={{ y: 410, height: 0 }}
             animate={{ y: 410 - (20 + (i % 5) * 9), height: 20 + (i % 5) * 9 }}
             transition={{ delay: d(1.6 + i * 0.03), duration: dur(0.7), ease: EASE }}
@@ -70,7 +70,7 @@ export function FinanceVisual() {
         <motion.path
           d={lineD}
           fill="none"
-          stroke="#fff"
+          stroke="#f0ede8"
           strokeWidth={1.5}
           strokeLinejoin="round"
           initial={{ pathLength: 0 }}
@@ -82,7 +82,7 @@ export function FinanceVisual() {
           <motion.circle
             key={i}
             r={i === COUNT - 1 ? 5 : 2.2}
-            fill={i === COUNT - 1 ? RED : '#fff'}
+            fill={i === COUNT - 1 ? RED : '#f0ede8'}
             initial={{ cx: p.from.x, cy: p.from.y, opacity: 0 }}
             animate={{ cx: p.to.x, cy: p.to.y, opacity: 1 }}
             transition={{

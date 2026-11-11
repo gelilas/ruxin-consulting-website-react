@@ -32,7 +32,7 @@ export function ConnectionNetwork({ onLight = false, static: isStatic = false }:
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    const palette = { red: '171, 38, 28', ink: '#4b0b10' }
+    const palette = { red: '171, 38, 28', ink: '#820710' }
     const readPalette = () => {
       const style = getComputedStyle(document.documentElement)
       const hex = style.getPropertyValue('--brand-bright-red').trim().replace('#', '')
@@ -134,7 +134,7 @@ export function ConnectionNetwork({ onLight = false, static: isStatic = false }:
       const inkN = /^[0-9a-fA-F]{6}$/.test(inkHex) ? parseInt(inkHex, 16) : 0x4b0b10
       const inkRgb = `${(inkN >> 16) & 255}, ${(inkN >> 8) & 255}, ${inkN & 255}`
       const line = (alpha: number) =>
-        onLight ? `rgba(${inkRgb}, ${Math.min(1, alpha * 2.4)})` : `rgba(255, 255, 255, ${alpha})`
+        onLight ? `rgba(${inkRgb}, ${Math.min(1, alpha * 2.4)})` : `rgba(240, 237, 232, ${alpha})`
 
       ctx.clearRect(0, 0, w, h)
 
@@ -303,7 +303,7 @@ export function ConnectionNetwork({ onLight = false, static: isStatic = false }:
         ctx.beginPath()
         ctx.arc(n.x, n.y, 5 * appear, 0, Math.PI * 2)
         ctx.fill()
-        ctx.fillStyle = `rgba(255,255,255,${0.95 * appear})`
+        ctx.fillStyle = `rgba(240,237,232,${0.95 * appear})`
         ctx.beginPath()
         ctx.arc(n.x, n.y, 3.2 * appear, 0, Math.PI * 2)
         ctx.fill()
@@ -372,7 +372,7 @@ export function ConnectionNetwork({ onLight = false, static: isStatic = false }:
         ctx.stroke()
 
         if (r > 18) {
-          ctx.fillStyle = `rgba(255,255,255,${centerIn})`
+          ctx.fillStyle = `rgba(240,237,232,${centerIn})`
           ctx.font = `700 ${Math.round(r * 0.3)}px "Power Grotesk", "Inter Tight Variable", "Inter Tight", sans-serif`
           if ('letterSpacing' in ctx) (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = `${Math.round(r * 0.06)}px`
           ctx.fillText('RUXIN', c.x + r * 0.03, c.y + 1)
