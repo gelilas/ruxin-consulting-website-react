@@ -9,7 +9,7 @@ export const company = {
   email: 'ruxinconsulting@gmail.com',
   phone: '+251 988 987 777',
   location: 'Rwanda St, Addis Ababa',
-  mapEmbedUrl: 'https://www.google.com/maps?q=8.992503,38.778893&output=embed',
+  mapEmbedUrl: 'https://www.google.com/maps?q=Ruxin+Consulting,+Rwanda+St,+Addis+Ababa&ftid=0x164b85ea367df1a9:0x71eaf705c5b7e08e&output=embed',
   website: 'https://www.ruxinconsulting.com',
   socials: [] as { label: string; href: string }[],
 }
