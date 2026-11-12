@@ -7,7 +7,8 @@ RUN npm ci
 
 COPY . .
 
-ARG VITE_CMS_URL=http://localhost:4001
+# Empty = same origin; nginx in this image proxies /api and /uploads to the backend.
+ARG VITE_CMS_URL=""
 ENV VITE_CMS_URL=$VITE_CMS_URL
 
 RUN npm run build

@@ -110,7 +110,11 @@ export function isSiteContent(value: unknown): value is SiteContent {
 
 const SiteContentContext = createContext<SiteContent>(fallback)
 
-const cmsUrl = (import.meta.env.VITE_CMS_URL as string | undefined)?.replace(/\/$/, '') || 'http://localhost:4001'
+// Empty/unset in a production build means "same origin" - nginx proxies /api
+// and /uploads to the backend. Dev keeps the direct localhost default.
+const cmsUrl =
+  ((import.meta.env.VITE_CMS_URL as string | undefined) ?? '').replace(/\/$/, '') ||
+  (import.meta.env.DEV ? 'http://localhost:4001' : '')
 
 const loadingCopy: Record<Locale, { title: string; body: string }> = {
   en: { title: 'Loading…', body: 'Preparing the selected language.' },
