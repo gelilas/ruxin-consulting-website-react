@@ -70,7 +70,7 @@ export function Navbar() {
                   <a
                     href={link.href}
                     className={cn(
-                      'relative px-3.5 py-2 text-[13px] tracking-wide transition-colors',
+                      'relative px-3.5 py-2 text-[15px] tracking-wide transition-colors',
                       isActive ? 'text-white' : 'text-white/75 hover:text-white',
                     )}
                   >
@@ -96,7 +96,7 @@ export function Navbar() {
                   aria-pressed={locale === item}
                   onClick={() => setLocale(item)}
                   className={cn(
-                    'rounded-full px-2 py-1 text-[10px] font-medium transition-colors',
+                    'rounded-full px-2 py-1 text-[11px] font-medium transition-colors',
                     locale === item ? 'bg-white text-ruxin' : 'text-white/70 hover:text-white',
                   )}
                 >
@@ -108,7 +108,7 @@ export function Navbar() {
               <a
                 href="#contact"
                 data-analytics-location="navbar"
-                className="group inline-flex h-10 items-center gap-2 rounded-full bg-cream pl-5 pr-4 text-[13px] font-medium text-ink transition-colors hover:bg-white"
+                className="group inline-flex h-10 items-center gap-2 rounded-full bg-cream pl-5 pr-4 text-[14px] font-medium text-ink transition-colors hover:bg-white"
               >
                 {copy.talk}
                 <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
