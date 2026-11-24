@@ -58,7 +58,7 @@ export function EventsSection() {
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
             <Reveal>
-              <Eyebrow>{events.eyebrow}</Eyebrow>
+              <Eyebrow icon={CalendarDays}>{events.eyebrow}</Eyebrow>
             </Reveal>
             <SplitHeading
               id="events-heading"
@@ -155,7 +155,7 @@ export function EventsPage() {
   return (
     <div className="bg-paper pb-24 pt-32 text-ink md:pb-32 md:pt-40">
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
-        <Eyebrow>{events.eyebrow}</Eyebrow>
+        <Eyebrow icon={CalendarDays}>{events.eyebrow}</Eyebrow>
         <SplitHeading
           as="h1"
           lines={events.headline}

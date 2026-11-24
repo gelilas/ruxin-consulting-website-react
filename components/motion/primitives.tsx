@@ -2,6 +2,7 @@
 
 import { animate, motion, useInView, useMotionValue, useReducedMotion, useSpring } from 'motion/react'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { Sparkles, type LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export const EASE = [0.22, 1, 0.36, 1] as const
@@ -147,11 +148,13 @@ export function Eyebrow({
   className,
   dark = false,
   mark = 'red',
+  icon: Icon = Sparkles,
 }: {
   children: ReactNode
   className?: string
   dark?: boolean
   mark?: 'red' | 'white'
+  icon?: LucideIcon
 }) {
   return (
     <p
@@ -161,8 +164,14 @@ export function Eyebrow({
         className,
       )}
     >
-      <span className="relative flex size-2.5">
-        <span className={cn('absolute inset-0 rounded-full', mark === 'white' ? 'bg-white' : 'bg-ruxin')} />
+      <span
+        className={cn(
+          'flex size-9 shrink-0 items-center justify-center rounded-xl ring-1 ring-inset',
+          mark === 'white' ? 'bg-white/15 text-white ring-white/30' : 'bg-ruxin/10 text-ruxin ring-ruxin/20',
+        )}
+        aria-hidden="true"
+      >
+        <Icon className="size-[18px]" strokeWidth={1.75} />
       </span>
       {children}
     </p>

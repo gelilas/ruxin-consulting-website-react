@@ -128,7 +128,7 @@ export function Navbar() {
                       current ? 'text-white' : 'text-white/75 hover:text-white',
                     )}
                   >
-                    {copy.navLabels[index] || link.label}
+                    {link.label}
                     {current && (
                       <motion.span
                         layoutId="nav-dot"
@@ -208,7 +208,7 @@ export function Navbar() {
                     onClick={() => setOpen(false)}
                     className="flex items-baseline justify-between py-4 font-heading text-3xl font-medium tracking-tight text-white"
                   >
-                    {copy.navLabels[i] || link.label}
+                    {link.label}
                     <span className="font-mono text-xs text-white/80">0{i + 1}</span>
                   </NavItem>
                 </motion.li>

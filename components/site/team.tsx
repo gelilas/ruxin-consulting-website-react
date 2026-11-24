@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, UsersRound } from 'lucide-react'
 import { useState } from 'react'
 import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
@@ -46,7 +46,7 @@ export function Team() {
         <div className="grid grid-cols-1 items-end gap-8 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <Reveal>
-              <Eyebrow>{copy.team}</Eyebrow>
+              <Eyebrow icon={UsersRound}>{copy.team}</Eyebrow>
             </Reveal>
             <SplitHeading
               id="team-heading"

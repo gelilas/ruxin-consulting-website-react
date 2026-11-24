@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowLeft, ArrowRight, ArrowUpRight, Clock, MapPin } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ArrowUpRight, CheckCircle2, Clock, MapPin, Users } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import { careers as careersShape } from '@/lib/content'
 import { useSiteContent } from '@/lib/site-content'
@@ -24,7 +24,7 @@ export function Careers() {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <Reveal>
-              <Eyebrow dark>{copy.careers}</Eyebrow>
+              <Eyebrow icon={Users} dark>{copy.careers}</Eyebrow>
             </Reveal>
             <SplitHeading
               id="careers-heading"
@@ -39,7 +39,7 @@ export function Careers() {
               <ul className="mt-10 space-y-3 border-t border-ink/10 pt-8">
                 {careers.benefits.map((benefit) => (
                   <li key={benefit} className="flex items-center gap-3 text-sm text-ink/70">
-                    <span className="size-1 rounded-full bg-ruxin" aria-hidden="true" />
+                    <CheckCircle2 className="size-4 shrink-0 text-ruxin" aria-hidden="true" />
                     {benefit}
                   </li>
                 ))}
@@ -116,7 +116,7 @@ export function CareersPage() {
   return (
     <div className="bg-paper pb-24 pt-32 text-ink md:pb-32 md:pt-40">
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
-        <Eyebrow>{copy.careers}</Eyebrow>
+        <Eyebrow icon={Users}>{copy.careers}</Eyebrow>
         <SplitHeading
           as="h1"
           lines={[careers.headline]}
@@ -253,7 +253,7 @@ function JobList({ title, items }: { title: string; items: string[] }) {
       <ul className="mt-5 space-y-3">
         {items.map((item) => (
           <li key={item} className="flex gap-3 text-pretty leading-relaxed text-ink/75">
-            <span className="mt-2.5 size-1 shrink-0 rounded-full bg-ruxin" aria-hidden="true" />
+            <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-ruxin" aria-hidden="true" />
             {item}
           </li>
         ))}

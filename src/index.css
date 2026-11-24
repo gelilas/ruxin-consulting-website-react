@@ -190,6 +190,8 @@
   }
   html {
     scroll-behavior: smooth;
+    /* Keeps anchor/in-page nav targets clear of the fixed header (h-16 to md:h-24). */
+    scroll-padding-top: 6.5rem;
   }
   body {
     @apply bg-background text-foreground font-sans;

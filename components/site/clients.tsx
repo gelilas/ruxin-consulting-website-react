@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion, useInView, useReducedMotion } from 'motion/react'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Handshake, MessageSquareQuote, ShieldCheck } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { clients as clientShape } from '@/lib/content'
 import { mediaUrl } from '@/lib/media'
@@ -61,7 +61,7 @@ export function Clients() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
           <div className="lg:col-span-3">
             <Reveal>
-              <Eyebrow>{copy.clients}</Eyebrow>
+              <Eyebrow icon={Handshake}>{copy.clients}</Eyebrow>
             </Reveal>
           </div>
           <div className="lg:col-span-9">
@@ -115,7 +115,7 @@ function ClientVoices() {
   return (
     <div className="mx-auto mt-20 max-w-[1440px] px-5 md:mt-28 md:px-10">
       <Reveal>
-        <Eyebrow>{copy.testimonials}</Eyebrow>
+        <Eyebrow icon={MessageSquareQuote}>{copy.testimonials}</Eyebrow>
         <h3 className="mt-4 max-w-xl text-balance text-3xl font-semibold tracking-tight md:text-4xl">
           In our clients’ words.
         </h3>
@@ -250,7 +250,7 @@ export function WhyChoose() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
           <div className="lg:col-span-3">
             <Reveal>
-              <Eyebrow dark mark="white" className="text-white/80">{whyChoose.eyebrow}</Eyebrow>
+              <Eyebrow icon={ShieldCheck} dark mark="white" className="text-white/80">{whyChoose.eyebrow}</Eyebrow>
             </Reveal>
           </div>
           <div className="lg:col-span-9">

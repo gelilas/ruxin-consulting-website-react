@@ -171,11 +171,24 @@ function LocaleStatus({ locale, error }: { locale: Locale; error: boolean }) {
   )
 }
 
+/** Events and Careers have dedicated pages, so they must always be in the navbar. */
+function withRequiredNav(content: SiteContent): SiteContent {
+  const links = [...content.navLinks]
+  const insert = (label: string, href: string) => {
+    if (links.some((l) => l.href === href)) return
+    const i = links.findIndex((l) => l.href === '#clients')
+    links.splice(i === -1 ? links.length : i, 0, { label, href })
+  }
+  insert('Events', '/events')
+  insert('Careers', '/careers')
+  return { ...content, navLinks: links }
+}
+
 async function loadCmsContent(signal: AbortSignal, locale: Locale): Promise<SiteContent | null> {
   const response = await fetch(`${cmsUrl}/api/content?lang=${locale}`, { signal })
   if (!response.ok) return null
   const data: unknown = await response.json()
-  return isSiteContent(data) ? data : null
+  return isSiteContent(data) ? withRequiredNav(data) : null
 }
 
 export function SiteContentProvider({ children }: { children: ReactNode }) {

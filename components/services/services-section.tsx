@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, useMotionValueEvent, useReducedMotion, useScroll } from 'motion/react'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Briefcase } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState, type ComponentType } from 'react'
 import { type ServiceId } from '@/lib/content'
 import { trackAnalytics } from '@/lib/analytics'
@@ -101,7 +101,7 @@ export function ServicesSection() {
     <div className="mx-auto max-w-[1600px] px-5 md:px-10">
       <div className="max-w-3xl">
         <Reveal>
-          <Eyebrow>{copy.services}</Eyebrow>
+          <Eyebrow icon={Briefcase}>{copy.services}</Eyebrow>
         </Reveal>
         <SplitHeading
           lines={copy.essentialSupport}

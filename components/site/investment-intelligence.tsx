@@ -1,4 +1,4 @@
-import { ArrowUpRight, BarChart3, BriefcaseBusiness, ChartNoAxesCombined } from 'lucide-react'
+import { ArrowUpRight, BarChart3, BriefcaseBusiness, ChartNoAxesCombined, TrendingUp } from 'lucide-react'
 import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
 import { Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
@@ -14,7 +14,7 @@ export function InvestmentIntelligence() {
         <div className="grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-16">
           <div className="lg:col-span-6">
             <Reveal>
-              <Eyebrow>{investmentIntelligence.eyebrow}</Eyebrow>
+              <Eyebrow icon={TrendingUp}>{investmentIntelligence.eyebrow}</Eyebrow>
             </Reveal>
             <SplitHeading
               id="investment-intelligence-heading"

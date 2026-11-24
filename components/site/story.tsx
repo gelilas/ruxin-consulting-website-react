@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion, useInView, useReducedMotion, useScroll, useTransform } from 'motion/react'
-import { ArrowDown, ArrowRight, BadgeCheck, Gauge, HeartHandshake, Handshake, ShieldCheck, TrendingUp, type LucideIcon } from 'lucide-react'
+import { ArrowDown, ArrowRight, BadgeCheck, Building2, Flag, Gauge, Gem, Handshake, HeartHandshake, ShieldCheck, TrendingUp, type LucideIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
@@ -46,7 +46,7 @@ function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: EASE, delay: 0.5 }}
             >
-              <Eyebrow dark className="text-white/80">
+              <Eyebrow icon={Flag} dark mark="white" className="text-white/80">
                 {hero.eyebrow}
               </Eyebrow>
             </motion.div>
@@ -129,7 +129,7 @@ function About() {
         <div className="grid items-end gap-8 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-8">
             <Reveal>
-              <Eyebrow>{about.eyebrow}</Eyebrow>
+              <Eyebrow icon={Building2}>{about.eyebrow}</Eyebrow>
             </Reveal>
             <SplitHeading
               id="about-heading"
@@ -294,7 +294,7 @@ function Values() {
         >
           <div className="max-w-xl lg:col-span-6 lg:max-w-[34rem]">
             <Reveal>
-              <Eyebrow>{copy.coreValues}</Eyebrow>
+              <Eyebrow icon={Gem}>{copy.coreValues}</Eyebrow>
             </Reveal>
             <SplitHeading
               id="values-heading"

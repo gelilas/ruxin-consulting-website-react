@@ -2,7 +2,6 @@ import { useLocale } from './site-content'
 
 const copy = {
   en: {
-    navLabels: ['About', 'Services', 'Why us', 'Our team', 'Events', 'Careers', 'Clients', 'Contact'],
     talk: "Let's Talk",
     coreValues: 'Our core values',
     howWeWork: ['How we work', 'with every client.'],
@@ -68,7 +67,6 @@ const copy = {
     copyright: '© 2026 Ruxin Consulting. All rights reserved.',
   },
   am: {
-    navLabels: ['ስለ እኛ', 'አገልግሎቶች', 'ለምን እኛ', 'ቡድናችን', 'ዝግጅቶች', 'ሥራዎች', 'ደንበኞች', 'ያግኙን'],
     talk: 'ያግኙን',
     coreValues: 'ዋና እሴቶቻችን',
     howWeWork: ['ከእያንዳንዱ ደንበኛ ጋር', 'እንዴት እንደምንሰራ።'],
@@ -134,7 +132,6 @@ const copy = {
     copyright: '© 2026 Ruxin Consulting። መብቱ በሙሉ የተጠበቀ ነው።',
   },
   zh: {
-    navLabels: ['关于我们', '服务', '为什么选择我们', '我们的团队', '活动', '招聘', '客户', '联系我们'],
     talk: '联系我们',
     coreValues: '我们的核心价值观',
     howWeWork: ['我们如何工作', '与每一位客户同行。'],

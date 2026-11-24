@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion } from 'motion/react'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, Lightbulb } from 'lucide-react'
 import { useState } from 'react'
 import { insights as insightShape } from '@/lib/content'
 import { mediaUrl } from '@/lib/media'
@@ -97,7 +97,7 @@ export function Insights() {
         <div className="grid grid-cols-1 items-end gap-8 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <Reveal>
-              <Eyebrow>{copy.insights}</Eyebrow>
+              <Eyebrow icon={Lightbulb}>{copy.insights}</Eyebrow>
             </Reveal>
             <SplitHeading
               id="insights-heading"

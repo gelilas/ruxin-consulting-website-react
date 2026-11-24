@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion } from 'motion/react'
-import { ArrowRight, Check, Globe, Loader2, Mail, MapPin, Phone } from 'lucide-react'
+import { ArrowRight, Check, Globe, Loader2, Mail, MapPin, Phone, Send } from 'lucide-react'
 import { useActionState, useEffect, useId, useRef } from 'react'
 import { useSiteContent } from '@/lib/site-content'
 import { trackAnalytics } from '@/lib/analytics'
@@ -96,7 +96,7 @@ export function Contact() {
     <section id="contact" aria-labelledby="contact-heading" className="relative overflow-hidden bg-ruxin py-24 text-white md:py-36">
       <div className="relative mx-auto max-w-[1440px] px-5 md:px-10">
         <Reveal>
-          <Eyebrow dark mark="white" className="text-white/70">
+          <Eyebrow icon={Mail} dark mark="white" className="text-white/70">
             {copy.contact}
           </Eyebrow>
         </Reveal>
@@ -238,7 +238,7 @@ export function Contact() {
         <Reveal delay={0.2} className="mt-16 border-t border-white/20 pt-8 md:mt-24">
           <div className="grid gap-6 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:items-end">
             <div>
-              <Eyebrow dark mark="white" className="text-white/70">
+              <Eyebrow icon={Send} dark mark="white" className="text-white/70">
                 {copy.findUs}
               </Eyebrow>
               <p className="mt-4 max-w-md text-sm leading-relaxed text-white/70">
