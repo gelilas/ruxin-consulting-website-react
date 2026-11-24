@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useMotionValueEvent, useReducedMotion, useScroll } from 'motion/react'
+import { useReducedMotion } from 'motion/react'
 import { ArrowRight, Briefcase } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState, type ComponentType } from 'react'
 import { type ServiceId } from '@/lib/content'
@@ -46,16 +46,20 @@ export function ServicesSection() {
   const copy = useUiCopy()
   const reduce = useReducedMotion()
   const [index, setIndex] = useState(0)
-  const trackRef = useRef<HTMLDivElement>(null)
+  const stacked = useRef(false)
 
-  const scrollDriven = !reduce
-  const { scrollYProgress } = useScroll({ target: trackRef, offset: ['start start', 'end end'] })
-
-  useMotionValueEvent(scrollYProgress, 'change', (value) => {
-    if (!scrollDriven || services.length === 0) return
-    const next = Math.min(services.length - 1, Math.max(0, Math.floor(value * services.length)))
-    setIndex((prev) => (prev === next ? prev : next))
-  })
+  // Page scrolls normally: cards change only on click / keyboard, never on scroll or hover.
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    const update = () => {
+      stacked.current = mq.matches
+      // Desktop rails always keep one panel open.
+      if (!mq.matches) setIndex((prev) => (prev < 0 ? 0 : prev))
+    }
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
 
   const select = useCallback(
     (i: number, fromUser = true) => {
@@ -66,15 +70,24 @@ export function ServicesSection() {
         if (service) trackAnalytics('service_interest', { service: service.id })
       }
       setIndex(bounded)
+      // On mobile the cards stack: once the previous one collapses, bring the opened one into view.
+      if (fromUser && stacked.current) {
+        window.setTimeout(() => {
+          const el = document.getElementById(`service-panel-${services[bounded].id}`)
+          if (!el) return
+          const top = el.getBoundingClientRect().top + window.scrollY - 88
+          window.scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' })
+        }, 580)
+      }
     },
-    [services],
+    [services, reduce],
   )
 
   const service = services[index] ?? services[0]
 
   useEffect(() => {
-    if (service) trackAnalytics('service_viewed', { service: service.id })
-  }, [service?.id])
+    if (service && index >= 0) trackAnalytics('service_viewed', { service: service.id })
+  }, [service?.id, index >= 0])
 
   useEffect(() => {
     const onSelect = (event: Event) => {
@@ -137,24 +150,26 @@ export function ServicesSection() {
               aria-selected={isActive}
               aria-expanded={isActive}
               tabIndex={isActive ? 0 : -1}
-              onClick={() => select(i)}
-              onMouseEnter={() => !reduce && select(i, false)}
-              onFocus={() => select(i, false)}
+              onClick={() => (stacked.current && isActive ? setIndex(-1) : select(i))}
               style={{
                 backgroundColor: railTints[i % railTints.length],
                 // flex-grow/basis are animatable, so the panels slide open
                 // without a layout library fighting the flex container.
-                flexGrow: isActive ? 1 : 0,
-                flexBasis: isActive ? '0%' : RAIL,
-                flexShrink: isActive ? 1 : 0,
+                // Desktop animates flex sizing; mobile animates an explicit height
+                // (min-height jumps can't be transitioned, which made it feel stuck).
+                ['--grow' as string]: isActive ? 1 : 0,
+                ['--basis' as string]: isActive ? '0%' : RAIL,
+                ['--shrink' as string]: isActive ? 1 : 0,
+                ['--h' as string]: isActive ? '28rem' : '4.25rem',
                 transition: reduce
                   ? undefined
-                  : `flex-grow 700ms ${PANEL_EASE}, flex-basis 700ms ${PANEL_EASE}`,
+                  : `flex-grow 700ms ${PANEL_EASE}, flex-basis 700ms ${PANEL_EASE}, height 550ms ${PANEL_EASE}`,
               }}
               className={cn(
                 'group relative overflow-hidden rounded-[1.75rem] text-left outline-none ring-ruxin/60 focus-visible:ring-2',
                 // Mobile stacks: the open card gets real height, rails stay short.
-                isActive ? 'min-h-[26rem] md:min-h-0' : 'min-h-[4.25rem] md:min-h-0',
+                'h-[var(--h)] cursor-pointer will-change-[height] md:h-auto md:[flex-basis:var(--basis)] md:[flex-grow:var(--grow)] md:[flex-shrink:var(--shrink)]',
+                !isActive && 'hover:brightness-110',
               )}
             >
               {/* Media sits behind everything. Collapsed rails keep a dim blur. */}
@@ -258,21 +273,10 @@ export function ServicesSection() {
     </div>
   )
 
-  if (!scrollDriven) {
-    return (
-      <section id="services" aria-label={copy.services} className="bg-stone py-24 text-ink md:py-32">
-        {header}
-        <div className="mt-12">{accordion}</div>
-      </section>
-    )
-  }
-
   return (
-    <section id="services" aria-label={copy.services} className="bg-stone text-ink">
-      <div className="pt-24 md:pt-32">{header}</div>
-      <div ref={trackRef} style={{ height: `${services.length * 85 + 40}svh` }} className="relative">
-        <motion.div className="sticky top-0 flex min-h-svh items-center py-10">{accordion}</motion.div>
-      </div>
+    <section id="services" aria-label={copy.services} className="bg-stone py-24 text-ink md:py-32">
+      {header}
+      <div className="mt-12">{accordion}</div>
     </section>
   )
 }
