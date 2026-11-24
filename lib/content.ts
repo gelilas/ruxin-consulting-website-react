@@ -19,6 +19,8 @@ export const navLinks = [
   { label: 'Services', href: '#services' },
   { label: 'Why us', href: '#why' },
   { label: 'Our team', href: '#team' },
+  { label: 'Events', href: '/events' },
+  { label: 'Careers', href: '/careers' },
   { label: 'Clients', href: '#clients' },
   { label: 'Contact', href: '#contact' },
 ]
@@ -28,6 +30,7 @@ export const hero = {
   headline: ['Your Partner', 'in Every Step!'],
   body: 'Ruxin Consulting is an Ethiopia-based FDI consulting firm committed to simplifying the way businesses establish, operate, and grow in Ethiopia.',
   image: '/profile/hero.jpg',
+  video: '',
   primaryCta: { label: 'Explore Our Services', href: '#services' },
   secondaryCta: { label: 'Talk to Ruxin', href: '#contact' },
 }
@@ -92,6 +95,7 @@ export const services: {
   description: string
   capabilities: string[]
   image: string
+  video: string
 }[] = [
   {
     id: 'consulting',
@@ -103,6 +107,7 @@ export const services: {
       'We guide foreign investors through Ethiopia’s investment regulations and requirements, providing clarity on applicable procedures and assisting them throughout the business registration and licensing process.',
     capabilities: ['Investment regulations', 'Business registration', 'Licensing', 'Government liaison'],
     image: '/profile/consulting-team.jpg',
+    video: '',
   },
   {
     id: 'logistics',
@@ -114,6 +119,7 @@ export const services: {
       'We facilitate customs clearance by coordinating documentation, regulatory requirements, and relevant procedures to help businesses navigate import and export processes more smoothly and reduce unnecessary delays.',
     capabilities: ['Documentation', 'Import and export', 'Regulatory coordination', 'Clearance'],
     image: '/profile/customs-port.jpg',
+    video: '',
   },
   {
     id: 'finance',
@@ -125,6 +131,7 @@ export const services: {
       'We assist businesses with the preparation of monthly and annual financial reports in accordance with applicable local regulations, helping clients meet their reporting obligations and maintain proper financial documentation.',
     capabilities: ['Monthly reports', 'Annual reports', 'Local regulations', 'Financial documentation'],
     image: '/profile/finance-lead.jpg',
+    video: '',
   },
   {
     id: 'recruitment',
@@ -136,6 +143,7 @@ export const services: {
       'We connect businesses with qualified talent by supporting candidate sourcing, screening, and recruitment coordination — helping clients build capable teams that align with their operational needs and business goals.',
     capabilities: ['Candidate sourcing', 'Screening', 'Recruitment coordination', 'Team building'],
     image: '/profile/recruitment-team.jpg',
+    video: '',
   },
   {
     id: 'legal',
@@ -147,6 +155,7 @@ export const services: {
       'We provide legal guidance and document review to help businesses understand relevant legal and regulatory requirements, address contractual matters, and navigate business-related legal procedures with greater confidence.',
     capabilities: ['Legal guidance', 'Document review', 'Contracts', 'Regulatory requirements'],
     image: '/profile/legal-advisor.jpg',
+    video: '',
   },
 ]
 
@@ -537,5 +546,66 @@ export const assistant = {
     'I need investment consultancy',
     'Help with customs clearing',
     'How can I contact Ruxin?',
+  ],
+}
+
+export const events: {
+  eyebrow: string
+  headline: string[]
+  body: string
+  items: {
+    id: string
+    title: string
+    date: string
+    endDate: string
+    time: string
+    location: string
+    category: string
+    summary: string
+    description: string
+    image: string
+    video: string
+    registerUrl: string
+    registerLabel: string
+  }[]
+} = {
+  eyebrow: 'Events',
+  headline: ['Where we convene', 'investors and partners.'],
+  body: 'Briefings, roundtables and site visits that connect international investors with the people shaping business in Ethiopia.',
+  items: [
+    {
+      id: 'addis-investment-briefing',
+      title: 'Addis Investment Briefing',
+      date: '2026-03-12',
+      endDate: '',
+      time: '09:00 – 13:00 EAT',
+      location: 'Hyatt Regency, Addis Ababa',
+      category: 'Briefing',
+      summary:
+        'A half-day briefing on incentives, licensing and the practical steps to establishing a presence in Ethiopia.',
+      description:
+        'Our investment team walks through the current regulatory landscape, the incentives available by sector, and the licensing path from first application to operating permit. The session closes with an open clinic where you can put your own case to our consultants.',
+      image: '/profile/consulting-team.jpg',
+      video: '',
+      registerUrl: '#contact',
+      registerLabel: 'Request an invitation',
+    },
+    {
+      id: 'manufacturing-site-visit',
+      title: 'Industrial Park Site Visit',
+      date: '2026-04-24',
+      endDate: '',
+      time: '08:30 – 16:00 EAT',
+      location: 'Hawassa Industrial Park',
+      category: 'Site visit',
+      summary:
+        'A guided day inside one of Ethiopia’s flagship industrial parks, with park management and current tenants.',
+      description:
+        'See the facilities, utilities and logistics corridors first hand, meet park management, and hear directly from manufacturers already operating on site about what the first eighteen months actually involved.',
+      image: '/profile/customs-port.jpg',
+      video: '',
+      registerUrl: '#contact',
+      registerLabel: 'Reserve a place',
+    },
   ],
 }

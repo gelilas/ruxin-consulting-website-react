@@ -1,15 +1,15 @@
 'use client'
 
-import { AnimatePresence, motion, useInView, useReducedMotion } from 'motion/react'
-import { ArrowRight, Pause, Play } from 'lucide-react'
+import { motion, useMotionValueEvent, useReducedMotion, useScroll } from 'motion/react'
+import { ArrowRight } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState, type ComponentType } from 'react'
 import { type ServiceId } from '@/lib/content'
 import { trackAnalytics } from '@/lib/analytics'
-import { mediaUrl } from '@/lib/media'
 import { useSiteContent } from '@/lib/site-content'
 import { useUiCopy } from '@/lib/ui-copy'
 import { cn } from '@/lib/utils'
 import { EASE, Eyebrow, Reveal, SplitHeading } from '@/components/motion/primitives'
+import { Media } from '@/components/ui/media'
 import { ConsultingVisual } from './visuals/consulting-visual'
 import { FinanceVisual } from './visuals/finance-visual'
 import { LegalVisual } from './visuals/legal-visual'
@@ -24,63 +24,61 @@ const visuals: Record<ServiceId, ComponentType> = {
   legal: LegalVisual,
 }
 
-/** Where the ambient red glow sits for each service — it drifts as the system transforms. */
-const glowPositions: Record<ServiceId, { x: string; y: string }> = {
-  consulting: { x: '85%', y: '15%' },
-  logistics: { x: '40%', y: '30%' },
-  recruitment: { x: '82%', y: '62%' },
-  finance: { x: '90%', y: '25%' },
-  legal: { x: '55%', y: '88%' },
-}
+/**
+ * Collapsed-rail tints. The brand is only three colours, so panels are
+ * separated by depth within the red range rather than by hue.
+ */
+const railTints = [
+  'color-mix(in srgb, var(--brand-wine-red) 94%, black)',
+  'var(--brand-wine-red)',
+  'color-mix(in srgb, var(--brand-bright-red) 85%, var(--brand-wine-red))',
+  'color-mix(in srgb, var(--brand-wine-red) 65%, var(--brand-bright-red))',
+  'var(--brand-bright-red)',
+  'color-mix(in srgb, var(--brand-bright-red) 80%, black)',
+]
 
-const CYCLE_MS = 9000
+const PANEL_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
+/** Width of a closed rail. Wide enough for vertical text plus breathing room. */
+const RAIL = '5.25rem'
 
 export function ServicesSection() {
   const { services } = useSiteContent()
   const copy = useUiCopy()
-  const [index, setIndex] = useState(0)
-  const [playing, setPlaying] = useState(true)
-  const [hoverPaused, setHoverPaused] = useState(false)
-  const [cycle, setCycle] = useState(0)
-  const [burst, setBurst] = useState(0)
-  const [lifted, setLifted] = useState(false)
-  const sectionRef = useRef<HTMLElement>(null)
-  const inView = useInView(sectionRef, { margin: '-30% 0px' })
   const reduce = useReducedMotion()
-  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const swiped = useRef(false)
-  const service = services[index] ?? services[0]
-  const autoplay = playing && !hoverPaused && inView && !reduce
+  const [index, setIndex] = useState(0)
+  const trackRef = useRef<HTMLDivElement>(null)
 
-  const select = useCallback((i: number, fromUser = true) => {
-    const nextService = services[(i + services.length) % services.length]
-    if (fromUser && nextService) trackAnalytics('service_interest', { service: nextService.id })
-    setLifted(false)
-    setIndex((prev) => {
-      if (prev === i) setCycle((c) => c + 1)
-      return (i + services.length) % services.length
-    })
-    if (fromUser) setPlaying(false)
-  }, [services.length])
+  const scrollDriven = !reduce
+  const { scrollYProgress } = useScroll({ target: trackRef, offset: ['start start', 'end end'] })
+
+  useMotionValueEvent(scrollYProgress, 'change', (value) => {
+    if (!scrollDriven || services.length === 0) return
+    const next = Math.min(services.length - 1, Math.max(0, Math.floor(value * services.length)))
+    setIndex((prev) => (prev === next ? prev : next))
+  })
+
+  const select = useCallback(
+    (i: number, fromUser = true) => {
+      if (services.length === 0) return
+      const bounded = (i + services.length) % services.length
+      if (fromUser) {
+        const service = services[bounded]
+        if (service) trackAnalytics('service_interest', { service: service.id })
+      }
+      setIndex(bounded)
+    },
+    [services],
+  )
+
+  const service = services[index] ?? services[0]
 
   useEffect(() => {
     if (service) trackAnalytics('service_viewed', { service: service.id })
   }, [service?.id])
 
-  const focusVisual = useCallback(() => {
-    setBurst((n) => n + 1)
-    setLifted((open) => !open)
-  }, [])
-
   useEffect(() => {
-    if (!autoplay) return
-    const id = setTimeout(() => select(index + 1, false), CYCLE_MS)
-    return () => clearTimeout(id)
-  }, [autoplay, index, cycle, select])
-
-  useEffect(() => {
-    const onSelect = (e: Event) => {
-      const id = (e as CustomEvent<ServiceId>).detail
+    const onSelect = (event: Event) => {
+      const id = (event as CustomEvent<ServiceId>).detail
       const i = services.findIndex((s) => s.id === id)
       if (i >= 0) select(i)
     }
@@ -88,327 +86,193 @@ export function ServicesSection() {
     return () => window.removeEventListener('ruxin:service', onSelect)
   }, [select, services])
 
-  const onTabKey = (e: React.KeyboardEvent) => {
-    const keys: Record<string, number> = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }
-    if (e.key in keys) {
-      e.preventDefault()
-      const next = (index + keys[e.key] + services.length) % services.length
-      select(next)
-      document.getElementById(`service-tab-${services[next].id}`)?.focus()
-    }
-  }
-
-  const hoverSelect = (i: number) => {
-    if (hoverTimer.current) clearTimeout(hoverTimer.current)
-    hoverTimer.current = setTimeout(() => {
-      if (i !== index) select(i)
-    }, 220)
-  }
-  const cancelHover = () => {
-    if (hoverTimer.current) clearTimeout(hoverTimer.current)
+  const onKeyDown = (event: React.KeyboardEvent) => {
+    const steps: Record<string, number> = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }
+    if (!(event.key in steps)) return
+    event.preventDefault()
+    const next = (index + steps[event.key] + services.length) % services.length
+    select(next)
+    document.getElementById(`service-panel-${services[next].id}`)?.focus()
   }
 
   if (!service) return null
-  const visualKey = (Object.hasOwn(visuals, service.id) ? service.id : 'consulting') as ServiceId
-  const Visual = visuals[visualKey]
 
-  return (
-    <section
-      ref={sectionRef}
-      id="services"
-      aria-label={copy.services}
-      className="relative overflow-hidden bg-stone pb-24 pt-24 text-ink md:pb-32 md:pt-32"
-    >
-      <motion.div
-        aria-hidden="true"
-        className="pointer-events-none absolute size-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-25 blur-3xl"
-        style={{ background: 'radial-gradient(circle, color-mix(in srgb, var(--ruxin) 28%, transparent), transparent 65%)' }}
-        animate={{ left: glowPositions[visualKey].x, top: glowPositions[visualKey].y }}
-        transition={{ duration: 1.6, ease: EASE }}
-      />
+  const header = (
+    <div className="mx-auto max-w-[1600px] px-5 md:px-10">
+      <div className="max-w-3xl">
+        <Reveal>
+          <Eyebrow>{copy.services}</Eyebrow>
+        </Reveal>
+        <SplitHeading
+          lines={copy.essentialSupport}
+          accentLast
+          accentClassName="text-ruxin"
+          className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
+        />
+        <Reveal delay={0.2}>
+          <p className="mt-6 text-lg text-ink/65 md:text-xl">{copy.servicesLead}</p>
+        </Reveal>
+      </div>
+    </div>
+  )
 
-      <div className="relative mx-auto max-w-[1440px] px-5 md:px-10">
-        <div className="mb-14 max-w-3xl">
-          <Reveal>
-            <Eyebrow>{copy.services}</Eyebrow>
-          </Reveal>
-          <SplitHeading
-            lines={copy.essentialSupport}
-            accentLast
-            accentClassName="text-ruxin"
-            className="mt-7 text-balance text-[clamp(2.2rem,4.6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.03em]"
-          />
-          <Reveal delay={0.2}>
-            <p className="mt-6 text-lg text-ink/65 md:text-xl">{copy.servicesLead}</p>
-          </Reveal>
-        </div>
-        <div className="flex items-end justify-between border-b border-ink/10 pb-6">
-          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink/65">{copy.capabilities}</p>
-          <div className="flex items-center gap-4">
-            <p className="font-mono text-[11px] tracking-[0.2em] text-ink/65" aria-live="polite">
-              <span className="text-ink">{service.number}</span> / {String(services.length).padStart(2, '0')}
-            </p>
-            {!reduce && (
-              <button
-                type="button"
-                onClick={() => setPlaying((p) => !p)}
-                className="flex size-8 items-center justify-center rounded-full border border-ink/15 text-ink/70 transition-colors hover:border-ink/40 hover:text-ink"
-                aria-label={playing ? copy.pauseService : copy.playService}
-              >
-                {playing ? <Pause className="size-3" /> : <Play className="size-3" />}
-              </button>
-            )}
-          </div>
-        </div>
-
-        <div className="mt-8 grid grid-cols-1 gap-10 lg:mt-12 lg:grid-cols-12 lg:gap-12">
-          {/* Navigation */}
-          <div className="lg:col-span-4">
-            <div
-              role="tablist"
-              aria-label={copy.services}
-              aria-orientation="vertical"
-              onKeyDown={onTabKey}
-              className="no-scrollbar -mx-5 flex snap-x gap-2 overflow-x-auto px-5 lg:mx-0 lg:flex-col lg:gap-0 lg:overflow-visible lg:px-0"
+  const accordion = (
+    <div className="mx-auto w-full max-w-[1600px] px-5 md:px-10">
+      <div
+        role="tablist"
+        aria-label={copy.services}
+        aria-orientation="horizontal"
+        onKeyDown={onKeyDown}
+        className="flex w-full flex-col gap-2.5 md:h-[clamp(30rem,74svh,46rem)] md:flex-row md:gap-3"
+      >
+        {services.map((item, i) => {
+          const isActive = i === index
+          const Visual = visuals[(Object.hasOwn(visuals, item.id) ? item.id : 'consulting') as ServiceId]
+          return (
+            <button
+              key={item.id}
+              id={`service-panel-${item.id}`}
+              role="tab"
+              type="button"
+              aria-selected={isActive}
+              aria-expanded={isActive}
+              tabIndex={isActive ? 0 : -1}
+              onClick={() => select(i)}
+              onMouseEnter={() => !reduce && select(i, false)}
+              onFocus={() => select(i, false)}
+              style={{
+                backgroundColor: railTints[i % railTints.length],
+                // flex-grow/basis are animatable, so the panels slide open
+                // without a layout library fighting the flex container.
+                flexGrow: isActive ? 1 : 0,
+                flexBasis: isActive ? '0%' : RAIL,
+                flexShrink: isActive ? 1 : 0,
+                transition: reduce
+                  ? undefined
+                  : `flex-grow 700ms ${PANEL_EASE}, flex-basis 700ms ${PANEL_EASE}`,
+              }}
+              className={cn(
+                'group relative overflow-hidden rounded-[1.75rem] text-left outline-none ring-ruxin/60 focus-visible:ring-2',
+                // Mobile stacks: the open card gets real height, rails stay short.
+                isActive ? 'min-h-[26rem] md:min-h-0' : 'min-h-[4.25rem] md:min-h-0',
+              )}
             >
-              {services.map((s, i) => {
-                const isActive = i === index
-                return (
-                  <button
-                    key={s.id}
-                    id={`service-tab-${s.id}`}
-                    role="tab"
-                    type="button"
-                    aria-selected={isActive}
-                    aria-controls="service-panel"
-                    tabIndex={isActive ? 0 : -1}
-                    onClick={() => select(i)}
-                    onMouseEnter={() => hoverSelect(i)}
-                    onMouseLeave={cancelHover}
-                    className={cn(
-                      'group relative flex shrink-0 snap-start items-center gap-3 rounded-full border px-4 py-2.5 text-left transition-colors lg:gap-6 lg:rounded-none lg:border-0 lg:border-b lg:border-ink/10 lg:px-0 lg:py-6',
-                      isActive
-                        ? 'border-ruxin bg-ruxin text-white lg:px-5'
-                        : 'border-ink/15 text-ink/70 hover:border-ink/30',
-                    )}
-                  >
-                    <span
-                      className={cn(
-                        'font-mono text-[11px] transition-colors',
-                        isActive ? 'text-white' : 'text-ink/65',
-                      )}
-                    >
-                      {s.number}
+              {/* Media sits behind everything. Collapsed rails keep a dim blur. */}
+              <span
+                className={cn(
+                  'absolute inset-0 transition-[opacity,filter] duration-700',
+                  isActive ? 'opacity-70' : 'opacity-30 blur-[3px]',
+                )}
+                aria-hidden="true"
+              >
+                {item.image || item.video ? (
+                  <Media image={item.image} video={item.video} paused={!isActive} className="size-full object-cover" />
+                ) : (
+                  <Visual />
+                )}
+              </span>
+              <span
+                className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10"
+                aria-hidden="true"
+              />
+
+              {/* Closed rail: vertical label, centred. */}
+              <span
+                className={cn(
+                  'absolute inset-0 flex items-center justify-between gap-3 px-5 transition-opacity duration-300 md:justify-center md:px-0',
+                  isActive ? 'pointer-events-none opacity-0' : 'opacity-100 delay-200',
+                )}
+              >
+                <span className="font-heading text-base font-semibold text-white md:rotate-180 md:text-[1.0625rem] md:[writing-mode:vertical-rl]">
+                  {item.name}
+                </span>
+                <span className="font-mono text-[11px] text-white/70 md:hidden">{item.number}</span>
+              </span>
+
+              {/* Open card: normal flow anchored to the bottom, so nothing clips. */}
+              <span
+                className={cn(
+                  'relative flex h-full min-w-0 flex-col justify-end p-7 transition-opacity duration-500 md:p-10',
+                  isActive ? 'opacity-100 delay-200' : 'pointer-events-none opacity-0',
+                )}
+              >
+                <span className="flex items-end justify-between gap-6">
+                  <span className="min-w-0 max-w-2xl">
+                    <span className="block font-mono text-[11px] uppercase tracking-[0.22em] text-white/70">
+                      {item.number} / {String(services.length).padStart(2, '0')}
                     </span>
-                    <span className={cn('hidden h-px w-6 lg:block', isActive ? 'bg-white/40' : 'bg-ink/20')} aria-hidden="true" />
-                    <span
-                      className={cn(
-                        'font-heading text-sm font-medium transition-all duration-500 lg:text-[clamp(1.5rem,2.4vw,2.25rem)] lg:font-semibold lg:tracking-tight',
-                        isActive ? 'text-white lg:translate-x-1' : 'text-ink/70 group-hover:text-ink/80',
-                      )}
-                    >
-                      {s.name}
+                    <span className="mt-4 block text-balance font-heading text-[clamp(1.75rem,2.9vw,3.25rem)] font-semibold leading-[1.04] tracking-tight text-white">
+                      {item.title || item.name}
                     </span>
-                    {isActive && (
-                      <span className="absolute inset-x-0 -bottom-px hidden h-px overflow-hidden lg:block" aria-hidden="true">
-                        <motion.span
-                          key={`${index}-${cycle}-${autoplay}`}
-                          className="block h-full origin-left bg-white/80"
-                          initial={{ scaleX: autoplay ? 0 : 1 }}
-                          animate={{ scaleX: 1 }}
-                          transition={{ duration: autoplay ? CYCLE_MS / 1000 : 0.4, ease: 'linear' }}
-                        />
+                    <span className="mt-4 line-clamp-4 block text-pretty text-sm leading-relaxed text-white/85 md:text-base">
+                      {item.description}
+                    </span>
+                    {item.capabilities.length > 0 && (
+                      <span className="mt-6 hidden flex-wrap gap-2 lg:flex">
+                        {item.capabilities.slice(0, 4).map((capability) => (
+                          <span
+                            key={capability}
+                            className="rounded-full border border-white/30 px-3.5 py-1.5 text-xs text-white/90"
+                          >
+                            {capability}
+                          </span>
+                        ))}
                       </span>
                     )}
-                  </button>
-                )
-              })}
-            </div>
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={service.id}
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.5, ease: EASE }}
-                className="mt-10 hidden lg:block"
-              >
-                <ServiceDetails index={index} />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Visual stage */}
-          <div className="lg:col-span-8">
-            <div
-              id="service-panel"
-              role="tabpanel"
-              aria-labelledby={`service-tab-${service.id}`}
-              onMouseEnter={() => setHoverPaused(true)}
-              onMouseLeave={() => setHoverPaused(false)}
-              className="relative"
-            >
-              <div className="relative">
-                <motion.span
-                  key={burst}
-                  aria-hidden="true"
-                  className="pointer-events-none absolute -inset-1.5 rounded-[2.1rem] ring-2 ring-ruxin"
-                  initial={{ opacity: burst ? 0.85 : 0, scale: 0.97 }}
-                  animate={{ opacity: 0, scale: 1.03 }}
-                  transition={{ duration: 0.7, ease: EASE }}
-                />
-                <motion.button
-                  type="button"
-                  drag={reduce ? false : 'x'}
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.15}
-                  dragSnapToOrigin
-                  onClick={() => {
-                    if (swiped.current) {
-                      swiped.current = false
-                      return
-                    }
-                    focusVisual()
-                  }}
-                  onDragEnd={(_, info) => {
-                    if (info.offset.x < -60) {
-                      swiped.current = true
-                      select(index + 1)
-                    } else if (info.offset.x > 60) {
-                      swiped.current = true
-                      select(index - 1)
-                    }
-                  }}
-                  aria-pressed={lifted}
-                  aria-label={lifted ? `Show the full ${service.name} image` : `Look closer at ${service.name}`}
-                  className="relative block aspect-[4/3] w-full cursor-pointer touch-pan-y overflow-hidden rounded-[1.75rem] border-2 border-ruxin bg-white text-left shadow-[0_28px_60px_-32px_rgba(130,7,16,0.32)]"
-                >
-                  <CornerTicks />
-                  <AnimatePresence mode="popLayout" initial={false}>
-                    <motion.div
-                      key={service.id}
-                      className="absolute inset-0"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.45, ease: EASE }}
-                    >
-                      {service.image ? (
-                        <motion.img
-                          src={mediaUrl(service.image)}
-                          alt=""
-                          draggable={false}
-                          className="absolute inset-0 size-full object-cover"
-                          animate={{ scale: lifted ? 1.08 : 1 }}
-                          transition={{ type: 'spring', stiffness: 220, damping: 24 }}
-                        />
-                      ) : (
-                        <Visual key={cycle} />
-                      )}
-                    </motion.div>
-                  </AnimatePresence>
-                  <AnimatePresence>
-                    {burst > 0 && (
-                      <motion.span
-                        key={burst}
+                    <span className="mt-7 inline-flex items-center gap-2 text-sm font-medium text-white">
+                      {copy.discuss} {item.name.toLowerCase()}
+                      <ArrowRight
+                        className="size-4 transition-transform duration-300 group-hover:translate-x-1"
                         aria-hidden="true"
-                        className="pointer-events-none absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/55 to-transparent"
-                        initial={{ x: '-130%' }}
-                        animate={{ x: '420%' }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.75, ease: EASE }}
                       />
-                    )}
-                  </AnimatePresence>
-                </motion.button>
-              </div>
-              <ConceptChain index={index} />
-            </div>
+                    </span>
+                  </span>
 
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={service.id}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.45, ease: EASE }}
-                className="mt-8 lg:hidden"
-              >
-                <ServiceDetails index={index} />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
+                  {/* Circular affordance, as in the reference. */}
+                  <span
+                    className="hidden size-24 shrink-0 items-center justify-center rounded-full border border-white/40 text-sm text-white backdrop-blur-sm transition-colors duration-300 group-hover:bg-white group-hover:text-ink xl:flex"
+                    aria-hidden="true"
+                  >
+                    Explore
+                  </span>
+                </span>
+              </span>
+            </button>
+          )
+        })}
       </div>
-    </section>
-  )
-}
 
-function ServiceDetails({ index }: { index: number }) {
-  const { services } = useSiteContent()
-  const copy = useUiCopy()
-  const s = services[index]
-  if (!s) return null
-  return (
-    <div>
-      <h3 className="text-balance text-2xl font-semibold leading-tight tracking-tight md:text-3xl">{s.title}</h3>
-      <p className="mt-4 max-w-md text-pretty leading-relaxed text-ink/60">{s.description}</p>
-      <ul className="mt-6 flex flex-wrap gap-2">
-        {s.capabilities.map((c) => (
-          <li key={c} className="rounded-full border border-ink/12 px-3 py-1.5 text-xs text-ink/70">
-            {c}
-          </li>
-        ))}
-      </ul>
-      <a
-        href="#contact"
-        className="group mt-8 inline-flex items-center gap-2 text-sm font-medium text-ink underline-offset-8 hover:underline"
-      >
-        {copy.discuss} {s.name.toLowerCase()}
-        <ArrowRight className="size-4 text-ruxin transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
-      </a>
-    </div>
-  )
-}
-
-function ConceptChain({ index }: { index: number }) {
-  const { services } = useSiteContent()
-  const copy = useUiCopy()
-  const s = services[index]
-  if (!s) return null
-  return (
-    <div className="mt-4 flex items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.18em] text-ink/65 md:text-[11px]">
-      <AnimatePresence mode="wait">
-        <motion.ol
-          key={s.id}
-          className="flex flex-wrap items-center gap-x-3 gap-y-1"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          {s.concept.map((c, i) => (
-            <li key={c} className="flex items-center gap-3">
-              <span className={i === s.concept.length - 1 ? 'text-ruxin' : 'text-ink/60'}>{c}</span>
-              {i < s.concept.length - 1 && <span aria-hidden="true">{'→'}</span>}
+      <div className="mt-7 flex items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.18em] text-ink/60 md:text-[11px]">
+        <ol className="flex flex-wrap items-center gap-x-3 gap-y-1">
+          {service.concept.map((step, i) => (
+            <li key={step} className="flex items-center gap-3">
+              <span className={i === service.concept.length - 1 ? 'text-ruxin' : 'text-ink/60'}>{step}</span>
+              {i < service.concept.length - 1 && <span aria-hidden="true">{'→'}</span>}
             </li>
           ))}
-        </motion.ol>
-      </AnimatePresence>
-      <span className="hidden shrink-0 sm:block">{copy.swipeOrSelect}</span>
+        </ol>
+        <a href="#contact" className="shrink-0 underline-offset-4 transition-colors hover:text-ruxin hover:underline">
+          {copy.discuss}
+        </a>
+      </div>
     </div>
   )
-}
 
-function CornerTicks() {
-  const base = 'pointer-events-none absolute size-3 border-white/40'
+  if (!scrollDriven) {
+    return (
+      <section id="services" aria-label={copy.services} className="bg-stone py-24 text-ink md:py-32">
+        {header}
+        <div className="mt-12">{accordion}</div>
+      </section>
+    )
+  }
+
   return (
-    <>
-      <span className={cn(base, 'left-3 top-3 border-l border-t')} aria-hidden="true" />
-      <span className={cn(base, 'right-3 top-3 border-r border-t')} aria-hidden="true" />
-      <span className={cn(base, 'bottom-3 left-3 border-b border-l')} aria-hidden="true" />
-      <span className={cn(base, 'bottom-3 right-3 border-b border-r')} aria-hidden="true" />
-    </>
+    <section id="services" aria-label={copy.services} className="bg-stone text-ink">
+      <div className="pt-24 md:pt-32">{header}</div>
+      <div ref={trackRef} style={{ height: `${services.length * 85 + 40}svh` }} className="relative">
+        <motion.div className="sticky top-0 flex min-h-svh items-center py-10">{accordion}</motion.div>
+      </div>
+    </section>
   )
 }

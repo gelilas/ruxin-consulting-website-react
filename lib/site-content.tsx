@@ -5,6 +5,7 @@ import {
   careers,
   clients,
   company,
+  events,
   hero,
   investmentIntelligence,
   insightCategories,
@@ -30,6 +31,7 @@ export type SiteContent = {
   whyChoose: typeof whyChoose
   team: typeof team
   careers: typeof careers
+  events: typeof events
   insightCategories: string[]
   insights: typeof insights
   assistant: typeof assistant
@@ -47,6 +49,7 @@ const REQUIRED_KEYS = [
   'whyChoose',
   'team',
   'careers',
+  'events',
   'insightCategories',
   'insights',
   'assistant',
@@ -65,6 +68,7 @@ export const fallback: SiteContent = {
   whyChoose,
   team,
   careers,
+  events,
   insightCategories: [...insightCategories],
   insights,
   assistant,
@@ -101,6 +105,7 @@ export function isSiteContent(value: unknown): value is SiteContent {
   if (!Array.isArray(value.team)) return false
 
   if (!isRecord(value.careers)) return false
+  if (!isRecord(value.events) || !Array.isArray((value.events as Record<string, unknown>).items)) return false
   if (!Array.isArray(value.insightCategories)) return false
   if (!Array.isArray(value.insights)) return false
   if (!isRecord(value.assistant)) return false

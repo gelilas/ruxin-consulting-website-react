@@ -2,7 +2,8 @@
 
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { ArrowRight, Menu, X } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { useLocale, useSiteContent } from '@/lib/site-content'
 import { cn } from '@/lib/utils'
 import { useUiCopy } from '@/lib/ui-copy'
@@ -11,19 +12,63 @@ import { Logo } from '@/components/site/logo'
 
 export { Logo }
 
+/**
+ * Nav entries are a mix of in-page anchors (#about) and real routes (/events).
+ * An anchor only resolves on the home page, so off-home it becomes /#about and
+ * is routed rather than being a dead link.
+ */
+function NavItem({
+  href,
+  isHome,
+  className,
+  children,
+  onClick,
+  ...rest
+}: {
+  href: string
+  isHome: boolean
+  className?: string
+  children: ReactNode
+  onClick?: () => void
+} & Record<string, unknown>) {
+  const isAnchor = href.startsWith('#')
+
+  if (isAnchor && isHome) {
+    return (
+      <a href={href} className={className} onClick={onClick} {...rest}>
+        {children}
+      </a>
+    )
+  }
+
+  return (
+    <Link to={isAnchor ? `/${href}` : href} className={className} onClick={onClick} {...rest}>
+      {children}
+    </Link>
+  )
+}
+
 export function Navbar() {
   const { navLinks } = useSiteContent()
   const { locale, setLocale } = useLocale()
   const copy = useUiCopy()
   const { scrollY } = useScroll()
+  const { pathname } = useLocation()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState('')
 
+  const isHome = pathname === '/'
+
   useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 40))
 
+  // Section highlighting only means anything on the single-page home route.
   useEffect(() => {
-    const ids = navLinks.map((l) => l.href.slice(1))
+    if (!isHome) {
+      setActive('')
+      return
+    }
+    const ids = navLinks.filter((l) => l.href.startsWith('#')).map((l) => l.href.slice(1))
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -37,7 +82,7 @@ export function Navbar() {
       if (el) io.observe(el)
     })
     return () => io.disconnect()
-  }, [navLinks])
+  }, [navLinks, isHome])
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
@@ -45,6 +90,12 @@ export function Navbar() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [open])
+
+  // Close the mobile menu whenever the route changes.
+  useEffect(() => setOpen(false), [pathname])
+
+  const isActive = (href: string) =>
+    href.startsWith('#') ? isHome && active === href.slice(1) : pathname.startsWith(href)
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
@@ -61,28 +112,31 @@ export function Navbar() {
             scrolled ? 'h-16' : 'h-20 md:h-24',
           )}
         >
-          <Logo light mark="white" />
+          <Link to="/" aria-label="Ruxin Consulting home">
+            <Logo light mark="white" />
+          </Link>
           <ul className="hidden items-center gap-1 lg:flex">
             {navLinks.map((link, index) => {
-              const isActive = active === link.href.slice(1)
+              const current = isActive(link.href)
               return (
                 <li key={link.href}>
-                  <a
+                  <NavItem
                     href={link.href}
+                    isHome={isHome}
                     className={cn(
                       'relative px-3.5 py-2 text-[15px] tracking-wide transition-colors',
-                      isActive ? 'text-white' : 'text-white/75 hover:text-white',
+                      current ? 'text-white' : 'text-white/75 hover:text-white',
                     )}
                   >
                     {copy.navLabels[index] || link.label}
-                    {isActive && (
+                    {current && (
                       <motion.span
                         layoutId="nav-dot"
                         className="absolute -bottom-0.5 left-1/2 size-1 -translate-x-1/2 rounded-full bg-white"
                         transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                       />
                     )}
-                  </a>
+                  </NavItem>
                 </li>
               )
             })}
@@ -105,14 +159,15 @@ export function Navbar() {
               ))}
             </div>
             <Magnetic strength={0.25} className="hidden sm:inline-block">
-              <a
+              <NavItem
                 href="#contact"
+                isHome={isHome}
                 data-analytics-location="navbar"
                 className="group inline-flex h-10 items-center gap-2 rounded-full bg-cream pl-5 pr-4 text-[14px] font-medium text-ink transition-colors hover:bg-white"
               >
                 {copy.talk}
                 <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
-              </a>
+              </NavItem>
             </Magnetic>
             <button
               type="button"
@@ -147,25 +202,27 @@ export function Navbar() {
                   transition={{ delay: 0.05 + i * 0.04, ease: EASE, duration: 0.5 }}
                   className="border-b border-white/15"
                 >
-                  <a
+                  <NavItem
                     href={link.href}
+                    isHome={isHome}
                     onClick={() => setOpen(false)}
                     className="flex items-baseline justify-between py-4 font-heading text-3xl font-medium tracking-tight text-white"
                   >
                     {copy.navLabels[i] || link.label}
                     <span className="font-mono text-xs text-white/80">0{i + 1}</span>
-                  </a>
+                  </NavItem>
                 </motion.li>
               ))}
             </ul>
-            <a
+            <NavItem
               href="#contact"
+              isHome={isHome}
               data-analytics-location="mobile-menu"
               onClick={() => setOpen(false)}
               className="flex h-14 items-center justify-center gap-2 rounded-full bg-cream text-base font-medium text-ink"
             >
               {copy.talk} <ArrowRight className="size-4" aria-hidden="true" />
-            </a>
+            </NavItem>
           </motion.div>
         )}
       </AnimatePresence>

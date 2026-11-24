@@ -8,6 +8,7 @@ import { useSiteContent } from '@/lib/site-content'
 import { useUiCopy } from '@/lib/ui-copy'
 import { cn } from '@/lib/utils'
 import { EASE, Eyebrow, Magnetic, Reveal, SplitHeading } from '@/components/motion/primitives'
+import { Media } from '@/components/ui/media'
 /** Core Values uses the former hero network as a static visual; Services uses static imagery. */
 export function Story() {
   return (
@@ -30,8 +31,9 @@ function Hero() {
 
   return (
     <section id="hero" ref={ref} aria-labelledby="hero-heading" className="relative flex min-h-svh items-end overflow-hidden bg-ruxin text-white lg:items-center">
-      <img
-        src={mediaUrl(hero.image)}
+      <Media
+        image={hero.image}
+        video={hero.video}
         alt="Ruxin consultants working together"
         className="absolute inset-0 size-full object-cover grayscale opacity-75"
       />
